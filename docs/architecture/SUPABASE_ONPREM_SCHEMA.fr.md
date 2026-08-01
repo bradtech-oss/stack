@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Paquets Fondations @quatrain](QUATRAIN_MDM_AND_STATE_MACHINE.fr.md)** | ➡️ **[Suivant : Cœur IA Hey Brad](HEY_BRAD_AI_CORE.fr.md)**
 ---
 

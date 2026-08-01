@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Planning Août 2026](AUGUST_2026_SPRINT_ROADMAP.fr.md)** | ➡️ **[Suivant : Architecture Local-First & Quality Gates](LOCAL_FIRST_AND_QUALITY_GATES.fr.md)**
 ---
 

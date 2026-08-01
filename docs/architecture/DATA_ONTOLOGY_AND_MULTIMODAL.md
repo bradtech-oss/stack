@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: Local-First Architecture](LOCAL_FIRST_AND_QUALITY_GATES.md)** | ➡️ **[Next: @quatrain Foundation Packages](QUATRAIN_MDM_AND_STATE_MACHINE.md)**
 ---
 

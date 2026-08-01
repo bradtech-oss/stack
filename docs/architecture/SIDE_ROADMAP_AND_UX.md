@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: August 2026 Sprint Roadmap](AUGUST_2026_SPRINT_ROADMAP.md)** | ➡️ **[Next: Local-First & Quality Gates](LOCAL_FIRST_AND_QUALITY_GATES.md)**
 ---
 

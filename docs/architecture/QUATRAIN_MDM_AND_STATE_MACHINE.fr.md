@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Ontologie Données & Multi-Modal](DATA_ONTOLOGY_AND_MULTIMODAL.fr.md)** | ➡️ **[Suivant : Schéma Supabase On-Premise](SUPABASE_ONPREM_SCHEMA.fr.md)**
 ---
 

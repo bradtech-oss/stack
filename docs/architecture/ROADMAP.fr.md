@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Architecture Système](ARCHITECTURE.fr.md)** | ➡️ **[Suivant : Planning Août 2026](AUGUST_2026_SPRINT_ROADMAP.fr.md)**
 ---
 

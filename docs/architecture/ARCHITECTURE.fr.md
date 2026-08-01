@@ -1,5 +1,5 @@
----
 🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : README](../../README.fr.md)** | ➡️ **[Suivant : Feuille de Route Globale](ROADMAP.fr.md)**
+
 ---
 
 # Architecture Globale & Vue d'Ensemble — bradtech-oss

@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: Sovereign LoRaWAN & CLI Setup](SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.md)** | ➡️ **[Next: Architecture Index](index.md)**
 ---
 

@@ -1,5 +1,5 @@
----
 🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: README](../../README.md)** | ➡️ **[Next: Global Roadmap](ROADMAP.md)**
+
 ---
 
 # System Architecture Overview — bradtech-oss

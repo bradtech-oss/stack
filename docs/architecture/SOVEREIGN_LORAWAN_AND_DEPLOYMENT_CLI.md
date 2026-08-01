@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: Dual-System ETL Sync](DATA_SYNC_AND_HOT_SWAP.md)** | ➡️ **[Next: IaC Recipes](IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md)**
 ---
 

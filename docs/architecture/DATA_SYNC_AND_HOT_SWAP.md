@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: Hey Brad AI Core](HEY_BRAD_AI_CORE.md)** | ➡️ **[Next: Sovereign LoRaWAN & CLI Setup](SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.md)**
 ---
 

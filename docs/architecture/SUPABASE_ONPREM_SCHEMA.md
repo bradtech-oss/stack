@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: @quatrain Packages](QUATRAIN_MDM_AND_STATE_MACHINE.md)** | ➡️ **[Next: Hey Brad AI Core](HEY_BRAD_AI_CORE.md)**
 ---
 

@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Feuille de Route Globale](ROADMAP.fr.md)** | ➡️ **[Suivant : Side Roadmap & UX PWA](SIDE_ROADMAP_AND_UX.fr.md)**
 ---
 

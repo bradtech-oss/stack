@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Sync ETL & Remplacement à Chaud](DATA_SYNC_AND_HOT_SWAP.fr.md)** | ➡️ **[Suivant : Recettes IaC Cloud & Edge](IAC_TERRAFORM_HELM_ARGOCD_PODMAN.fr.md)**
 ---
 

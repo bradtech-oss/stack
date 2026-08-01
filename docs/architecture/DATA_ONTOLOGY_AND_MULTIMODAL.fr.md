@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Architecture Local-First](LOCAL_FIRST_AND_QUALITY_GATES.fr.md)** | ➡️ **[Suivant : Paquets Fondations @quatrain](QUATRAIN_MDM_AND_STATE_MACHINE.fr.md)**
 ---
 

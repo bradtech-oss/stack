@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: System Architecture](ARCHITECTURE.md)** | ➡️ **[Next: August 2026 Sprint Roadmap](AUGUST_2026_SPRINT_ROADMAP.md)**
 ---
 

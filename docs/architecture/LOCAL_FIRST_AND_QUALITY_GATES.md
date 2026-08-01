@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: Side Roadmap & PWA UX](SIDE_ROADMAP_AND_UX.md)** | ➡️ **[Next: Data Ontology & Multi-Modal](DATA_ONTOLOGY_AND_MULTIMODAL.md)**
 ---
 

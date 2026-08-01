@@ -1,4 +1,3 @@
----
 🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Schéma Supabase On-Premise](SUPABASE_ONPREM_SCHEMA.fr.md)** | ➡️ **[Suivant : Sync ETL & Remplacement à Chaud](DATA_SYNC_AND_HOT_SWAP.fr.md)**
 ---
 
