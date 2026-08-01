@@ -1,6 +1,6 @@
 # System Architecture Overview — bradtech-oss
 
-> 🌐 *Version française disponible dans [`ARCHITECTURE.fr.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/ARCHITECTURE.fr.md)*
+> 🌐 *Version française disponible dans [`ARCHITECTURE.fr.md`](ARCHITECTURE.fr.md)*
 
 ## 1. Core Guiding Principles
 - **Open Source First (AGPL-v3)**: Fully open, public, and auditable code hosted under the **`bradtech-oss`** GitHub organization.
@@ -13,19 +13,19 @@
 
 ```mermaid
 graph TD
-    Client[Browser / Mobile App] -->|HTTP / WSS| Backoffice[code/apps/backoffice - Astro / CoreUX]
-    Sensors[Probes & LoRaWAN Sensors] -->|Uplink| API[code/apps/api - Ingestion]
+    Client["Browser / Mobile App"] -->|HTTP / WSS| Backoffice["code/apps/backoffice - Astro / CoreUX"]
+    Sensors["Probes & LoRaWAN Sensors"] -->|Uplink| API["code/apps/api - Ingestion"]
     
-    API -->|PostgreSQL / RLS| Supabase[(Supabase On-Premise)]
+    API -->|PostgreSQL / RLS| Supabase[("Supabase On-Premise")]
     Backoffice -->|GraphQL / REST / Realtime| Supabase
     
-    Backoffice -->|Search & AI Query| HeyBrad[code/packages/hey-brad - Modaka Engine]
-    Modaka[Modaka Engine] <-->|Build & Maintain| OKFRepo[(OKF / Markdown v0.1 Repo)]
-    OKFRepo -->|Flat Data HTTP Serving| OpenDataServer[xxx.brad.farm Open Data Endpoint]
+    Backoffice -->|Search & AI Query| HeyBrad["code/packages/hey-brad - Modaka Engine"]
+    Modaka["Modaka Engine"] <-->|Build & Maintain| OKFRepo[("OKF / Markdown v0.1 Repo")]
+    OKFRepo -->|Flat Data HTTP Serving| OpenDataServer["xxx.brad.farm Open Data Endpoint"]
 
-    subgraph Core Packages [@quatrain]
-        MDM[@quatrain/mdm - Master Data Management]
-        FSM[@quatrain/state-machine - Finite State Machine]
+    subgraph CorePackages ["Core Packages (@quatrain)"]
+        MDM["@quatrain/mdm - Master Data Management"]
+        FSM["@quatrain/state-machine - Finite State Machine"]
     end
 
     API --> MDM

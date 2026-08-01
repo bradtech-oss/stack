@@ -1,6 +1,6 @@
 # Spécifications — Side Roadmap : Paquets Quatrain, Curation Bookworm, Cœur Hey Brad & Écosystème UX PWA
 
-> 🌐 *English version available in [`SIDE_ROADMAP_AND_UX.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/SIDE_ROADMAP_AND_UX.md)*
+> 🌐 *English version available in [`SIDE_ROADMAP_AND_UX.md`](SIDE_ROADMAP_AND_UX.md)*
 
 Ce document détaille la **Side Roadmap** transversale pour le développement des briques fondations Quatrain, le système de curation Bookworm OKF, le moteur IA Hey Brad (Modaka SaaS) et la refonte des applications UX PWA (Backoffice & Mobile).
 
@@ -10,22 +10,22 @@ Ce document détaille la **Side Roadmap** transversale pour le développement de
 
 ```mermaid
 graph TD
-    subgraph 1. Paquets Fondations Quatrain
-        MDM[@quatrain/mdm - Master Data Management]
-        FSM[@quatrain/state-machine - Automate d'États]
+    subgraph CorePackages ["1. Paquets Fondations Quatrain"]
+        MDM["@quatrain/mdm - Master Data Management"]
+        FSM["@quatrain/state-machine - Automate d'États"]
     end
 
-    subgraph 2. Curation & Extraction Bookworm (Modaka OKF)
-        BookwormMaster[Bookworm Master OKF Repository] -->|Extractions Ciblées & Curation| TenantModaka[Instance Personnelle Modaka xxx.brad.farm]
+    subgraph BookwormCuration ["2. Curation & Extraction Bookworm (Modaka OKF)"]
+        BookwormMaster["Bookworm Master OKF Repository"] -->|Extractions Ciblées & Curation| TenantModaka["Instance Personnelle Modaka xxx.brad.farm"]
     end
 
-    subgraph 3. Cœur IA Hey Brad (Modaka SaaS)
-        HeyBradCore[Hey Brad Engine - Conversational & Reasoning] <--> TenantModaka
+    subgraph HeyBradCoreGroup ["3. Cœur IA Hey Brad (Modaka SaaS)"]
+        HeyBradCore["Hey Brad Engine - Conversational & Reasoning"] <--> TenantModaka
     end
 
-    subgraph 4. Écosystème UX PWA (Socle Commun Astro)
-        BackofficeApp[code/apps/backoffice - PC / Laptop / Tablette]
-        MobileApp[code/apps/mobile - Mobile / Tablette PWA]
+    subgraph UXEcosystem ["4. Écosystème UX PWA (Socle Commun Astro)"]
+        BackofficeApp["code/apps/backoffice - PC / Laptop / Tablette"]
+        MobileApp["code/apps/mobile - Mobile / Tablette PWA"]
     end
 
     MDM --> BackofficeApp
