@@ -1,17 +1,20 @@
 🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Ontologie Données & Multi-Modal](DATA_ONTOLOGY_AND_MULTIMODAL.fr.md)** | ➡️ **[Suivant : Schéma Supabase On-Premise](SUPABASE_ONPREM_SCHEMA.fr.md)**
+
 ---
 
-# Spécifications — Paquets `@quatrain/mdm` & `@quatrain/state-machine`
+# Spécifications — Paquets `@quatrain/mdm` & `@quatrain/state-machine` (Monorepo Quatrain Core)
 
 > 🌐 *English version available in [`QUATRAIN_MDM_AND_STATE_MACHINE.md`](QUATRAIN_MDM_AND_STATE_MACHINE.md)*
 
-Ce document spécifie la conception, les structures d'entités et les contrats de transition d'états pour les deux paquets fondations Open Source Quatrain : `@quatrain/mdm` et `@quatrain/state-machine`.
+> [!IMPORTANT]
+> **Emplacement dans les Dépôts :** Les paquets fondations `@quatrain/*` (`@quatrain/mdm` et `@quatrain/state-machine`) sont développés et maintenus au sein du **monorepo Quatrain Core** situé dans `Quatrain/Core` (`packages/mdm` & `packages/state-machine`).
+> Ils sont consommés dans `bradtech-oss/stack` via des résolutions explicites Yarn `portal:` lors du développement local (ex: `"portal:../../QUATRAIN/Core/packages/mdm"`).
 
 ---
 
 ## 📦 1. `@quatrain/mdm` (Master Data Management)
 
-`@quatrain/mdm` fournit une taxonomie abstraite et indépendante du domaine pour modéliser les équipements matériels et les réalités environnementales.
+Situé dans `Quatrain/Core/packages/mdm`, `@quatrain/mdm` fournit une taxonomie abstraite et indépendante du domaine pour modéliser les équipements matériels et les réalités environnementales.
 
 ### Entités Clés :
 - **`Device`** : Équipement IoT physique (ex: Sonde, Station Météo, Passerelle).
@@ -40,7 +43,7 @@ export interface DeviceEntity {
 
 ## ⚙️ 2. `@quatrain/state-machine` (Automate à États Universel)
 
-`@quatrain/state-machine` régit le cycle de vie et les transitions d'états des équipements et réalités métiers.
+Situé dans `Quatrain/Core/packages/state-machine`, `@quatrain/state-machine` régit le cycle de vie et les transitions d'états des équipements et réalités métiers.
 
 ### États du Cycle de Vie d'un Équipement :
 - `PLANNED` -> `ORDERED` -> `AVAILABLE` -> `ASSOCIATED` <-> `MAINTENANCE` -> `KO` -> `SCRAPPED`

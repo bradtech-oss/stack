@@ -1,20 +1,23 @@
-# bradtech-oss — Monorepo Écosystème Open Source Brad Technology
+# bradtech-oss/stack — Monorepo Écosystème Open Source Brad Technology
 
 > [!NOTE]
 > **Licence :** AGPL-v3 | **Organisation GitHub :** `bradtech-oss` | **Moteur :** Supabase On-Premise & Quatrain Core
 >
 > 🌐 *English version available in [`README.md`](README.md)*
 
-Bienvenue dans le monorepo des briques Open Source de **Brad Technology** (`bradtech-oss`).
+Bienvenue dans le monorepo des briques Open Source de **Brad Technology** (`bradtech-oss/stack`).
 
-Ce dépôt regroupe l'ensemble du code applicatif, des paquets du domaine, du cœur IA **Hey Brad**, du serveur LoRaWAN souverain embarqué (*ChirpStack + Basicstation WSS*), du moteur de synchronisation bi-système & remplacement à chaud (*Hot Swap*), des outils CLI de génération de configurations/clés secrètes sur-mesure, et des recettes d'Infrastructure-as-Code (IaC) pour des déploiements autonomes On-Premise et Cloud via **Terraform**, **ArgoCD**, **Helm** et **Podman**.
+Ce dépôt regroupe l'ensemble du code applicatif, des paquets du domaine (`@bradtech-oss/*`), du cœur IA **Hey Brad**, du serveur LoRaWAN souverain embarqué (*ChirpStack + Basicstation WSS*), du moteur de synchronisation bi-système & remplacement à chaud (*Hot Swap*), des outils CLI de génération de configurations/clés secrètes sur-mesure, et des recettes d'Infrastructure-as-Code (IaC) pour des déploiements autonomes On-Premise et Cloud via **Terraform**, **ArgoCD**, **Helm** et **Podman**.
+
+> [!TIP]
+> **Résolution des Paquets Quatrain Core :** Les paquets fondations `@quatrain/mdm` et `@quatrain/state-machine` résident dans le **monorepo Quatrain Core** (`Quatrain/Core`) et sont liés en développement local via des résolutions Yarn `portal:`.
 
 ---
 
 ## 🏗️ Structure du Monorepo
 
 ```text
-bradtech-oss/
+bradtech-oss/stack/
 ├── README.md                       # English main presentation
 ├── README.fr.md                    # French main presentation
 ├── HOWTO.md                        # English practical guides
@@ -33,7 +36,7 @@ bradtech-oss/
 │       ├── DATA_ONTOLOGY_AND_MULTIMODAL.md # Ontologie Données & Multi-Modal
 │       ├── SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.md # LoRaWAN Souverain & Outil CLI
 │       ├── DATA_SYNC_AND_HOT_SWAP.md # Moulinettes ETL, Sync Bi-Système & Hot Swap
-│       ├── QUATRAIN_MDM_AND_STATE_MACHINE.md # Spécifications @quatrain/mdm & @quatrain/state-machine
+│       ├── QUATRAIN_MDM_AND_STATE_MACHINE.md # Spécifications @quatrain/mdm & @quatrain/state-machine (Quatrain/Core)
 │       ├── SUPABASE_ONPREM_SCHEMA.md # Modèle de base de données PostgreSQL & RLS
 │       ├── HEY_BRAD_AI_CORE.md     # Cœur IA RAG (Bookworm + Télémétrie)
 │       └── IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md # Recettes IaC Terraform, Helm, ArgoCD & Podman
@@ -41,8 +44,6 @@ bradtech-oss/
 │
 ├── code/                           # CODE APPLICATIF & PAQUETS METIER
 │   ├── packages/
-│   │   ├── mdm/                    # @quatrain/mdm : Master Data Management (Devices & Capteurs)
-│   │   ├── state-machine/          # @quatrain/state-machine : Automate d'états (Devices & Réalités)
 │   │   ├── sync-engine/            # @bradtech-oss/sync-engine : ETL, CDC & Hot Swap avec Brad v3
 │   │   ├── db/                     # @bradtech-oss/db : Schéma Supabase PostgreSQL & Migrations
 │   │   └── hey-brad/               # @bradtech-oss/hey-brad : Assistant IA RAG
