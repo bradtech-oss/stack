@@ -7,7 +7,7 @@
 
 Welcome to the **Brad Technology** open-source monorepo repository (`bradtech-oss/stack`).
 
-This repository consolidates all application source code, domain packages (`@bradtech-oss/*`), **Hey Brad** AI engine, sovereign embedded LoRaWAN network server (*ChirpStack + Basicstation WSS*), dual-system synchronization & hot-swap engine, custom CLI secret/configuration provisioning tools, and Infrastructure-as-Code (IaC) recipes for standalone On-Premise and Cloud deployments via **Terraform**, **ArgoCD**, **Helm**, and **Podman**.
+This repository consolidates all application source code (`apps/*`), domain packages (`packages/*`), **Hey Brad** AI engine, sovereign embedded LoRaWAN network server (*ChirpStack + Basicstation WSS*), dual-system synchronization & hot-swap engine, custom CLI secret/configuration provisioning tools, and Infrastructure-as-Code (IaC) recipes for standalone On-Premise and Cloud deployments via **Terraform**, **ArgoCD**, **Helm**, and **Podman**.
 
 > [!TIP]
 > **Quatrain Core Resolution:** The foundational `@quatrain/mdm` and `@quatrain/state-machine` packages reside in the **Quatrain Core monorepo** (`Quatrain/Core`) and are linked in development via Yarn `portal:` resolutions.
@@ -42,15 +42,15 @@ bradtech-oss/stack/
 │   │   └── IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md # IaC Recipes (Terraform, Helm, ArgoCD, Podman)
 │   └── journal/                    # AI Agent Session Logs
 │
-├── code/                           # APPLICATION CODE & DOMAIN PACKAGES
-│   ├── packages/
-│   │   ├── sync-engine/            # @bradtech-oss/sync-engine: ETL, CDC & Hot-Swap with Brad v3
-│   │   ├── db/                     # @bradtech-oss/db: Supabase PostgreSQL Schema & Migrations
-│   │   └── hey-brad/               # @bradtech-oss/hey-brad: AI Assistant RAG Engine
-│   └── apps/
-│       ├── backoffice/             # On-Premise Backoffice UI (Astro + Quatrain CoreUX)
-│       ├── mobile/                 # Field Mobile PWA App (Astro + Quatrain CoreUX)
-│       └── api/                    # Telemetry Ingestion API & On-Premise Microservices
+├── packages/                       # DOMAIN PACKAGES (@bradtech-oss/*)
+│   ├── sync-engine/                # @bradtech-oss/sync-engine: ETL, CDC & Hot-Swap with Brad v3
+│   ├── db/                         # @bradtech-oss/db: Supabase PostgreSQL Schema & Migrations
+│   └── hey-brad/                   # @bradtech-oss/hey-brad: AI Assistant RAG Engine
+│
+├── apps/                           # APPLICATIONS
+│   ├── backoffice/                 # On-Premise Backoffice UI (Astro + Quatrain CoreUX)
+│   ├── mobile/                     # Field Mobile PWA App (Astro + Quatrain CoreUX)
+│   └── api/                        # Telemetry Ingestion API & On-Premise Microservices
 │
 └── infra/                          # IAC RECIPES, SOVEREIGN LORAWAN & CLI TOOLS
     ├── lorawan-server/             # Sovereign LoRaWAN Stack (ChirpStack + Basicstation WSS)

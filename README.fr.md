@@ -7,7 +7,7 @@
 
 Bienvenue dans le monorepo des briques Open Source de **Brad Technology** (`bradtech-oss/stack`).
 
-Ce dépôt regroupe l'ensemble du code applicatif, des paquets du domaine (`@bradtech-oss/*`), du cœur IA **Hey Brad**, du serveur LoRaWAN souverain embarqué (*ChirpStack + Basicstation WSS*), du moteur de synchronisation bi-système & remplacement à chaud (*Hot Swap*), des outils CLI de génération de configurations/clés secrètes sur-mesure, et des recettes d'Infrastructure-as-Code (IaC) pour des déploiements autonomes On-Premise et Cloud via **Terraform**, **ArgoCD**, **Helm** et **Podman**.
+Ce dépôt regroupe l'ensemble du code applicatif (`apps/*`), des paquets du domaine (`packages/*`), du cœur IA **Hey Brad**, du serveur LoRaWAN souverain embarqué (*ChirpStack + Basicstation WSS*), du moteur de synchronisation bi-système & remplacement à chaud (*Hot Swap*), des outils CLI de génération de configurations/clés secrètes sur-mesure, et des recettes d'Infrastructure-as-Code (IaC) pour des déploiements autonomes On-Premise et Cloud via **Terraform**, **ArgoCD**, **Helm** et **Podman**.
 
 > [!TIP]
 > **Résolution des Paquets Quatrain Core :** Les paquets fondations `@quatrain/mdm` et `@quatrain/state-machine` résident dans le **monorepo Quatrain Core** (`Quatrain/Core`) et sont liés en développement local via des résolutions Yarn `portal:`.
@@ -42,15 +42,15 @@ bradtech-oss/stack/
 │       └── IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md # Recettes IaC Terraform, Helm, ArgoCD & Podman
 │   └── journal/                    # Journaux de session des agents IA
 │
-├── code/                           # CODE APPLICATIF & PAQUETS METIER
-│   ├── packages/
-│   │   ├── sync-engine/            # @bradtech-oss/sync-engine : ETL, CDC & Hot Swap avec Brad v3
-│   │   ├── db/                     # @bradtech-oss/db : Schéma Supabase PostgreSQL & Migrations
-│   │   └── hey-brad/               # @bradtech-oss/hey-brad : Assistant IA RAG
-│   └── apps/
-│       ├── backoffice/             # Backoffice On-Premise (Astro + Quatrain CoreUX)
-│       ├── mobile/                 # App Mobile PWA Terrain (Astro + Quatrain CoreUX)
-│       └── api/                    # API Ingestion & Microservices On-Premise
+├── packages/                       # PAQUETS DOMAINE METIER (@bradtech-oss/*)
+│   ├── sync-engine/                # @bradtech-oss/sync-engine : ETL, CDC & Hot Swap avec Brad v3
+│   ├── db/                         # @bradtech-oss/db : Schéma Supabase PostgreSQL & Migrations
+│   └── hey-brad/                   # @bradtech-oss/hey-brad : Assistant IA RAG
+│
+├── apps/                           # APPLICATIONS
+│   ├── backoffice/                 # Backoffice On-Premise (Astro + Quatrain CoreUX)
+│   ├── mobile/                     # App Mobile PWA Terrain (Astro + Quatrain CoreUX)
+│   └── api/                        # API Ingestion & Microservices On-Premise
 │
 └── infra/                          # RECETTES IAC, LORAWAN SOUVERAIN & OUTILS CLI
     ├── lorawan-server/             # Serveur LoRaWAN Souverain (ChirpStack + Basicstation WSS)

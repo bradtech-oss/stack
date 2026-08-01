@@ -11,7 +11,7 @@ This document details the core **Local-First** architectural principles driving 
 
 ## 📱 1. Local-First Architecture (Heart of PWA Applications)
 
-The **Local-First** approach is placed at the absolute center of `code/apps/mobile` and `code/apps/backoffice`. It guarantees that any technician or field operator can work seamlessly without disruption, even in complete 4G/5G cellular dead zones.
+The **Local-First** approach is placed at the absolute center of `apps/mobile` and `apps/backoffice`. It guarantees that any technician or field operator can work seamlessly without disruption, even in complete 4G/5G cellular dead zones.
 
 ```mermaid
 graph TD

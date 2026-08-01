@@ -11,7 +11,7 @@ Ce document détaille les piliers d'architecture **Local-First** au cœur des ap
 
 ## 📱 1. Architecture Local-First (Cœur des Applications PWA)
 
-L'approche **Local-First** est placée au centre du design des applications `code/apps/mobile` et `code/apps/backoffice`. Elle garantit qu'un utilisateur ou technicien sur le terrain peut travailler sans aucune interruption, même en l'absence totale de réseau cellulaires 4G/5G.
+L'approche **Local-First** est placée au centre du design des applications `apps/mobile` et `apps/backoffice`. Elle garantit qu'un utilisateur ou technicien sur le terrain peut travailler sans aucune interruption, même en l'absence totale de réseau cellulaires 4G/5G.
 
 ```mermaid
 graph TD

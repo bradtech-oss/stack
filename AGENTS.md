@@ -24,7 +24,7 @@ Before undertaking any development, refactoring, database migration, or infrastr
 
 Key specifications to follow strictly:
 - **Quatrain Ecosystem Core**: `@quatrain/mdm` for Master Data Management & `@quatrain/state-machine` for universal hardware/reality Finite State Machines (FSM).
-- **Local-First Architecture**: 0ms local IndexedDB reads/writes for PWA apps (`code/apps/mobile` & `code/apps/backoffice`) with background sync to Supabase On-Premise.
+- **Local-First Architecture**: 0ms local IndexedDB reads/writes for PWA apps (`apps/mobile` & `apps/backoffice`) with background sync to Supabase On-Premise.
 - **Data Ontology**: Atomic `DataPoint` model (`measured` vs `computed` with `algorithmCode`, 3D geolocation with altitude, `open`/`closed` visibility, `okf:domain/category/item` URIs).
 - **Modaka Engine & OKF v0.1**: Flat Open Knowledge Format Markdown repositories and tenant Open Data publishing on `https://<tenant>.brad.farm`.
 - **Infrastructure-as-Code**: Non-root `Containerfile` Podman definitions (`USER bun`), multi-arch, Helm Charts, ArgoCD AppProjects/ApplicationSets, and Terraform recipes.

@@ -31,12 +31,12 @@ gantt
 ## 🏃 Sprint 1 : Fondations Monorepo, `@quatrain/mdm` & Supabase DB (01 - 07 Août)
 
 ### 🔹 Session 1.1 (2h30) — Initialisation du Monorepo `bradtech-oss`
-- **Objectif** : Structurer l'arborescence `code/` et `infra/`, configurer `package.json`, `turbo.json`, `.yarnrc.yml`, `tsconfig.json`.
+- **Objectif** : Structurer l'arborescence `` et `infra/`, configurer `package.json`, `turbo.json`, `.yarnrc.yml`, `tsconfig.json`.
 - **Livrables** : Monorepo fonctionnel avec `yarn install` et `yarn build` sans erreur.
 - **Vérification de Stabilité** : Build complet du monorepo validé.
 
 ### 🔹 Session 1.2 (2h30) — Développement du Paquet Fondateur `@quatrain/mdm`
-- **Objectif** : Créer `code/packages/mdm` avec les interfaces et validations Zod pour `Device`, `Component`, `Sensor` et `BaseEntity`.
+- **Objectif** : Créer `packages/mdm` avec les interfaces et validations Zod pour `Device`, `Component`, `Sensor` et `BaseEntity`.
 - **Livrables** : Tests unitaires Zod et export des types TypeScript.
 - **Vérification de Stabilité** : `yarn test --filter=@quatrain/mdm` passe à 100%.
 
@@ -55,7 +55,7 @@ gantt
 ## 🏃 Sprint 2 : `@quatrain/state-machine` & Moteur ETL Bi-Système (08 - 14 Août)
 
 ### 🔹 Session 2.1 (2h30) — Développement de `@quatrain/state-machine` (Automate Équipements)
-- **Objectif** : Créer le paquet `code/packages/state-machine` et modéliser l'automate FSM pour le cycle de vie des `Devices` (*Planned*, *Available*, *Associated*, *Maintenance*, *Ko*).
+- **Objectif** : Créer le paquet `packages/state-machine` et modéliser l'automate FSM pour le cycle de vie des `Devices` (*Planned*, *Available*, *Associated*, *Maintenance*, *Ko*).
 - **Livrables** : Moteur FSM réactif avec typage strict.
 - **Vérification de Stabilité** : Suite de tests FSM réactifs validée.
 
@@ -102,12 +102,12 @@ gantt
 
 ## 🏃 Sprint 4 : Écosystème Apps PWA (Backoffice/Mobile) & Outillage IaC (22 - 31 Août)
 
-### 🔹 Session 4.1 (3h00) — Application Backoffice UI PWA (`code/apps/backoffice`)
+### 🔹 Session 4.1 (3h00) — Application Backoffice UI PWA (`apps/backoffice`)
 - **Objectif** : Créer l'application Astro PWA Backoffice optimisée pour PC de bureau, Laptops et Tablettes avec les composants Quatrain CoreUX.
 - **Livrables** : Interface d'administration responsive complète.
 - **Vérification de Stabilité** : Build Astro PWA sans avertissement ni erreur.
 
-### 🔹 Session 4.2 (2h30) — Application Mobile PWA Terrain (`code/apps/mobile`)
+### 🔹 Session 4.2 (2h30) — Application Mobile PWA Terrain (`apps/mobile`)
 - **Objectif** : Créer l'application Astro PWA épurée optimisée pour Smartphones et Tablettes.
 - **Livrables** : Application Mobile PWA autonome.
 - **Vérification de Stabilité** : Service Worker PWA et manifeste validés.

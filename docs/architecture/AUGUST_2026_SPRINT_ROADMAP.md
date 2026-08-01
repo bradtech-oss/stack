@@ -31,12 +31,12 @@ gantt
 ## 🏃 Sprint 1: Monorepo Foundation, `@quatrain/mdm` & Supabase DB (Aug 01 - 07)
 
 ### 🔹 Session 1.1 (2h30) — `bradtech-oss` Monorepo Setup & Tooling
-- **Goal**: Initialize `code/` and `infra/` folder hierarchies, root `package.json`, `turbo.json`, `.yarnrc.yml`, `tsconfig.json`, and AGPL-v3 license.
+- **Goal**: Initialize `` and `infra/` folder hierarchies, root `package.json`, `turbo.json`, `.yarnrc.yml`, `tsconfig.json`, and AGPL-v3 license.
 - **Deliverables**: Working monorepo building cleanly with `yarn build`.
 - **Stability Check**: Clean monorepo build confirmed.
 
 ### 🔹 Session 1.2 (2h30) — `@quatrain/mdm` Core Package Development
-- **Goal**: Create `code/packages/mdm` with Zod schema definitions and TypeScript interfaces for `Device`, `Component`, `Sensor`, and `BaseEntity`.
+- **Goal**: Create `packages/mdm` with Zod schema definitions and TypeScript interfaces for `Device`, `Component`, `Sensor`, and `BaseEntity`.
 - **Deliverables**: Tested Zod schemas and exported TypeScript interfaces.
 - **Stability Check**: `yarn test --filter=@quatrain/mdm` passes 100%.
 
@@ -55,7 +55,7 @@ gantt
 ## 🏃 Sprint 2: `@quatrain/state-machine` & Dual-System ETL Engine (Aug 08 - 14)
 
 ### 🔹 Session 2.1 (2h30) — `@quatrain/state-machine` Development (Device FSM)
-- **Goal**: Create `code/packages/state-machine` modeling the finite state machine for `Device` lifecycles (*Planned*, *Available*, *Associated*, *Maintenance*, *Ko*).
+- **Goal**: Create `packages/state-machine` modeling the finite state machine for `Device` lifecycles (*Planned*, *Available*, *Associated*, *Maintenance*, *Ko*).
 - **Deliverables**: Strongly-typed reactive FSM engine.
 - **Stability Check**: Reactive FSM state transition test suite passing 100%.
 
@@ -102,12 +102,12 @@ gantt
 
 ## 🏃 Sprint 4: Dual PWA UX Apps (Backoffice/Mobile) & IaC Setup Tooling (Aug 22 - 31)
 
-### 🔹 Session 4.1 (3h00) — Backoffice UI PWA Application (`code/apps/backoffice`)
+### 🔹 Session 4.1 (3h00) — Backoffice UI PWA Application (`apps/backoffice`)
 - **Goal**: Build Astro PWA Backoffice web app optimized for Desktop PCs, Laptops, and Tablets using Quatrain CoreUX.
 - **Deliverables**: Complete responsive administration web dashboard.
 - **Stability Check**: Astro PWA build completing cleanly with 0 errors.
 
-### 🔹 Session 4.2 (2h30) — Field Mobile PWA Application (`code/apps/mobile`)
+### 🔹 Session 4.2 (2h30) — Field Mobile PWA Application (`apps/mobile`)
 - **Goal**: Build lightweight Astro PWA mobile app optimized for Smartphones and Tablets.
 - **Deliverables**: Standalone mobile PWA application.
 - **Stability Check**: PWA Service Worker and manifest verified.

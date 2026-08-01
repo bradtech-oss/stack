@@ -10,20 +10,20 @@
 - **Open Source First (AGPL-v3)**: Fully open, public, and auditable code hosted under the **`bradtech-oss`** GitHub organization.
 - **Quatrain Ecosystem Reusability**: Maximum utilization of Quatrain Core, CoreUX, and CoreApps packages (`@quatrain/*`).
 - **On-Premise Autonomy**: 100% self-hosted on-site operation without proprietary cloud dependencies via Self-Hosted Supabase.
-- **Decoupled Architecture (Code vs IaC)**: Explicit separation between application source code in `code/` and deployment infrastructure recipes in `infra/`.
+- **Decoupled Architecture (Code vs IaC)**: Explicit separation between application source code in `` and deployment infrastructure recipes in `infra/`.
 - **Modaka Engine & OKF Repositories**: Transparent knowledge management based on Open Knowledge Format (OKF v0.1) and flat Open Data publishing on dedicated **`xxx.brad.farm`** tenant endpoints.
 
 ## 2. Functional Component Diagram
 
 ```mermaid
 graph TD
-    Client["Browser / Mobile App"] -->|HTTP / WSS| Backoffice["code/apps/backoffice - Astro / CoreUX"]
-    Sensors["Probes & LoRaWAN Sensors"] -->|Uplink| API["code/apps/api - Ingestion"]
+    Client["Browser / Mobile App"] -->|HTTP / WSS| Backoffice["apps/backoffice - Astro / CoreUX"]
+    Sensors["Probes & LoRaWAN Sensors"] -->|Uplink| API["apps/api - Ingestion"]
     
     API -->|PostgreSQL / RLS| Supabase[("Supabase On-Premise")]
     Backoffice -->|GraphQL / REST / Realtime| Supabase
     
-    Backoffice -->|Search & AI Query| HeyBrad["code/packages/hey-brad - Modaka Engine"]
+    Backoffice -->|Search & AI Query| HeyBrad["packages/hey-brad - Modaka Engine"]
     Modaka["Modaka Engine"] <-->|Build & Maintain| OKFRepo[("OKF / Markdown v0.1 Repo")]
     OKFRepo -->|Flat Data HTTP Serving| OpenDataServer["xxx.brad.farm Open Data Endpoint"]
 

@@ -27,8 +27,8 @@ graph TD
     end
 
     subgraph UXEcosystem ["4. PWA UX Ecosystem (Shared Astro Foundation)"]
-        BackofficeApp["code/apps/backoffice - Desktop PC / Laptop / Tablet"]
-        MobileApp["code/apps/mobile - Smartphone / Tablet PWA"]
+        BackofficeApp["apps/backoffice - Desktop PC / Laptop / Tablet"]
+        MobileApp["apps/mobile - Smartphone / Tablet PWA"]
     end
 
     MDM --> BackofficeApp
@@ -62,8 +62,8 @@ graph TD
   - **AI Conversational Threads** (direct chat dialog with Hey Brad).
 
 ### Pillar 5: Clean Separation of Backoffice & Mobile PWA Apps (Astro)
-- **`code/apps/backoffice`**: Comprehensive administration and analytics dashboard, responsive and optimized for **Desktop PCs, Laptops, and Tablets**.
-- **`code/apps/mobile`**: Standalone PWA (Progressive Web App) field application, streamlined and optimized for **Smartphones and Tablets**.
+- **`apps/backoffice`**: Comprehensive administration and analytics dashboard, responsive and optimized for **Desktop PCs, Laptops, and Tablets**.
+- **`apps/mobile`**: Standalone PWA (Progressive Web App) field application, streamlined and optimized for **Smartphones and Tablets**.
 - **Shared Foundation**: 100% shared `@quatrain/mdm`, `@quatrain/state-machine`, and Quatrain CoreUX design system.
 
 ---

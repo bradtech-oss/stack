@@ -9,7 +9,7 @@
 
 | Milestone | Title | Est. Duration | Key Deliverables |
 | :--- | :--- | :---: | :--- |
-| **Milestone 1** | Monorepo Foundation & Tooling | 2 Days | `code/` & `infra/` layout, Yarn Berry/TurboRepo, `README.md`, `HOWTO.md`, `LICENSE.md` |
+| **Milestone 1** | Monorepo Foundation & Tooling | 2 Days | `` & `infra/` layout, Yarn Berry/TurboRepo, `README.md`, `HOWTO.md`, `LICENSE.md` |
 | **Milestone 2** | `@quatrain/mdm` & `@quatrain/state-machine` | 4 Days | Core MDM Device model & Universal FSM engine for devices and physical realities |
 | **Milestone 3** | Supabase On-Premise DB & RLS | 4 Days | 100% UUID v4 (`uid`) PostgreSQL schema, `pgvector` index, multi-tenant RLS policies |
 | **Milestone 4** | On-Premise Applications (Backoffice & API) | 5 Days | Astro + CoreUX Backoffice, high-speed telemetry ingestion microservice API |
@@ -21,7 +21,7 @@
 ## 🎯 Detailed Milestone Breakdowns
 
 ### Milestone 1: Monorepo Foundation
-- Initialize `code/` and `infra/` directory hierarchies.
+- Initialize `` and `infra/` directory hierarchies.
 - Create root tooling config files: `package.json`, `turbo.json`, `.yarnrc.yml`, `tsconfig.json`.
 - Core documentation setup.
 
@@ -30,7 +30,7 @@
 - **`@quatrain/state-machine`**: Reactive, strongly typed state machines.
 
 ### Milestone 3: Supabase On-Premise PostgreSQL
-- Versioned SQL migrations under `code/packages/db/migrations/`.
+- Versioned SQL migrations under `packages/db/migrations/`.
 - Enable `pgvector` for semantic document indexing.
 - Enforce Row-Level Security (RLS) across all public tables.
 

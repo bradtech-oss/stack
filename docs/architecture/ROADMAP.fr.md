@@ -9,7 +9,7 @@
 
 | Jalon | Intitulé | Durée Estimée | Livrables Clés |
 | :--- | :--- | :---: | :--- |
-| **Milestone 1** | Monorepo Foundation & Tooling | 2 Jours | Structure `code/` & `infra/`, Yarn Berry/TurboRepo, `README.md`, `HOWTO.md`, `LICENSE.md` |
+| **Milestone 1** | Monorepo Foundation & Tooling | 2 Jours | Structure `` & `infra/`, Yarn Berry/TurboRepo, `README.md`, `HOWTO.md`, `LICENSE.md` |
 | **Milestone 2** | Paquets `@quatrain/mdm` & `@quatrain/state-machine` | 4 Jours | Core MDM Device & Universal FSM Engine pour équipements et réalités métiers |
 | **Milestone 3** | Supabase On-Premise DB & RLS | 4 Jours | Schéma PostgreSQL 100% UUID v4 (`uid`), index `pgvector`, politiques RLS multi-tenant |
 | **Milestone 4** | Apps On-Premise (Backoffice UI & API) | 5 Jours | Backoffice Astro + CoreUX, API d'ingestion de télémétrie ultra-rapide |
@@ -21,7 +21,7 @@
 ## 🎯 Détail des Jalons (Milestones)
 
 ### Milestone 1 : Fondation du Monorepo
-- Initialisation de la structure de répertoires `code/` et `infra/`.
+- Initialisation de la structure de répertoires `` et `infra/`.
 - Fichiers de configuration racine : `package.json`, `turbo.json`, `.yarnrc.yml`, `tsconfig.json`.
 - Documentation initiale.
 
@@ -30,7 +30,7 @@
 - **`@quatrain/state-machine`** : Automates d'états réactifs et fortement typés.
 
 ### Milestone 3 : Supabase On-Premise PostgreSQL
-- Migrations SQL versionnées dans `code/packages/db/migrations/`.
+- Migrations SQL versionnées dans `packages/db/migrations/`.
 - Activation de `pgvector` pour l'indexation sémantique.
 - Row-Level Security (RLS) sur toutes les tables.
 
