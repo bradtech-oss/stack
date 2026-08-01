@@ -3,7 +3,7 @@
 > [!IMPORTANT]
 > Tous les agents de codage IA interagissant avec cet espace de travail DOIVENT impérativement lire et respecter les règles énoncées dans ce document.
 >
-> 🌐 *English version available in [`AGENTS.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/AGENTS.md)*
+> 🌐 *English version available in [`AGENTS.md`](AGENTS.md)*
 
 ---
 
@@ -17,7 +17,7 @@ Toutes les actions des agents dans ce dépôt doivent se conformer aux principes
 ## 2. Conformité avec la Documentation d'Architecture
 
 Avant d'entreprendre toute tâche de développement, de refactoring, de migration de base de données ou d'infrastructure, les agents **DOIVENT** lire et respecter la documentation d'architecture faisant autorité dans :
-👉 **[Index de la Documentation d'Architecture (`docs/architecture/index.fr.md`)](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/index.fr.md)** *(English version: [docs/architecture/index.md](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/index.md))*
+👉 **[Index de la Documentation d'Architecture (`docs/architecture/index.fr.md`)](docs/architecture/index.fr.md)** *(English version: [docs/architecture/index.md](docs/architecture/index.md))*
 
 > [!CAUTION]
 > **Obligation de Synchronisation Bilingue :** Lors de toute modification ou création de documents d'architecture sous `docs/architecture/`, les agents **DOIVENT** maintenir les versions en Anglais International (`.md`) et en Français (`.fr.md`) strictement synchronisées.
@@ -27,7 +27,7 @@ Avant d'entreprendre toute tâche de développement, de refactoring, de migratio
 ## 3. Journalisation des Actions de Session (`docs/journal/`)
 
 Chaque session de travail, décision d'architecture, refactoring majeur, migration de base de données ou livraison exécutée par un agent IA **DOIT ÊTRE JOURNALISÉE** dans des fichiers Markdown chronologiques situés sous :
-👉 **[`docs/journal/`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/journal/)**
+👉 **[`docs/journal/`](docs/journal/)**
 
 ### Convention de Nommage des Journaux :
 - Format : `YYYY-MM-DD-session-topic.md` (ex: `docs/journal/2026-08-01-initial-architecture-setup.md`)

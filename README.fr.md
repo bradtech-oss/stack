@@ -3,7 +3,7 @@
 > [!NOTE]
 > **Licence :** AGPL-v3 | **Organisation GitHub :** `bradtech-oss` | **Moteur :** Supabase On-Premise & Quatrain Core
 >
-> 🌐 *English version available in [`README.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/README.md)*
+> 🌐 *English version available in [`README.md`](README.md)*
 
 Bienvenue dans le monorepo des briques Open Source de **Brad Technology** (`bradtech-oss`).
 
@@ -18,20 +18,26 @@ bradtech-oss/
 ├── README.md                       # English main presentation
 ├── README.fr.md                    # French main presentation
 ├── HOWTO.md                        # English practical guides
-├── HOWTO.fr.md                     # French practical guides
 ├── LICENSE.md                      # AGPL-v3 License
+├── AGENTS.md                       # Directives agents IA (Anglais)
+├── AGENTS.fr.md                    # Directives agents IA (Français)
 ├── docs/                           # Documentation d'architecture
 │   └── architecture/
 │       ├── index.md                # 🗺️ English Architecture Index
 │       ├── index.fr.md             # 🗺️ French Architecture Index
 │       ├── ARCHITECTURE.md         # Vue d'ensemble de l'architecture système
 │       ├── ROADMAP.md              # Feuille de route & Jalons (Milestones)
+│       ├── AUGUST_2026_SPRINT_ROADMAP.md # Planning détaillé Août 2026
+│       ├── SIDE_ROADMAP_AND_UX.md   # Side Roadmap & UX PWA
+│       ├── LOCAL_FIRST_AND_QUALITY_GATES.md # Local-First IndexedDB & SonarQube
+│       ├── DATA_ONTOLOGY_AND_MULTIMODAL.md # Ontologie Données & Multi-Modal
 │       ├── SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.md # LoRaWAN Souverain & Outil CLI
 │       ├── DATA_SYNC_AND_HOT_SWAP.md # Moulinettes ETL, Sync Bi-Système & Hot Swap
 │       ├── QUATRAIN_MDM_AND_STATE_MACHINE.md # Spécifications @quatrain/mdm & @quatrain/state-machine
 │       ├── SUPABASE_ONPREM_SCHEMA.md # Modèle de base de données PostgreSQL & RLS
 │       ├── HEY_BRAD_AI_CORE.md     # Cœur IA RAG (Bookworm + Télémétrie)
 │       └── IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md # Recettes IaC Terraform, Helm, ArgoCD & Podman
+│   └── journal/                    # Journaux de session des agents IA
 │
 ├── code/                           # CODE APPLICATIF & PAQUETS METIER
 │   ├── packages/
@@ -42,6 +48,7 @@ bradtech-oss/
 │   │   └── hey-brad/               # @bradtech-oss/hey-brad : Assistant IA RAG
 │   └── apps/
 │       ├── backoffice/             # Backoffice On-Premise (Astro + Quatrain CoreUX)
+│       ├── mobile/                 # App Mobile PWA Terrain (Astro + Quatrain CoreUX)
 │       └── api/                    # API Ingestion & Microservices On-Premise
 │
 └── infra/                          # RECETTES IAC, LORAWAN SOUVERAIN & OUTILS CLI
@@ -57,4 +64,4 @@ bradtech-oss/
 
 ## 📚 Index de la Documentation d'Architecture
 
-👉 **[Consulter l'Index Général & l'Ordre de Lecture (`docs/architecture/index.fr.md`)](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/index.fr.md)**
+👉 **[Consulter l'Index Général & l'Ordre de Lecture (`docs/architecture/index.fr.md`)](docs/architecture/index.fr.md)**

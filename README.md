@@ -3,7 +3,7 @@
 > [!NOTE]
 > **License:** AGPL-v3 | **GitHub Organization:** `bradtech-oss` | **Core Engine:** Supabase On-Premise & Quatrain Core
 >
-> 🌐 *Version française disponible dans [`README.fr.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/README.fr.md)*
+> 🌐 *Version française disponible dans [`README.fr.md`](README.fr.md)*
 
 Welcome to the **Brad Technology** open-source monorepo repository (`bradtech-oss`).
 
@@ -18,20 +18,26 @@ bradtech-oss/
 ├── README.md                       # Main English presentation
 ├── README.fr.md                    # Main French presentation
 ├── HOWTO.md                        # English practical guides & usage scenarios
-├── HOWTO.fr.md                     # French practical guides & usage scenarios
 ├── LICENSE.md                      # AGPL-v3 License
+├── AGENTS.md                       # LLM Agent instructions (English)
+├── AGENTS.fr.md                    # LLM Agent instructions (French)
 ├── docs/                           # Architecture specifications & docs
-│   └── architecture/
-│       ├── index.md                # 🗺️ English Architecture Index & Reading Order
-│       ├── index.fr.md             # 🗺️ French Architecture Index & Reading Order
-│       ├── ARCHITECTURE.md         # System Architecture Overview
-│       ├── ROADMAP.md              # Roadmap & Milestones (1 to 6)
-│       ├── SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.md # Sovereign LoRaWAN & CLI Setup Tool
-│       ├── DATA_SYNC_AND_HOT_SWAP.md # ETL Migration, CDC Sync & Hot-Swap Strategy
-│       ├── QUATRAIN_MDM_AND_STATE_MACHINE.md # @quatrain/mdm & @quatrain/state-machine specs
-│       ├── SUPABASE_ONPREM_SCHEMA.md # Supabase PostgreSQL Schema & RLS Policies
-│       ├── HEY_BRAD_AI_CORE.md     # Hey Brad AI RAG Engine (Bookworm + Telemetry)
-│       └── IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md # IaC Recipes (Terraform, Helm, ArgoCD, Podman)
+│   ├── architecture/
+│   │   ├── index.md                # 🗺️ English Architecture Index & Reading Order
+│   │   ├── index.fr.md             # 🗺️ French Architecture Index & Reading Order
+│   │   ├── ARCHITECTURE.md         # System Architecture Overview
+│   │   ├── ROADMAP.md              # Roadmap & Milestones (1 to 6)
+│   │   ├── AUGUST_2026_SPRINT_ROADMAP.md # Refined August 2026 Sprints & 2-3h Sessions
+│   │   ├── SIDE_ROADMAP_AND_UX.md   # Side Roadmap: Quatrain Packages & PWA Apps
+│   │   ├── LOCAL_FIRST_AND_QUALITY_GATES.md # Local-First IndexedDB & SonarQube
+│   │   ├── DATA_ONTOLOGY_AND_MULTIMODAL.md # Data Ontology & Multi-Modal Specs
+│   │   ├── SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.md # Sovereign LoRaWAN & CLI Setup Tool
+│   │   ├── DATA_SYNC_AND_HOT_SWAP.md # ETL Migration, CDC Sync & Hot-Swap Strategy
+│   │   ├── QUATRAIN_MDM_AND_STATE_MACHINE.md # @quatrain/mdm & @quatrain/state-machine specs
+│   │   ├── SUPABASE_ONPREM_SCHEMA.md # Supabase PostgreSQL Schema & RLS Policies
+│   │   ├── HEY_BRAD_AI_CORE.md     # Hey Brad AI RAG Engine (Bookworm + Telemetry)
+│   │   └── IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md # IaC Recipes (Terraform, Helm, ArgoCD, Podman)
+│   └── journal/                    # AI Agent Session Logs
 │
 ├── code/                           # APPLICATION CODE & DOMAIN PACKAGES
 │   ├── packages/
@@ -42,6 +48,7 @@ bradtech-oss/
 │   │   └── hey-brad/               # @bradtech-oss/hey-brad: AI Assistant RAG Engine
 │   └── apps/
 │       ├── backoffice/             # On-Premise Backoffice UI (Astro + Quatrain CoreUX)
+│       ├── mobile/                 # Field Mobile PWA App (Astro + Quatrain CoreUX)
 │       └── api/                    # Telemetry Ingestion API & On-Premise Microservices
 │
 └── infra/                          # IAC RECIPES, SOVEREIGN LORAWAN & CLI TOOLS
@@ -57,19 +64,23 @@ bradtech-oss/
 
 ## 📚 Architecture Documentation Index
 
-👉 **[Browse Full Architecture Index & Recommended Reading Order (`docs/architecture/index.md`)](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/index.md)**
+👉 **[Browse Full Architecture Index & Recommended Reading Order (`docs/architecture/index.md`)](docs/architecture/index.md)**
 
-1. 📐 **[System Architecture Overview](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/ARCHITECTURE.md)**
-2. 🗺️ **[Roadmap & Milestones](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/ROADMAP.md)**
-3. 📦 **[`@quatrain/mdm` & `@quatrain/state-machine` Packages](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/QUATRAIN_MDM_AND_STATE_MACHINE.md)**
-4. 🗄️ **[Supabase On-Premise PostgreSQL Schema & RLS](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/SUPABASE_ONPREM_SCHEMA.md)**
-5. 🤖 **[Hey Brad AI Core (RAG + Bookworm)](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/HEY_BRAD_AI_CORE.md)**
-6. 🔄 **[ETL Conversion, Dual-System Sync & Hot-Swap Strategy](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/DATA_SYNC_AND_HOT_SWAP.md)**
-7. 🛰️ **[Sovereign LoRaWAN Server & Deployment Setup CLI](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.md)**
-8. 🐳 **[IaC: Terraform, Helm, ArgoCD & Podman](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md)**
+1. 📐 **[System Architecture Overview](docs/architecture/ARCHITECTURE.md)**
+2. 🗺️ **[Global Roadmap & Milestones](docs/architecture/ROADMAP.md)**
+3. 🗓️ **[Refined August 2026 Sprint Roadmap](docs/architecture/AUGUST_2026_SPRINT_ROADMAP.md)**
+4. 🎯 **[Side Roadmap & PWA UX Ecosystem](docs/architecture/SIDE_ROADMAP_AND_UX.md)**
+5. 📱 **[Local-First Architecture & SonarQube Quality Gates](docs/architecture/LOCAL_FIRST_AND_QUALITY_GATES.md)**
+6. 🏛️ **[Structured Data Ontology & Multi-Modal Observations](docs/architecture/DATA_ONTOLOGY_AND_MULTIMODAL.md)**
+7. 📦 **[`@quatrain/mdm` & `@quatrain/state-machine` Packages](docs/architecture/QUATRAIN_MDM_AND_STATE_MACHINE.md)**
+8. 🗄️ **[Supabase On-Premise PostgreSQL Schema & RLS](docs/architecture/SUPABASE_ONPREM_SCHEMA.md)**
+9. 🤖 **[Hey Brad AI Core (Modaka Engine & OKF)](docs/architecture/HEY_BRAD_AI_CORE.md)**
+10. 🔄 **[ETL Conversion, Dual-System Sync & Hot-Swap Strategy](docs/architecture/DATA_SYNC_AND_HOT_SWAP.md)**
+11. 🛰️ **[Sovereign LoRaWAN Server & Deployment Setup CLI](docs/architecture/SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.md)**
+12. 🐳 **[IaC: Terraform, Helm, ArgoCD & Podman](docs/architecture/IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md)**
 
 ---
 
 ## ⚖️ License
 
-This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-v3)**. See [`LICENSE.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/LICENSE.md).
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-v3)**. See [`LICENSE.md`](LICENSE.md).
