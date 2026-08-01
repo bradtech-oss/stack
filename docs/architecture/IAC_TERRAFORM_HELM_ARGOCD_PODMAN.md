@@ -16,7 +16,7 @@ This document specifies the Infrastructure-as-Code (IaC) deployment recipes supp
 | **On-Premise Edge (Single-Node)** | `infra/podman/` | Podman Compose | Non-root container execution (`USER bun`), local SQLite/Postgres data isolation |
 | **Public Cloud (Scaleway / AWS / GCP)** | `infra/terraform/cloud/` | Terraform + Helm | Managed Kubernetes (Kapsule/EKS), Cloudflare TLS, S3 Storage buckets |
 | **Private Cloud (Proxmox VE)** | `infra/terraform/proxmox/` | Terraform + Telmate Provider | Automated VM/LXContainer provisioning on bare-metal hardware |
-| **GitOps Kubernetes Cluster** | `infra/argocd/` | ArgoCD AppSets | GitOps continuous sync driven from `https://github.com/bradtech-oss/bradtech-oss` |
+| **GitOps Kubernetes Cluster** | `infra/argocd/` | ArgoCD AppSets | GitOps continuous sync driven from `https://github.com/bradtech-oss/stack` |
 
 ---
 
