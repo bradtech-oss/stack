@@ -1,0 +1,20 @@
+{
+  "name": "@bradtech-oss/backoffice",
+  "version": "0.1.0",
+  "private": true,
+  "description": "On-Premise Backoffice UI (Astro PWA + Quatrain CoreUX)",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "bun test",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@bradtech-oss/db": "workspace:*",
+    "@bradtech-oss/hey-brad": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}

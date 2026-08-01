@@ -1,0 +1,35 @@
+{
+  "name": "@bradtech-oss/stack",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Brad Technology Open Source Ecosystem Monorepo (AGPL-v3)",
+  "license": "AGPL-3.0-only",
+  "author": "Brad Technology <contact@brad.farm>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bradtech-oss/stack.git"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "infra/tools"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "dev": "turbo run dev",
+    "clean": "turbo run clean && rimraf node_modules"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "rimraf": "^6.0.1",
+    "turbo": "^2.0.0",
+    "typescript": "^5.5.0"
+  },
+  "resolutions": {
+    "@quatrain/mdm": "portal:../../QUATRAIN/Core/packages/mdm",
+    "@quatrain/state-machine": "portal:../../QUATRAIN/Core/packages/state-machine"
+  },
+  "packageManager": "bun@1.1.20"
+}

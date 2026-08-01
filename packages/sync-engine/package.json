@@ -1,0 +1,19 @@
+{
+  "name": "@bradtech-oss/sync-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ETL Migration, Change Data Capture & Parity Reconciliation Engine",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "bun test",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@bradtech-oss/db": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}
