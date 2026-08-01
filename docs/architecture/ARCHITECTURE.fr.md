@@ -1,3 +1,7 @@
+---
+🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : README](../../README.fr.md)** | ➡️ **[Suivant : Feuille de Route Globale](ROADMAP.fr.md)**
+---
+
 # Architecture Globale & Vue d'Ensemble — bradtech-oss
 
 > 🌐 *English version available in [`ARCHITECTURE.md`](ARCHITECTURE.md)*
@@ -47,3 +51,6 @@ Moteur d'assistance IA basé sur Modaka construisant un répertoire OKF (Open Kn
 
 ### D. Supabase On-Premise (`@bradtech-oss/db`)
 Base de données PostgreSQL réécrite avec identifiants uniques 100% UUID v4 (`uid`), extension `pgvector` et politiques de sécurité Row-Level Security (RLS).
+
+---
+🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : README](../../README.fr.md)** | ➡️ **[Suivant : Feuille de Route Globale](ROADMAP.fr.md)**

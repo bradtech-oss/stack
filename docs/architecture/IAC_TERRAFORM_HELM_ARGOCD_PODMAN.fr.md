@@ -1,67 +1,37 @@
-# Spécifications — IaC : Terraform, Helm, ArgoCD & Podman
+---
+🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : LoRaWAN Souverain & CLI Setup](SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.fr.md)** | ➡️ **[Suivant : Index Architecture](index.fr.md)**
+---
 
-> 🌐 *English version available in [`IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md)*
+# Spécifications — Recettes d'Infrastructure-as-Code (Terraform, Helm, ArgoCD & Podman)
 
-> [!NOTE]
-> **Normes Infrastructure-as-Code (IaC) :** Structuration des déploiements pour Cloud Public (Scaleway, AWS, GCP) et Cloud Privé / On-Premise (Proxmox, Bare-Metal K3s, OpenStack) via Terraform, Helm, ArgoCD et Podman.
+> 🌐 *English version available in [`IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md`](IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md)*
+
+Ce document spécifie les recettes de déploiement Infrastructure-as-Code (IaC) pour les déploiements autonomes On-Premise Single-Node (*Podman Compose*) ainsi que les clusters Cloud/Edge (*Terraform, Helm, ArgoCD*).
 
 ---
 
-## 🏗️ Structure du Dossier `infra/`
+## 🛠️ 1. Matrice des Cibles d'Infrastructure
 
-```text
-infra/
-├── terraform/                      # RECETTES TERRAFORM (PROVISIONING INFRASTRUCTURE)
-│   ├── modules/
-│   │   ├── k8s-cluster/            # Module provisioning Kubernetes (SKS / K3s)
-│   │   ├── object-storage/         # Module S3 (Bucket stockage médias & backups)
-│   │   └── supabase-onprem/        # Module provisioning VM / PostgreSQL Supabase
-│   └── environments/
-│       ├── public-cloud/           # Recettes Terraform Cloud Public (ex: Scaleway / AWS)
-│       │   ├── main.tf
-│       │   ├── variables.tf
-│       │   └── terraform.tfvars.dist
-│       └── private-cloud/          # Recettes Terraform Cloud Privé / Bare-Metal (ex: Proxmox / K3s)
-│           ├── main.tf
-│           ├── variables.tf
-│           └── terraform.tfvars.dist
-│
-├── argocd/                         # CONFIGURATIONS ARGOCD DÉTAILLÉES (GITOPS)
-│   ├── projects/
-│   │   └── brad-oss-project.yaml   # AppProject ArgoCD avec règles de sécurité et RBAC
-│   ├── applications/
-│   │   ├── brad-oss-staging.yaml   # Application ArgoCD Staging
-│   │   └── brad-oss-prod.yaml      # Application ArgoCD Production
-│   └── applicationsets/
-│       └── multi-cluster-appset.yaml # ApplicationSet pour déploiement multi-clusters / multi-sites
-│
-├── helm/                           # CHARTES HELM KUBERNETES
-│   ├── brad-oss/                   # Charte Helm globale (Backoffice UI + API + Hey Brad)
-│   └── supabase-onprem/            # Overrides Helm Supabase Self-Hosted
-│
-└── podman/                         # RECETTES PODMAN (SINGLE-NODE ON-PREMISE)
-    ├── Containerfile.backoffice    # Image multi-arch non-root (USER bun)
-    ├── Containerfile.api           # Image multi-arch non-root (USER bun)
-    └── podman-compose.yml          # Composition complète On-Premise instantanée
-```
+| Environnement Cible | Emplacement des Recettes | Orchestrateur Principal | Sécurité & Conformité |
+| :--- | :--- | :--- | :--- |
+| **Edge On-Premise (Single-Node)** | `infra/podman/` | Podman Compose | Conteneurs non-root (`USER bun`), isolation des données locales |
+| **Cloud Public (Scaleway / AWS / GCP)** | `infra/terraform/cloud/` | Terraform + Helm | Kubernetes géré (Kapsule/EKS), TLS Cloudflare, buckets S3 |
+| **Cloud Privé (Proxmox VE)** | `infra/terraform/proxmox/` | Provider Telmate | Provisioning automatique de VM/LXContainers sur hyperviseurs |
+| **Cluster Kubernetes GitOps** | `infra/argocd/` | ArgoCD AppSets | Synchronisation continue GitOps depuis `https://github.com/bradtech-oss/bradtech-oss` |
 
 ---
 
-## 🌍 1. Provisioning Infrastructure via Terraform
-
-### A. Cloud Public (`infra/terraform/environments/public-cloud/`)
-- Provisioning d'un cluster Kubernetes managé (ex: Scaleway SKS ou AWS EKS).
-- Provisioning des buckets S3 pour les médias et backups d'archivage.
-- Configuration du DNS et des IP publiques.
-
-### B. Cloud Privé / On-Premise (`infra/terraform/environments/private-cloud/`)
-- Provisioning d'infrastructures virtuelles ou Bare-Metal (ex: Proxmox VE via provider Terraform ou instances K3s sur réseau local).
-- Provisioning des volumes de stockage persistants locaux (*Local Path Provisioner* / *Longhorn*).
+## 🐳 2. Normes des Conteneurs Podman (`infra/podman`)
+- **Nommage `Containerfile`** : Utilisation exclusive du nom `Containerfile` (centré Podman).
+- **Exécution Non-Root** : Dégradation des privilèges dans les étapes finales via `USER bun` ou `USER node`.
+- **Multi-Architecture** : Build systématique pour `linux/amd64` et `linux/arm64`.
 
 ---
 
-## 🔄 2. GitOps Continu via ArgoCD
+## ☸️ 3. Configurations GitOps ArgoCD (`infra/argocd`)
+Manifestes ArgoCD détaillés :
+- `AppProject` : Périmètres de sécurité et namespaces cibles.
+- `ApplicationSet` : Générateur matriciel déployant dynamiquement les instances clients.
 
-### Configurations ArgoCD Avancées (`infra/argocd/`)
-- **`AppProject` (`projects/brad-oss-project.yaml`)** : Restreint les namespaces de destination autorisés, gère les rôles RBAC et sécurise les dépôts Git sources.
-- **`ApplicationSet` (`applicationsets/multi-cluster-appset.yaml`)** : Permet le déploiement automatique de **bradtech-oss** sur plusieurs fermes ou clusters clients (*multi-tenancy edge*).
+---
+🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : LoRaWAN Souverain & CLI Setup](SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.fr.md)** | ➡️ **[Suivant : Index Architecture](index.fr.md)**

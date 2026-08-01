@@ -1,96 +1,71 @@
-# Specifications — Supabase On-Premise PostgreSQL Schema & RLS
+---
+🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: @quatrain Packages](QUATRAIN_MDM_AND_STATE_MACHINE.md)** | ➡️ **[Next: Hey Brad AI Core](HEY_BRAD_AI_CORE.md)**
+---
 
-> 🌐 *Version française disponible dans [`SUPABASE_ONPREM_SCHEMA.fr.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/SUPABASE_ONPREM_SCHEMA.fr.md)*
+# Specifications — Supabase On-Premise PostgreSQL Schema (`@bradtech-oss/db`)
 
-This document describes the PostgreSQL database architecture running on the self-hosted **Supabase On-Premise** instance for **bradtech-oss**.
+> 🌐 *Version française disponible dans [`SUPABASE_ONPREM_SCHEMA.fr.md`](SUPABASE_ONPREM_SCHEMA.fr.md)*
+
+This document specifies the PostgreSQL relational schema, 100% UUID v4 (`uid`) primary key enforcement, `pgvector` semantic extension, and Row-Level Security (RLS) policies for **`bradtech-oss`**.
 
 ---
 
-## 🗄️ 1. Core Data Modeling Principles
-
-1. **UUID v4 Primary Keys (`uid`)**: All relational tables strictly enforce `uid UUID PRIMARY KEY DEFAULT gen_random_uuid()`.
-2. **Row-Level Security (RLS)**: RLS is systematically enabled on all public schema tables.
-3. **`pgvector` Vector Indexing**: The `vector` extension is enabled for storing high-dimensional embeddings for the **Hey Brad** AI engine.
+## 🗄️ 1. Core Schema Principles
+- **100% UUID v4 (`uid`)**: Every single table utilizes `uid UUID PRIMARY KEY DEFAULT gen_random_uuid()`.
+- **Multi-Tenant Isolation**: Enforced via `tenant_uid UUID REFERENCES public.tenants(uid)` and strict Supabase RLS policies.
+- **`pgvector` Support**: Vector embeddings stored in `observation_events` for semantic search and multi-modal AI querying.
 
 ---
 
-## 📐 2. Primary Relational Database Schema
+## 📐 2. DDL Table Schema Definitions
 
 ```sql
--- Enable vector search extension for RAG AI embeddings
-CREATE EXTENSION IF NOT EXISTS vector;
+-- Extensions
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "vector";
 
--- 1. Tenants / Organizations Table
+-- Tenants Table
 CREATE TABLE public.tenants (
   uid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug TEXT UNIQUE NOT NULL, -- e.g. 'mas-baudouin'
   name TEXT NOT NULL,
-  slug TEXT NOT NULL UNIQUE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
-ALTER TABLE public.tenants ENABLE ROW LEVEL SECURITY;
-
--- 2. Hardware Devices Table (Based on @quatrain/mdm)
-CREATE TABLE public.devices (
-  uid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  tenant_uid UUID REFERENCES public.tenants(uid) ON DELETE CASCADE,
-  serial_number TEXT NOT NULL UNIQUE,
-  name TEXT NOT NULL,
-  device_type TEXT NOT NULL, -- 'probe', 'weather_station', 'gateway'
-  hardware_revision TEXT,
-  metadata JSONB DEFAULT '{}'::jsonb,
-  _state TEXT NOT NULL DEFAULT 'Available',
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
-  last_seen_at TIMESTAMP WITH TIME ZONE
-);
-
-ALTER TABLE public.devices ENABLE ROW LEVEL SECURITY;
-
--- 3. Domain Operational Realities Table (Agricultural Plots, Ponds, Barns, Silos)
+-- Realities Table (Plots, Ponds, Barns, Silos)
 CREATE TABLE public.realities (
   uid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  tenant_uid UUID REFERENCES public.tenants(uid) ON DELETE CASCADE,
+  tenant_uid UUID NOT NULL REFERENCES public.tenants(uid) ON DELETE CASCADE,
+  kind TEXT NOT NULL CHECK (kind IN ('plot', 'pond', 'barn', 'storage')),
   name TEXT NOT NULL,
-  reality_type TEXT NOT NULL, -- 'plot', 'pond', 'barn', 'storage'
-  geolocation JSONB, -- GeoJSON Point / Polygon
-  _state TEXT NOT NULL DEFAULT 'Active',
-  metadata JSONB DEFAULT '{}'::jsonb,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
-);
-
-ALTER TABLE public.realities ENABLE ROW LEVEL SECURITY;
-
--- 4. Telemetry Raw Measurements Table
-CREATE TABLE public.telemetry_measures (
-  uid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  device_uid UUID REFERENCES public.devices(uid) ON DELETE CASCADE,
-  reality_uid UUID REFERENCES public.realities(uid) ON DELETE SET NULL,
-  port INTEGER NOT NULL,
-  metric_name TEXT NOT NULL,
-  numeric_value NUMERIC NOT NULL,
-  unit TEXT,
-  fcnt INTEGER,
-  rssi INTEGER,
-  snr NUMERIC,
-  gateway_count INTEGER,
-  infra_name TEXT DEFAULT 'LoraBrad',
-  recorded_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
-);
-
-ALTER TABLE public.telemetry_measures ENABLE ROW LEVEL SECURITY;
-
--- 5. Knowledge Documents & Vector Embeddings Table (Bookworm Knowledge Base)
-CREATE TABLE public.knowledge_documents (
-  uid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  title TEXT NOT NULL,
-  category TEXT NOT NULL,
-  content TEXT NOT NULL,
-  embedding vector(1536), -- OpenAI / Custom Embedding Dimension
-  metadata JSONB DEFAULT '{}'::jsonb,
+  geometry JSONB, -- GeoJSON representation
   created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
-ALTER TABLE public.knowledge_documents ENABLE ROW LEVEL SECURITY;
+-- Devices Table (@quatrain/mdm)
+CREATE TABLE public.devices (
+  uid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_uid UUID NOT NULL REFERENCES public.tenants(uid) ON DELETE CASCADE,
+  serial_number TEXT UNIQUE NOT NULL,
+  model_name TEXT NOT NULL,
+  hardware_revision TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'AVAILABLE',
+  installed_reality_uid UUID REFERENCES public.realities(uid) ON DELETE SET NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+-- Multi-Modal Observation Events & Embeddings
+CREATE TABLE public.observation_events (
+  uid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tenant_uid UUID NOT NULL REFERENCES public.tenants(uid) ON DELETE CASCADE,
+  reality_uid UUID REFERENCES public.realities(uid) ON DELETE SET NULL,
+  source_type TEXT NOT NULL CHECK (source_type IN ('human', 'ugv', 'uav', 'satellite')),
+  media_url TEXT NOT NULL,
+  embedding vector(1536), -- OpenAI / Modaka multi-modal embedding
+  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+  captured_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+);
 ```
+
+---
+🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: @quatrain Packages](QUATRAIN_MDM_AND_STATE_MACHINE.md)** | ➡️ **[Next: Hey Brad AI Core](HEY_BRAD_AI_CORE.md)**

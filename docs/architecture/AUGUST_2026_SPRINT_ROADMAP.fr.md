@@ -1,6 +1,10 @@
+---
+🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Feuille de Route Globale](ROADMAP.fr.md)** | ➡️ **[Suivant : Side Roadmap & UX PWA](SIDE_ROADMAP_AND_UX.fr.md)**
+---
+
 # Feuille de Route Détaillée — Mois d'Août 2026 (Sprints Hebdomadaires & Sessions de 2-3h)
 
-> 🌐 *English version available in [`AUGUST_2026_SPRINT_ROADMAP.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/AUGUST_2026_SPRINT_ROADMAP.md)*
+> 🌐 *English version available in [`AUGUST_2026_SPRINT_ROADMAP.md`](AUGUST_2026_SPRINT_ROADMAP.md)*
 
 > [!IMPORTANT]
 > **Règle de Stabilité Stricte :** Chaque session de travail de 2 à 3 heures doit s'achever par un build propre, des tests unitaires validés à 100%, et laisser l'intégralité du stack Quatrain / Brad dans un **état parfaitement stable et fonctionnel**.
@@ -20,7 +24,7 @@ gantt
     section Sprint 3 (15-21 Août)
     Modaka Engine, OKF & Hey Brad AI      :s3, 2026-08-15, 7d
     section Sprint 4 (22-31 Août)
-    Apps PWA (Backoffice/Mobile) & IaC CLI :s4, 2026-08-22, 10d
+    Dual PWA Apps & IaC CLI               :s4, 2026-08-22, 10d
 ```
 
 ---
@@ -123,3 +127,6 @@ gantt
 - **Objectif** : Rédiger et valider le `podman-compose.yml`, la charte Helm et le manifest ArgoCD ApplicationSet.
 - **Livrables** : Pack IaC complet.
 - **Vérification de Stabilité** : `helm template` et `podman-compose config` validés sans erreur.
+
+---
+🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Feuille de Route Globale](ROADMAP.fr.md)** | ➡️ **[Suivant : Side Roadmap & UX PWA](SIDE_ROADMAP_AND_UX.fr.md)**

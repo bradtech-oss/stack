@@ -1,6 +1,10 @@
+---
+🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: Side Roadmap & PWA UX](SIDE_ROADMAP_AND_UX.md)** | ➡️ **[Next: Data Ontology & Multi-Modal](DATA_ONTOLOGY_AND_MULTIMODAL.md)**
+---
+
 # Specifications — Local-First Architecture, SonarQube Quality Gates & CI/CD Tooling
 
-> 🌐 *Version française disponible dans [`LOCAL_FIRST_AND_QUALITY_GATES.fr.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/LOCAL_FIRST_AND_QUALITY_GATES.fr.md)*
+> 🌐 *Version française disponible dans [`LOCAL_FIRST_AND_QUALITY_GATES.fr.md`](LOCAL_FIRST_AND_QUALITY_GATES.fr.md)*
 
 This document details the core **Local-First** architectural principles driving the PWA applications, the integration of **SonarQube Quality Gates**, the local telemetry simulation suite, and the **GitHub Actions** continuous integration workflow.
 
@@ -12,11 +16,11 @@ The **Local-First** approach is placed at the absolute center of `code/apps/mobi
 
 ```mermaid
 graph TD
-    User[User / PWA Mobile App] -->|1. Immediate Local Read/Write| LocalDB[(Local IndexedDB / RxDB Cache)]
-    LocalDB -->|2. Instant 0ms UI Rendering| UI[PWA User Interface]
+    User["User / PWA Mobile App"] -->|1. Immediate Local Read/Write| LocalDB[("Local IndexedDB / RxDB Cache")]
+    LocalDB -->|2. Instant 0ms UI Rendering| UI["PWA User Interface"]
     
-    LocalDB <-->|3. Background Sync Queue| SyncWorker[Service Worker Background Sync]
-    SyncWorker <-->|4. Auto Re-sync when 4G/WiFi Restored| Supabase[(Supabase On-Premise)]
+    LocalDB <-->|3. Background Sync Queue| SyncWorker["Service Worker Background Sync"]
+    SyncWorker <-->|4. Auto Re-sync when 4G/WiFi Restored| Supabase[("Supabase On-Premise")]
 ```
 
 ### Core Local-First Principles:
@@ -80,3 +84,6 @@ yarn mock:telemetry --interval 5s --probes 10 --stations 2
 ### Simulator Capabilities:
 - Realistic random data generation for soil moisture capacitance, temperatures, rainfall, and wind speed.
 - Alert scenario triggers (e.g., simulating sudden frost or severe drought) to validate `@quatrain/state-machine` execution and **OKF** repository updates.
+
+---
+🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: Side Roadmap & PWA UX](SIDE_ROADMAP_AND_UX.md)** | ➡️ **[Next: Data Ontology & Multi-Modal](DATA_ONTOLOGY_AND_MULTIMODAL.md)**

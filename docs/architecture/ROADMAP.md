@@ -1,6 +1,10 @@
+---
+🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: System Architecture](ARCHITECTURE.md)** | ➡️ **[Next: August 2026 Sprint Roadmap](AUGUST_2026_SPRINT_ROADMAP.md)**
+---
+
 # Development Roadmap & Milestones — bradtech-oss
 
-> 🌐 *Version française disponible dans [`ROADMAP.fr.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/ROADMAP.fr.md)*
+> 🌐 *Version française disponible dans [`ROADMAP.fr.md`](ROADMAP.fr.md)*
 
 ## 📅 Global Roadmap Summary
 
@@ -42,3 +46,6 @@
 ### Milestone 6: IaC & GitOps Deployment
 - Multi-arch, non-root Podman `Containerfile` definitions (`USER bun`).
 - Helm Charts and ArgoCD ApplicationSet for continuous deployment.
+
+---
+🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: System Architecture](ARCHITECTURE.md)** | ➡️ **[Next: August 2026 Sprint Roadmap](AUGUST_2026_SPRINT_ROADMAP.md)**

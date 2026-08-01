@@ -1,6 +1,10 @@
+---
+🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Side Roadmap & UX PWA](SIDE_ROADMAP_AND_UX.fr.md)** | ➡️ **[Suivant : Ontologie Données & Multi-Modal](DATA_ONTOLOGY_AND_MULTIMODAL.fr.md)**
+---
+
 # Spécifications — Architecture Local-First, Quality Gates SonarQube & Outillage CI/CD
 
-> 🌐 *English version available in [`LOCAL_FIRST_AND_QUALITY_GATES.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/LOCAL_FIRST_AND_QUALITY_GATES.md)*
+> 🌐 *English version available in [`LOCAL_FIRST_AND_QUALITY_GATES.md`](LOCAL_FIRST_AND_QUALITY_GATES.md)*
 
 Ce document détaille les piliers d'architecture **Local-First** au cœur des applications PWA, l'intégration des barrières de qualité **SonarQube**, le simulateur de télémétrie local et le pipeline de déploiement continu **GitHub Actions**.
 
@@ -12,11 +16,11 @@ L'approche **Local-First** est placée au centre du design des applications `cod
 
 ```mermaid
 graph TD
-    User[Utilisateur / App PWA Mobile] -->|1. Écriture / Lecture Immédiate| LocalDB[(Base Locale IndexedDB / RxDB)]
-    LocalDB -->|2. Rendu Instantané 0ms| UI[Interface Utilisateur PWA]
+    User["Utilisateur / App PWA Mobile"] -->|1. Écriture / Lecture Immédiate| LocalDB[("Base Locale IndexedDB / RxDB")]
+    LocalDB -->|2. Rendu Instantané 0ms| UI["Interface Utilisateur PWA"]
     
-    LocalDB <-->|3. Queue de Sync en Tâche de Fond| SyncWorker[Service Worker Background Sync]
-    SyncWorker <-->|4. Re-synchronisation Auto quand Réseau 4G/WiFi| Supabase[(Supabase On-Premise)]
+    LocalDB <-->|3. Queue de Sync en Tâche de Fond| SyncWorker["Service Worker Background Sync"]
+    SyncWorker <-->|4. Re-synchronisation Auto quand Réseau 4G/WiFi| Supabase[("Supabase On-Premise")]
 ```
 
 ### Principes Directeurs Local-First :
@@ -80,3 +84,6 @@ yarn mock:telemetry --interval 5s --probes 10 --stations 2
 ### Fonctionnalités du Simulateur :
 - Génération aléatoire réaliste de valeurs capacitives (humidité du sol), températures, pluie et vent.
 - Déclenchement de scénarios d'alerte (ex: simulation de gel brutal ou de sécheresse critique) pour valider l'exécution des automates `@quatrain/state-machine` et les mises à jour des repositories **OKF**.
+
+---
+🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Side Roadmap & UX PWA](SIDE_ROADMAP_AND_UX.fr.md)** | ➡️ **[Suivant : Ontologie Données & Multi-Modal](DATA_ONTOLOGY_AND_MULTIMODAL.fr.md)**

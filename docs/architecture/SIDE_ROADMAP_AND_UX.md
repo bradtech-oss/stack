@@ -1,3 +1,7 @@
+---
+🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: August 2026 Sprint Roadmap](AUGUST_2026_SPRINT_ROADMAP.md)** | ➡️ **[Next: Local-First & Quality Gates](LOCAL_FIRST_AND_QUALITY_GATES.md)**
+---
+
 # Specifications — Side Roadmap: Quatrain Core Packages, Bookworm Curation, Hey Brad & PWA UX Ecosystem
 
 > 🌐 *Version française disponible dans [`SIDE_ROADMAP_AND_UX.fr.md`](SIDE_ROADMAP_AND_UX.fr.md)*
@@ -62,3 +66,6 @@ graph TD
 - **`code/apps/backoffice`**: Comprehensive administration and analytics dashboard, responsive and optimized for **Desktop PCs, Laptops, and Tablets**.
 - **`code/apps/mobile`**: Standalone PWA (Progressive Web App) field application, streamlined and optimized for **Smartphones and Tablets**.
 - **Shared Foundation**: 100% shared `@quatrain/mdm`, `@quatrain/state-machine`, and Quatrain CoreUX design system.
+
+---
+🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: August 2026 Sprint Roadmap](AUGUST_2026_SPRINT_ROADMAP.md)** | ➡️ **[Next: Local-First & Quality Gates](LOCAL_FIRST_AND_QUALITY_GATES.md)**

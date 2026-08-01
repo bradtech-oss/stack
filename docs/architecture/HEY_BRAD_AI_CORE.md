@@ -1,58 +1,51 @@
-# Specifications — "Hey Brad" AI Core (Modaka Engine & OKF Repositories)
+---
+🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: Supabase On-Premise Schema](SUPABASE_ONPREM_SCHEMA.md)** | ➡️ **[Next: Dual-System ETL & Hot Swap](DATA_SYNC_AND_HOT_SWAP.md)**
+---
 
-> 🌐 *Version française disponible dans [`HEY_BRAD_AI_CORE.fr.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/HEY_BRAD_AI_CORE.fr.md)*
+# Specifications — "Hey Brad" AI Core Engine & Modaka OKF Repository (`@bradtech-oss/hey-brad`)
 
-This document describes the integration of the **Modaka AI engine** into the core of **bradtech-oss**, based on the **Open Knowledge Format (OKF v0.1)** specification and flat Open Data publishing on dedicated `xxx.brad.farm` tenant endpoints.
+> 🌐 *Version française disponible dans [`HEY_BRAD_AI_CORE.fr.md`](HEY_BRAD_AI_CORE.fr.md)*
+
+This document specifies the integration of the **Modaka Engine**, the **Open Knowledge Format (OKF v0.1)** Markdown specifications, and the tenant Open Data HTTP serving mechanism (`https://<tenant>.brad.farm`).
 
 ---
 
-## 🤖 1. Modaka Engine & Open Knowledge Format (OKF v0.1)
+## 🤖 1. Modaka Architecture & OKF v0.1 Integration
 
-Unlike traditional closed vector database RAG architectures, **Hey Brad** is built directly on the **Modaka Engine**, which constructs, maintains, and continuously updates a **structured knowledge repository in the OKF v0.1 specification**.
+Instead of a black-box vector database, **Hey Brad** relies on the **Modaka Engine**, which constructs and maintains a flat, human & AI-readable **Open Knowledge Format (OKF v0.1)** Markdown repository.
 
-### OKF v0.1 Core Principles:
-- **Flat Markdown Documents with YAML Headers**: Each concept (crop, plot, agronomic guide, sensor summary) is a standalone Markdown document with flat YAML frontmatter.
-- **Semantic File Names**: Human and AI-readable slugified filenames (`water-stress-management.md`), avoiding opaque UUIDs in the document filesystem.
-- **Progressive Index-First Disclosure**: Seamless navigation starting from category index files (`index.md`) following relative Markdown links.
-
-```text
-content/
-├── index.md                        # Root Knowledge Index
-├── agronomy/
-│   ├── index.md                    # Agronomy Category Index
-│   └── irrigation-guides/
-│       └── water-stress-management.md
-└── telemetry-summaries/
-    ├── index.md                    # Modaka-generated Sensor Summaries
-    └── plot-les-erables-2026.md
-```
+### OKF v0.1 Document Structure:
+- **Slugified Filename**: `my-concept-title.md`
+- **Flat YAML Frontmatter**: Bounded by `---`.
+- **Mandatory Frontmatter Attributes**:
+  - `type`: `specification` | `guide` | `observation` | `recipe`
+  - `title`: Human title
+  - `description`: 1-2 sentence summary
+  - `tags`: Array of lowercase tag strings
+  - `timestamp`: Creation ISO timestamp
+- **Markdown Body**: Standard GFM Markdown with relative cross-links.
 
 ---
 
-## 🌐 2. Per-Tenant Open Data Publishing (`xxx.brad.farm`)
+## 🌐 2. Per-Tenant Open Data Endpoint (`xxx.brad.farm`)
 
-Every client / farm site is assigned a dedicated HTTP endpoint: **`https://<tenant>.brad.farm`** (e.g., `https://chateau-margaux.brad.farm` or `https://avignon-farm.brad.farm`).
+Each client/tenant receives a dedicated HTTP sub-domain endpoint:
+`https://<tenant>.brad.farm` (e.g. `chateau-margaux.brad.farm` or `mas-baudouin.brad.farm`).
 
 ```mermaid
 graph TD
-    Modaka[Modaka Engine] -->|Generates & Maintains| OKFRepo[OKF / Markdown Repository]
+    Modaka["Modaka Engine"] -->|Generates & Maintains| OKFRepo[("OKF / Markdown Repository")]
     
-    OKFRepo -->|Search & Inference| HeyBrad[Hey Brad AI Assistant]
-    OKFRepo -->|Flat Data HTTP Serving| Server[Open Data Server xxx.brad.farm]
+    OKFRepo -->|Search & Inference| HeyBrad["Hey Brad AI Assistant"]
+    OKFRepo -->|Flat Data HTTP Serving| Server["Open Data Server xxx.brad.farm"]
     
-    Server -->|Open Public Access| Public[General Public / Open Data Partners]
-    Server -->|Controlled ACL / Token Access| Restricted[Buyers / Auditors / Certifiers]
+    Server -->|Open Public Access| Public["General Public / Open Data Partners"]
+    Server -->|Controlled ACL / Token Access| Restricted["Buyers / Auditors / Certifiers"]
 ```
 
-### Data Exposure Modes:
-1. **Open Data Access (Public)**: Farm operators can choose to publicly expose all or part of their environmental metrics, irrigation balances, and low-carbon diagnostics to the community.
-2. **Controlled Access (Restricted / ACL)**: Fine-grained access control using API tokens/JWTs to share specific OKF subfolders with buyers, cooperatives, or certification bodies.
+### Access Modes:
+1. **Open Data (Public)**: Flat Markdown/JSON files accessible publicly without authentication.
+2. **Controlled Access (ACL)**: Bearer token or JWT authentication required for private plot data or sensitive financial/yield metrics.
 
 ---
-
-## 🧠 3. AI Navigation & Processing by Modaka
-
-The **Modaka engine** traverses the OKF repository using progressive disclosure:
-1. **Reads Index Files (`index.md`)** to map out category structures and available concepts.
-2. **Resolves Relative Markdown Links** to aggregate complete context on demand.
-3. **Continuously Updates OKF Documents** as new telemetry or agronomic analysis data arrives.
+🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: Supabase On-Premise Schema](SUPABASE_ONPREM_SCHEMA.md)** | ➡️ **[Next: Dual-System ETL & Hot Swap](DATA_SYNC_AND_HOT_SWAP.md)**

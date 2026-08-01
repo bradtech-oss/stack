@@ -1,3 +1,7 @@
+---
+🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: README](../../README.md)** | ➡️ **[Next: Global Roadmap](ROADMAP.md)**
+---
+
 # System Architecture Overview — bradtech-oss
 
 > 🌐 *Version française disponible dans [`ARCHITECTURE.fr.md`](ARCHITECTURE.fr.md)*
@@ -47,3 +51,6 @@ Modaka-based AI engine constructing an Open Knowledge Format (OKF v0.1) reposito
 
 ### D. Supabase On-Premise (`@bradtech-oss/db`)
 Redesigned PostgreSQL schema using 100% UUID v4 (`uid`) primary keys, `pgvector` embeddings, and strict Row-Level Security (RLS) policies.
+
+---
+🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: README](../../README.md)** | ➡️ **[Next: Global Roadmap](ROADMAP.md)**

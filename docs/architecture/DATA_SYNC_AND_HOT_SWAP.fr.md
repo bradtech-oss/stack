@@ -1,30 +1,31 @@
-# Spécifications — Moulinettes de Conversion, Synchronisation & Remplacement à Chaud (*Hot Swap*)
+---
+🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Cœur IA Hey Brad](HEY_BRAD_AI_CORE.fr.md)** | ➡️ **[Suivant : LoRaWAN Souverain & CLI Setup](SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.fr.md)**
+---
 
-> 🌐 *English version available in [`DATA_SYNC_AND_HOT_SWAP.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/DATA_SYNC_AND_HOT_SWAP.md)*
+# Spécifications — Synchronisation Bi-Système, Moulinettes ETL & Remplacement à Chaud (*Hot Swap*) (`@bradtech-oss/sync-engine`)
 
-> [!IMPORTANT]
-> **Objectif Stratégique :** Garantir que le projet **bradtech-oss** évolue en observation continue du projet vivant [`Brad/apps/backoffice-ui`](file:///Users/crapougnax/CODE/BRAD2026/Brad/apps/backoffice-ui), et fournir un moteur d'ETL/synchronisation temps réel permettant un **remplacement à chaud** sans interruption de service lorsque bradtech-oss atteindra sa pleine maturité.
+> 🌐 *English version available in [`DATA_SYNC_AND_HOT_SWAP.md`](DATA_SYNC_AND_HOT_SWAP.md)*
+
+Ce document spécifie le moteur de synchronisation bidirectionnelle, les flux de réplication Change Data Capture (CDC), le comparateur de réconciliation et le protocole de basculement sans interruption (*Hot Swap*) entre le système de production hérité **Brad v3** et **bradtech-oss**.
 
 ---
 
-## 🔄 1. Principes de la Synchronisation Bi-Système
-
-Pendant la phase de transition et de montée en maturité de **bradtech-oss**, les deux systèmes fonctionneront en parallèle :
+## 🔄 1. Schéma d'Architecture Bi-Système
 
 ```mermaid
 graph TD
-    LegacyApp[Système Vivant Actuel - Brad/apps/backoffice-ui] -->|Ingestion Telemetrie| LegacyDB[(Base Legacy - Supabase/Firestore)]
+    LegacyApp["Live Legacy System - Brad/apps/backoffice-ui"] -->|Telemetry Ingestion| LegacyDB[("Legacy DB - Supabase/Firestore")]
     
-    SyncEngine[Moteur de Synchronisation & Moulinettes ETL]
+    SyncEngine["Synchronization Engine & ETL Utilities"]
     
-    LegacyDB <-->|Sync Bi-directionnelle / Change Data Capture| SyncEngine
-    SyncEngine <-->|Transformation MDM & State-Machine| OSSDB[(Supabase On-Premise bradtech-oss)]
+    LegacyDB <-->|Bi-directional Sync / Change Data Capture| SyncEngine
+    SyncEngine <-->|MDM & State Machine Transformations| OSSDB[("Supabase On-Premise bradtech-oss")]
     
-    OSSApp[Nouveau Backoffice - bradtech-oss] -->|GraphQL / REST| OSSDB
+    OSSApp["New Backoffice UI - bradtech-oss"] -->|GraphQL / REST| OSSDB
     
-    subgraph Hot Swap Trigger
-        Router[Proxy Ingress / API Router]
-        Router -->|Phase 1: Shadow Traffic 100%| LegacyApp
+    subgraph HotSwapTrigger ["Hot Swap Trigger"]
+        Router["Ingress Proxy / API Router"]
+        Router -->|Phase 1: 100% Shadow Traffic| LegacyApp
         Router -->|Phase 1: Parallel Read| SyncEngine
         Router -.->|Phase 2: Hot Swap Cutover| OSSApp
     end
@@ -32,30 +33,21 @@ graph TD
 
 ---
 
-## 🛠️ 2. Moulinettes de Conversion & Pipeline ETL
+## 🛠️ 2. Sous-Systèmes Clés
 
-Le paquet `@bradtech-oss/sync-engine` (situé dans `code/packages/sync-engine`) fournit deux modes de conversion :
+### A. Moulinette ETL d'Historique (`yarn sync:bulk`)
+Convertit les schémas relationnels hérités vers les entités `@quatrain/mdm` et les clés primaires UUID v4 (`uid`).
 
-### A. Moulinette Historique (*Bulk Initial Migration*)
-- **Rôle** : Transférer et convertir l'ensemble des données d'historique depuis les tables legacy (`probes`, `weather-stations`, `gateways`, `keychains`, `companies`, `plots`, `probe-payloads`) vers le modèle unifié bradtech-oss.
-- **Transformations appliquées** :
-  1. **UUID v4 Mapping** : Génération ou conversion des identifiants vers `uid` UUID v4 avec table de correspondance d'alias.
-  2. **Mapping MDM (`@quatrain/mdm`)** : Conversion des fiches `probes` et `weather-stations` en objets `Device` enrichis de leurs composants (`PCB`, `Enclosure`, `Sensors`).
-  3. **Mapping Automate d'États (`@quatrain/state-machine`)** : Conversion des états textuels (`Active`, `Associated`, `Stock`) vers les états typés FSM (`Available`, `Associated`, `Maintenance`).
-  4. **Mapping Réalités Agricoles/Élevages (`Realities`)** : Conversion des `plots` (parcelles) et `tenancies` en objets `Realities` (`plot`, `pond`, `barn`, `storage`).
+### B. Flux CDC Temps Réel (`yarn sync:stream`)
+Écouteur CDC s'appuyant sur les réplications PostgreSQL Supabase pour répliquer la télémétrie en sous-seconde.
 
-### B. Synchronisation Temps Réel (*CDC / Realtime Mirroring*)
-- **Rôle** : Rejouer en temps réel chaque nouvelle mesure radio ou modification de fiche équipement depuis l'application legacy vers bradtech-oss (et réciproquement).
-- **Mécanisme** : Webhooks PostgreSQL Supabase (CDC) et Change Streams qui alimentent la file d'attente d'ingestion bradtech-oss.
+### C. Comparateur de Réconciliation (`yarn sync:reconcile`)
+Génère des hachages cryptographiques sur les lignes des tables entre la base héritée et Supabase On-Premise pour garantir l'absence de perte de données.
+
+### D. Protocole de Basculement Sans Interruption (*Hot Swap*)
+- **Phase 1 (Shadow Run)** : Brad v3 reste le système maître. `sync-engine` réplique la télémétrie en temps réel vers `bradtech-oss`.
+- **Phase 2 (Audit de Parité)** : `yarn sync:reconcile` confirme 100% de parité.
+- **Phase 3 (Bascule)** : L'Ingress Proxy fait basculer 100% du trafic vers `bradtech-oss`. La base héritée passe en lecture seule.
 
 ---
-
-## ⚡ 3. Stratégie de Remplacement à Chaud (*Hot Swap*)
-
-Le basculement se déroulera selon un protocole en 3 phases sans aucune perte de données :
-
-| Phase | Description | État des Systèmes |
-| :--- | :--- | :--- |
-| **Phase 1 : Shadow Execution (Ombrage)** | Les trames LoRaWAN sont ingérées par les deux systèmes. bradtech-oss calcule les états et les métriques en tâche de fond sans impacter la prod. | **Principal :** Legacy<br>**Secondaire :** bradtech-oss (Shadow) |
-| **Phase 2 : Dual-Read & Verification** | Les utilisateurs peuvent consulter les deux Backoffices. Des scripts de comparaison (*reconciliation checkers*) vérifient l'exactitude stricte à 100%. | **Principal :** Legacy<br>**Secondaire :** bradtech-oss (Read-Only Prod) |
-| **Phase 3 : Hot Swap Cutover (Basculement)** | Redirection de la route Ingress/DNS (`backoffice.brad.technology`) vers bradtech-oss. L'ancien système passe en mode archive read-only. | **Principal :** bradtech-oss<br>**Archive :** Legacy |
+🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Cœur IA Hey Brad](HEY_BRAD_AI_CORE.fr.md)** | ➡️ **[Suivant : LoRaWAN Souverain & CLI Setup](SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.fr.md)**

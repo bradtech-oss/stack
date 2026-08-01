@@ -1,84 +1,61 @@
-# Spécifications — `@quatrain/mdm` & `@quatrain/state-machine`
+---
+🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Ontologie Données & Multi-Modal](DATA_ONTOLOGY_AND_MULTIMODAL.fr.md)** | ➡️ **[Suivant : Schéma Supabase On-Premise](SUPABASE_ONPREM_SCHEMA.fr.md)**
+---
 
-> 🌐 *English version available in [`QUATRAIN_MDM_AND_STATE_MACHINE.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/QUATRAIN_MDM_AND_STATE_MACHINE.md)*
+# Spécifications — Paquets `@quatrain/mdm` & `@quatrain/state-machine`
 
-Ce document définit les spécifications techniques des deux paquets fondations développés au sein du projet **bradtech-oss** et destinés à enrichir l'écosystème **Quatrain Core**.
+> 🌐 *English version available in [`QUATRAIN_MDM_AND_STATE_MACHINE.md`](QUATRAIN_MDM_AND_STATE_MACHINE.md)*
+
+Ce document spécifie la conception, les structures d'entités et les contrats de transition d'états pour les deux paquets fondations Open Source Quatrain : `@quatrain/mdm` et `@quatrain/state-machine`.
 
 ---
 
 ## 📦 1. `@quatrain/mdm` (Master Data Management)
 
-### Rôle
-Fournir un modèle de données universel, typé, abstrait et extensible pour la gestion des équipements (*Devices*), composants informatiques/électroniques (*PCB, Enclosure, PowerSupply*) et capteurs (*Sensors*).
+`@quatrain/mdm` fournit une taxonomie abstraite et indépendante du domaine pour modéliser les équipements matériels et les réalités environnementales.
 
-### Structure des Types Principaux
+### Entités Clés :
+- **`Device`** : Équipement IoT physique (ex: Sonde, Station Météo, Passerelle).
+- **`PCB`** : Identifiant de révision matérielle de la carte électronique.
+- **`Enclosure`** : Spécification du boîtier mécanique.
+- **`Sensor`** : Composant transducteur physique ou virtuel.
+- **`Accessory`** : Périphérique externe (panneau solaire, antenne externe, batterie).
+- **`Reality`** : Réalité physique rattachée aux équipements (*Parcelle, Bassin, Élevage, Silo*).
 
+### Exemple d'interface TypeScript :
 ```typescript
-export interface BaseEntity {
-   uid: string // UUID v4
-   name: string
-   tags: string[]
-   metadata: Record<string, unknown> // Schema-less JSONB Attributes
-   createdAt: string
-   updatedAt: string
-}
-
-export interface Device extends BaseEntity {
-   serialNumber: string
-   deviceType: string // e.g. 'probe', 'weather_station', 'gateway'
-   hardwareRevision: string
-   components: DeviceComponent[]
-   sensors: SensorConfig[]
-}
-
-export interface DeviceComponent extends BaseEntity {
-   componentType: 'pcb' | 'enclosure' | 'powersupply' | 'accessory'
-   partNumber: string
-   manufacturer?: string
-}
-
-export interface SensorConfig extends BaseEntity {
-   sensorType: string // e.g. 'soil_capacitance', 'soil_temperature', 'uv', 'pressure'
-   depthCm?: number
-   unit: string
-   calibrationCoefficients?: number[]
+export interface DeviceEntity {
+  uid: string // UUID v4
+  tenantId: string
+  serialNumber: string
+  modelName: string
+  hardwareRevision: string
+  status: DeviceStatus
+  installedAt?: string
+  lastSeenAt?: string
+  sensors: SensorEntity[]
 }
 ```
 
 ---
 
-## ⚙️ 2. `@quatrain/state-machine` (Automate à États Finis)
+## ⚙️ 2. `@quatrain/state-machine` (Automate à États Universel)
 
-### Rôle
-Proposer un moteur réactif de Machine à États Fini (FSM) pour régir les transitions d'état valides des équipements et des réalités d'exploitation (*Realities*).
+`@quatrain/state-machine` régit le cycle de vie et les transitions d'états des équipements et réalités métiers.
 
-### A. États des Équipements (*Device States*)
+### États du Cycle de Vie d'un Équipement :
+- `PLANNED` -> `ORDERED` -> `AVAILABLE` -> `ASSOCIATED` <-> `MAINTENANCE` -> `KO` -> `SCRAPPED`
+
+### Schéma de Transition d'États :
 ```text
-[Planned] ---> [Ordered] ---> [Available] ---> [Associated] <---> [Maintenance]
+[PLANNED] ---> [ORDERED] ---> [AVAILABLE] ---> [ASSOCIATED] <---> [MAINTENANCE]
                                    |                 |
                                    v                 v
-                              [Scrapped]          [Ko]
+                                [SCRAPPED]         [KO]
 ```
 
-### B. États des Réalités Métier (*Reality States*)
-Le paquet prend en charge les différentes typologies d'exploitation :
-- 🌾 **Parcelles Agricoles** (*Plot*) : `Uncultivated`, `Seeded`, `Growing`, `Harvesting`, `Fallow`
-- 🐟 **Bassins d'Aquaculture** (*Pond*) : `Preparing`, `Stocked`, `Monitoring`, `Harvesting`, `Empty`
-- 🐔 **Bâtiments d'Élevage** (*Barn*) : `SanitaryBreak`, `Populated`, `Brooding`, `Depopulating`
-- 🌾 **Silos & Stockages** (*Storage*) : `Empty`, `Filling`, `Stored`, `Aerating`, `Emptying`
+### États des Réalités Métier :
+- Les réalités physiques (*Parcelles, Élevages, Bassins*) bénéficient de transitions d'états (ex: *Préparation, Croissance, Récolte, Repos*) déclenchées par les seuils de télémétrie.
 
-### Exemple d'utilisation de l'API
-```typescript
-import { createStateMachine } from '@quatrain/state-machine'
-
-const deviceFsm = createStateMachine({
-   initial: 'Available',
-   states: {
-      Available: { on: { ASSOCIATE: 'Associated', SCRAP: 'Scrapped' } },
-      Associated: { on: { DISSOCIATE: 'Available', MARK_KO: 'Ko', MAINTAIN: 'Maintenance' } },
-      Maintenance: { on: { REPAIR: 'Available', SCRAP: 'Scrapped' } },
-      Ko: { on: { REPAIR: 'Maintenance', SCRAP: 'Scrapped' } },
-      Scrapped: { type: 'final' }
-   }
-})
-```
+---
+🏠 **[README](../../README.fr.md)** | 🗺️ **[Index Architecture](index.fr.md)** | ⬅️ **[Précédent : Ontologie Données & Multi-Modal](DATA_ONTOLOGY_AND_MULTIMODAL.fr.md)** | ➡️ **[Suivant : Schéma Supabase On-Premise](SUPABASE_ONPREM_SCHEMA.fr.md)**

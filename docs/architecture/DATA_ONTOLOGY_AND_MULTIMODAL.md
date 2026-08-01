@@ -1,6 +1,10 @@
+---
+🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: Local-First Architecture](LOCAL_FIRST_AND_QUALITY_GATES.md)** | ➡️ **[Next: @quatrain Foundation Packages](QUATRAIN_MDM_AND_STATE_MACHINE.md)**
+---
+
 # Specifications — Structured Data Ontology & Multi-Modal Observations
 
-> 🌐 *Version française disponible dans [`DATA_ONTOLOGY_AND_MULTIMODAL.fr.md`](file:///Users/crapougnax/CODE/BRAD2026/bradtech-oss/docs/architecture/DATA_ONTOLOGY_AND_MULTIMODAL.fr.md)*
+> 🌐 *Version française disponible dans [`DATA_ONTOLOGY_AND_MULTIMODAL.fr.md`](DATA_ONTOLOGY_AND_MULTIMODAL.fr.md)*
 
 This document defines the comprehensive data ontology for **bradtech-oss**, detailing the atomic data model for measured vs. computed metrics (units, referenced algorithms, 3D geolocation with altitude, Open/Closed visibility, and OKF physical reality URIs).
 
@@ -10,21 +14,21 @@ This document defines the comprehensive data ontology for **bradtech-oss**, deta
 
 ```mermaid
 graph TD
-    Root[Brad Data Ontology] --> Devices[1. Managed Devices - @quatrain/mdm]
-    Root --> APIData[2. External API Data]
-    Root --> Observations[3. Multi-Modal Observations]
+    Root["Brad Data Ontology"] --> Devices["1. Managed Devices - @quatrain/mdm"]
+    Root --> APIData["2. External API Data"]
+    Root --> Observations["3. Multi-Modal Observations"]
 
-    Devices --> Probes[Capacitance & Temperature Probes]
-    Devices --> Stations[Weather Stations]
-    Devices --> Gateways[LoRaWAN Gateways]
-    Devices --> Telco[Telco Operators & SIM Cards]
+    Devices --> Probes["Capacitance & Temperature Probes"]
+    Devices --> Stations["Weather Stations"]
+    Devices --> Gateways["LoRaWAN Gateways"]
+    Devices --> Telco["Telco Operators & SIM Cards"]
 
-    APIData --> Weather[AccuWeather Forecasts & Current Conditions]
-    APIData --> SatelliteAPI[Copernicus Sentinel / NDVI / EVI Feeds]
+    APIData --> Weather["AccuWeather Forecasts & Current Conditions"]
+    APIData --> SatelliteAPI["Copernicus Sentinel / NDVI / EVI Feeds"]
 
-    Observations --> Ground[Ground Observations: Human Photos/Videos & UGV Robots]
-    Observations --> Aerial[Aerial Observations: Drone Photogrammetry & UAV Orthomosaics]
-    Observations --> Orbital[Space Observations: Satellite Multispectral Imagery]
+    Observations --> Ground["Ground Observations: Human Photos/Videos & UGV Robots"]
+    Observations --> Aerial["Aerial Observations: Drone Photogrammetry & UAV Orthomosaics"]
+    Observations --> Orbital["Space Observations: Satellite Multispectral Imagery"]
 ```
 
 ---
@@ -121,3 +125,6 @@ CREATE TABLE public.telemetry_measures (
 
 ALTER TABLE public.telemetry_measures ENABLE ROW LEVEL SECURITY;
 ```
+
+---
+🏠 **[README](../../README.md)** | 🗺️ **[Architecture Index](index.md)** | ⬅️ **[Previous: Local-First Architecture](LOCAL_FIRST_AND_QUALITY_GATES.md)** | ➡️ **[Next: @quatrain Foundation Packages](QUATRAIN_MDM_AND_STATE_MACHINE.md)**
