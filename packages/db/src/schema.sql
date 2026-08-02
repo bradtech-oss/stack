@@ -22,14 +22,14 @@ CREATE TABLE IF NOT EXISTS device_types (
    created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Physical Inventory Units (Unit-level specs: net Map with eth/wifi/lorawan/gsm MAC/IMEI)
+-- Physical Inventory Units (Unit-level specs: network Map with eth/wifi/lorawan/gsm MAC/IMEI & powerSource)
 CREATE TABLE IF NOT EXISTS devices (
    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
    device_type_id UUID NOT NULL REFERENCES device_types(id) ON DELETE RESTRICT,
    serial_number VARCHAR(128) NOT NULL UNIQUE,
    name VARCHAR(255) NOT NULL,
    lifecycle_state VARCHAR(32) NOT NULL DEFAULT 'AVAILABLE',
-   net JSONB DEFAULT '{}'::jsonb,                               -- UNIT-LEVEL SPEC GROUP (eth, wifi, lorawan, gsm)
+   network JSONB DEFAULT '{}'::jsonb,                           -- UNIT-LEVEL SPEC GROUP (eth, wifi, lorawan, gsm, powerSource)
    created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -37,5 +37,5 @@ CREATE TABLE IF NOT EXISTS devices (
 CREATE INDEX IF NOT EXISTS idx_device_types_dimensions ON device_types USING GIN (dimensions);
 CREATE INDEX IF NOT EXISTS idx_device_types_vendor ON device_types USING GIN (vendor);
 CREATE INDEX IF NOT EXISTS idx_device_types_electrical ON device_types USING GIN (electrical);
-CREATE INDEX IF NOT EXISTS idx_devices_net ON devices USING GIN (net);
+CREATE INDEX IF NOT EXISTS idx_devices_network ON devices USING GIN (network);
 CREATE INDEX IF NOT EXISTS idx_devices_serial_number ON devices (serial_number);

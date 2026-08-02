@@ -21,17 +21,17 @@ export interface DeviceVendorMap {
 }
 
 export interface DeviceElectricalMap {
-  voltageNominalV?: number
-  voltageMinV?: number
-  voltageMaxV?: number
-  currentMaxmA?: number
-  powerActivemW?: number
-  powerSleepuW?: number
+  voltageNominal?: number
+  voltageMin?: number
+  voltageMax?: number
+  currentMax?: number
+  powerActive?: number
+  powerSleep?: number
 }
 
 export interface DeviceEthMap {
   macAddress?: string
-  speedMbps?: number
+  speed?: number
   poeSupported?: boolean
 }
 
@@ -54,13 +54,16 @@ export interface DeviceGsmMap {
   technologies?: string[]
 }
 
-export interface DeviceNetMap {
+export interface DeviceNetworkMap {
   powerSource?: 'BATTERY' | 'SOLAR_BATTERY' | 'MAINS_AC' | 'POE' | 'DC_EXTERNAL' | string
   eth?: DeviceEthMap
   wifi?: DeviceWifiMap
   lorawan?: DeviceLorawanMap
   gsm?: DeviceGsmMap
 }
+
+// Backward compatibility alias for DeviceNetMap
+export type DeviceNetMap = DeviceNetworkMap
 
 export interface DeviceTypeRow {
   id: string
@@ -79,7 +82,7 @@ export interface DeviceRow {
   serial_number: string
   name: string
   lifecycle_state: 'AVAILABLE' | 'ASSOCIATED' | 'MAINTENANCE' | 'RETIRED' | string
-  net: DeviceNetMap                 // Unit-level spec group (eth, wifi, lorawan, gsm, powerSource)
+  network: DeviceNetworkMap         // Unit-level spec group (eth, wifi, lorawan, gsm, powerSource)
   created_at?: string
 }
 

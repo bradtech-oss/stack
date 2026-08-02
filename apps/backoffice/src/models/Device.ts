@@ -1,6 +1,6 @@
 import { AbstractMdmObject, MdmArchetypeSpec } from '@quatrain/mdm'
 import { MapProperty, StringProperty, Core } from '@quatrain/core'
-import { DeviceDimensionsMap, DeviceVendorMap, DeviceElectricalMap, DeviceNetMap } from '@bradtech-oss/db'
+import { DeviceDimensionsMap, DeviceVendorMap, DeviceElectricalMap, DeviceNetworkMap } from '@bradtech-oss/db'
 
 import deviceArchetypeConfig from './mdm_device.json'
 
@@ -39,7 +39,7 @@ export class DeviceType extends AbstractMdmObject {
 }
 
 /**
- * Physical Device Inventory Unit Model (Carries serialNumber and unit-level net Map)
+ * Physical Device Inventory Unit Model (Carries serialNumber and unit-level network Map)
  */
 export class Device extends AbstractMdmObject {
    static COLLECTION = 'devices'
@@ -47,7 +47,7 @@ export class Device extends AbstractMdmObject {
       ...AbstractMdmObject.PROPS_DEFINITION,
       { name: 'serialNumber', type: StringProperty.TYPE, required: true },
       { name: 'deviceTypeId', type: StringProperty.TYPE, required: true },
-      { name: 'net', type: MapProperty.TYPE, required: false, default: {} },
+      { name: 'network', type: MapProperty.TYPE, required: false, default: {} },
    ] as typeof AbstractMdmObject.PROPS_DEFINITION
 
    getArchetypeSpec(): MdmArchetypeSpec {
@@ -62,8 +62,8 @@ export class Device extends AbstractMdmObject {
       return (this.dataObject.val('deviceTypeId') as string) || ''
    }
 
-   public get netMap(): DeviceNetMap {
-      return (this.dataObject.val('net') as DeviceNetMap) || {}
+   public get networkMap(): DeviceNetworkMap {
+      return (this.dataObject.val('network') as DeviceNetworkMap) || {}
    }
 }
 

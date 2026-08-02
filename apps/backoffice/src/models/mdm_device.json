@@ -10,12 +10,12 @@
     { "key": "dimensions", "scope": "type", "$ref": "@quatrain/mdm/groups/dimensions" },
     { "key": "vendor", "scope": "type", "$ref": "@quatrain/mdm/groups/vendor" },
     { "key": "electrical", "scope": "type", "$ref": "@quatrain/mdm/groups/electrical" },
-    { "key": "net", "scope": "unit", "$ref": "@quatrain/mdm/groups/net" }
+    { "key": "network", "scope": "unit", "$ref": "@quatrain/mdm/groups/network" }
   ],
-  "requiredProperties": ["dimensions", "vendor", "electrical", "net"],
+  "requiredProperties": ["dimensions", "vendor", "electrical", "network"],
   "jsonSchema": {
     "type": "object",
-    "required": ["dimensions", "vendor", "electrical", "net"],
+    "required": ["dimensions", "vendor", "electrical", "network"],
     "properties": {
       "dimensions": {
         "$ref": "@quatrain/mdm/groups/dimensions",
@@ -53,26 +53,26 @@
         "title": "Electrical Hardware Ratings Specification Group (Type-Level)",
         "description": "Static hardware operating voltage ratings, peak amperage, and active/sleep power consumption",
         "properties": {
-          "voltageNominalV": { "type": "number", "minimum": 0 },
-          "voltageMinV": { "type": "number", "minimum": 0 },
-          "voltageMaxV": { "type": "number", "minimum": 0 },
-          "currentMaxmA": { "type": "number", "minimum": 0 },
-          "powerActivemW": { "type": "number", "minimum": 0 },
-          "powerSleepuW": { "type": "number", "minimum": 0 }
+          "voltageNominal": { "type": "number", "minimum": 0 },
+          "voltageMin": { "type": "number", "minimum": 0 },
+          "voltageMax": { "type": "number", "minimum": 0 },
+          "currentMax": { "type": "number", "minimum": 0 },
+          "powerActive": { "type": "number", "minimum": 0 },
+          "powerSleep": { "type": "number", "minimum": 0 }
         }
       },
-      "net": {
-        "$ref": "@quatrain/mdm/groups/net",
+      "network": {
+        "$ref": "@quatrain/mdm/groups/network",
         "scope": "unit",
         "type": "object",
         "title": "Network Connectivity Master Group (Unit-Level)",
         "description": "Unique physical hardware network interfaces (MAC addresses, DevEUI, IMEI) and deployment power source",
         "properties": {
           "powerSource": { "type": "string", "enum": ["BATTERY", "SOLAR_BATTERY", "MAINS_AC", "POE", "DC_EXTERNAL"] },
-          "eth": { "$ref": "@quatrain/mdm/groups/net/eth" },
-          "wifi": { "$ref": "@quatrain/mdm/groups/net/wifi" },
-          "lorawan": { "$ref": "@quatrain/mdm/groups/net/lorawan" },
-          "gsm": { "$ref": "@quatrain/mdm/groups/net/gsm" }
+          "eth": { "$ref": "@quatrain/mdm/groups/network/eth" },
+          "wifi": { "$ref": "@quatrain/mdm/groups/network/wifi" },
+          "lorawan": { "$ref": "@quatrain/mdm/groups/network/lorawan" },
+          "gsm": { "$ref": "@quatrain/mdm/groups/network/gsm" }
         }
       }
     }

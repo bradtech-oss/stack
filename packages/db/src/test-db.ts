@@ -15,23 +15,24 @@ async function main() {
   vendors.forEach(v => console.log(`  - [${v.id}] ${v.name} (${v.url || 'No URL'})`))
 
   const deviceTypes: DeviceTypeRow[] = await sql`SELECT * FROM device_types`
-  console.log(`\n📐 Found ${deviceTypes.length} Catalog Device Types (Type-Level Specs: dimensions Map, vendor Map):`)
+  console.log(`\n📐 Found ${deviceTypes.length} Catalog Device Types (Type-Level Specs: dimensions Map, vendor Map, electrical Map):`)
   deviceTypes.forEach(dt => {
     console.log(`  - [${dt.id}] ${dt.name} (SKU: ${dt.sku})`)
     console.log(`    📐 Dimensions Map: ${JSON.stringify(dt.dimensions)}`)
     console.log(`    🏢 Vendor Map: ${JSON.stringify(dt.vendor)}`)
+    console.log(`    ⚡ Electrical Map: ${JSON.stringify(dt.electrical)}`)
   })
 
   const devices: DeviceRow[] = await sql`SELECT * FROM devices`
-  console.log(`\n📱 Found ${devices.length} Physical Inventory Device Units (Unit-Level Specs: net Map & S/N):`)
+  console.log(`\n📱 Found ${devices.length} Physical Inventory Device Units (Unit-Level Specs: network Map & S/N):`)
   devices.forEach(d => {
     console.log(`  - [${d.id}] ${d.name} (S/N: ${d.serial_number}, Model ID: ${d.device_type_id})`)
-    console.log(`    🌐 Net Spec Map (eth/wifi/lorawan/gsm): ${JSON.stringify(d.net)}`)
+    console.log(`    🌐 Network Spec Map (eth/wifi/lorawan/gsm/powerSource): ${JSON.stringify(d.network)}`)
   })
 
   // Test PostgreSQL JOIN query
   const joinedQuery = await sql`
-    SELECT d.serial_number, d.name as unit_name, d.net, dt.name as model_name, dt.sku, dt.dimensions->>'enclosureRating' as ip
+    SELECT d.serial_number, d.name as unit_name, d.network, dt.name as model_name, dt.sku, dt.dimensions->>'enclosureRating' as ip
     FROM devices d
     JOIN device_types dt ON d.device_type_id = dt.id
   `
