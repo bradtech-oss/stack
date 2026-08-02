@@ -1,0 +1,27 @@
+-- Quatrain MDM / BradTech Stack - Unified Devices & Standalone Vendors Schema
+-- PostgreSQL / Supabase On-Premise Schema
+
+CREATE TABLE IF NOT EXISTS vendors (
+   uid VARCHAR(64) PRIMARY KEY,
+   name VARCHAR(255) NOT NULL,
+   sku VARCHAR(64),
+   url VARCHAR(255),
+   details JSONB DEFAULT '{}'::jsonb,
+   created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS devices (
+   uid VARCHAR(64) PRIMARY KEY,
+   name VARCHAR(255) NOT NULL,
+   sku VARCHAR(64),
+   archetype_id VARCHAR(128) NOT NULL,
+   nature VARCHAR(32) NOT NULL DEFAULT 'physical',
+   lifecycle_state VARCHAR(32) NOT NULL DEFAULT 'AVAILABLE',
+   dimensions JSONB DEFAULT '{}'::jsonb,
+   vendor_info JSONB DEFAULT '{}'::jsonb,
+   created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- JSONB GIN Indexes for high-performance inline specification group queries
+CREATE INDEX IF NOT EXISTS idx_devices_dimensions ON devices USING GIN (dimensions);
+CREATE INDEX IF NOT EXISTS idx_devices_vendor_info ON devices USING GIN (vendor_info);

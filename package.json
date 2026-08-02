@@ -28,8 +28,8 @@
     "typescript": "^5.5.0"
   },
   "resolutions": {
-    "@quatrain/mdm": "portal:../../QUATRAIN/Core/packages/mdm",
-    "@quatrain/state-machine": "portal:../../QUATRAIN/Core/packages/state-machine"
+    "@quatrain/mdm": "link:../../QUATRAIN/Core/packages/mdm",
+    "@quatrain/state-machine": "link:../../QUATRAIN/Core/packages/state-machine"
   },
   "packageManager": "bun@1.1.20"
 }

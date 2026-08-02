@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@bradtech-oss/db": "workspace:*",
-    "@bradtech-oss/hey-brad": "workspace:*"
+    "@bradtech-oss/hey-brad": "workspace:*",
+    "@quatrain/mdm": "link:../../../../QUATRAIN/Core/packages/mdm"
   },
   "devDependencies": {
     "typescript": "^5.5.0"

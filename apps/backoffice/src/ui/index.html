@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BradTech Backoffice - Quatrain MDM Device Visualizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --card-bg: rgba(22, 31, 49, 0.75);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --accent-green: #10b981;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-amber: #f59e0b;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --glass-blur: blur(16px);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at 15% 15%, #1e1b4b 0%, var(--bg-dark) 50%, #030712 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      background: linear-gradient(to right, #fff, #9ca3af);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .badge-podman {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #60a5fa;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .filters {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .device-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .device-card {
+      background: var(--card-bg);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .device-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .device-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .device-sku {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-active {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .status-eol {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .spec-group {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-top: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .group-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      margin-bottom: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .spec-label {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
+    .spec-value {
+      color: #f3f4f6;
+      font-weight: 500;
+    }
+
+    .ip-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+      color: #fff;
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .vendor-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(59, 130, 246, 0.08);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 8px;
+      padding: 0.6rem 0.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .vendor-name {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #93c5fd;
+    }
+
+    .uri-link {
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-logo">B</div>
+      <div>
+        <h1>BradTech Backoffice — Quatrain MDM</h1>
+        <div class="subtitle">Unified Devices Store & Inline Specification Groups Visualizer</div>
+      </div>
+    </div>
+    <div class="badge-podman">⚡ Podman Local Postgres + Inline JSONB Store</div>
+  </header>
+
+  <div class="controls-bar">
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterDevices('ALL')">All Devices (3)</button>
+      <button class="filter-btn" onclick="filterDevices('hardware.probe')">Probes</button>
+      <button class="filter-btn" onclick="filterDevices('hardware.gateway')">Gateways</button>
+      <button class="filter-btn" onclick="filterDevices('hardware.weather_station')">Weather Stations</button>
+    </div>
+  </div>
+
+  <div class="device-grid" id="deviceGrid">
+    <!-- Rendered dynamically by JavaScript -->
+  </div>
+
+  <script>
+    const mockDevices = [
+      {
+        uid: 'dev_probe_001',
+        name: 'Soil Moisture Probe V2',
+        sku: 'BRAD-PROBE-V2-HYBRID',
+        archetype_id: 'hardware.probe',
+        nature: 'physical',
+        lifecycle_state: 'ASSOCIATED',
+        dimensions: { heightMm: 450, widthMm: 65, depthMm: 65, weightGrams: 480, enclosureRating: 'IP68' },
+        vendor_info: { vendorUri: 'vendors/vendor_brad_tech', vendorName: 'Brad Technology', vendorSku: 'BRAD-PHY-PCB-HYBRID-01', status: 'ACTIVE', releaseDate: '2025-06-01', eolDate: '2030-12-31' }
+      },
+      {
+        uid: 'dev_gateway_001',
+        name: 'LoRaWAN Outdoor Gateway 868MHz',
+        sku: 'BRAD-GW-868-OUTDOOR',
+        archetype_id: 'hardware.gateway',
+        nature: 'physical',
+        lifecycle_state: 'AVAILABLE',
+        dimensions: { heightMm: 220, widthMm: 180, depthMm: 90, weightGrams: 1250, enclosureRating: 'IP67' },
+        vendor_info: { vendorUri: 'vendors/vendor_brad_tech', vendorName: 'Brad Technology', vendorSku: 'BRAD-GW-MOD-868', status: 'ACTIVE', releaseDate: '2024-03-15', eolDate: '2029-12-31' }
+      },
+      {
+        uid: 'dev_station_001',
+        name: 'Agri Weather Station Pro',
+        sku: 'ECO-WX-STATION-PRO',
+        archetype_id: 'hardware.weather_station',
+        nature: 'physical',
+        lifecycle_state: 'AVAILABLE',
+        dimensions: { heightMm: 850, widthMm: 320, depthMm: 320, weightGrams: 3400, enclosureRating: 'IP66' },
+        vendor_info: { vendorUri: 'vendors/vendor_eco_mills', vendorName: 'EcoApparel & IoT Sensors', vendorSku: 'ECO-WX-2026-X', status: 'ACTIVE', releaseDate: '2025-01-10', eolDate: '2031-01-01' }
+      }
+    ];
+
+    function renderDevices(filter = 'ALL') {
+      const container = document.getElementById('deviceGrid');
+      container.innerHTML = '';
+
+      const filtered = filter === 'ALL' ? mockDevices : mockDevices.filter(d => d.archetype_id === filter);
+
+      filtered.forEach(dev => {
+        const card = document.createElement('div');
+        card.className = 'device-card';
+        card.innerHTML = `
+          <div class="card-header">
+            <div>
+              <div class="device-title">${dev.name}</div>
+              <div class="device-sku">SKU: ${dev.sku} | UID: ${dev.uid}</div>
+            </div>
+            <span class="status-badge status-active">${dev.lifecycle_state}</span>
+          </div>
+
+          <!-- Inline Specification Group: Dimensions Map -->
+          <div class="spec-group">
+            <div class="group-title">
+              <span>Inline Group: "dimensions"</span>
+              <span class="ip-badge">${dev.dimensions.enclosureRating}</span>
+            </div>
+            <div class="spec-grid">
+              <div class="spec-item">
+                <span class="spec-label">Height x Width</span>
+                <span class="spec-value">${dev.dimensions.heightMm} x ${dev.dimensions.widthMm} mm</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Depth x Weight</span>
+                <span class="spec-value">${dev.dimensions.depthMm} mm | ${dev.dimensions.weightGrams} g</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inline Specification Group: Vendor ObjectUri & Lifecycle -->
+          <div class="spec-group">
+            <div class="group-title">
+              <span>Inline Group: "vendor_info"</span>
+              <span class="status-badge status-active">${dev.vendor_info.status}</span>
+            </div>
+            <div class="vendor-card">
+              <div>
+                <div class="vendor-name">${dev.vendor_info.vendorName}</div>
+                <div class="uri-link">ObjectUri: ${dev.vendor_info.vendorUri}</div>
+              </div>
+            </div>
+            <div class="spec-grid" style="margin-top: 0.6rem;">
+              <div class="spec-item">
+                <span class="spec-label">Vendor SKU</span>
+                <span class="spec-value">${dev.vendor_info.vendorSku}</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Lifecycle EOL</span>
+                <span class="spec-value">${dev.vendor_info.eolDate}</span>
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterDevices(archetype) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      renderDevices(archetype);
+    }
+
+    renderDevices();
+  </script>
+</body>
+</html>

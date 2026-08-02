@@ -27,6 +27,7 @@
       "dependencies": {
         "@bradtech-oss/db": "workspace:*",
         "@bradtech-oss/hey-brad": "workspace:*",
+        "@quatrain/mdm": "link:../../../../QUATRAIN/Core/packages/mdm",
       },
       "devDependencies": {
         "typescript": "^5.5.0",
@@ -81,8 +82,8 @@
     },
   },
   "overrides": {
-    "@quatrain/mdm": "portal:../../QUATRAIN/Core/packages/mdm",
-    "@quatrain/state-machine": "portal:../../QUATRAIN/Core/packages/state-machine",
+    "@quatrain/mdm": "link:../../QUATRAIN/Core/packages/mdm",
+    "@quatrain/state-machine": "link:../../QUATRAIN/Core/packages/state-machine",
   },
   "packages": {
     "@bradtech-oss/api": ["@bradtech-oss/api@workspace:apps/api"],
@@ -98,6 +99,8 @@
     "@bradtech-oss/mobile": ["@bradtech-oss/mobile@workspace:apps/mobile"],
 
     "@bradtech-oss/sync-engine": ["@bradtech-oss/sync-engine@workspace:packages/sync-engine"],
+
+    "@quatrain/mdm": ["@quatrain/mdm@link:../../QUATRAIN/Core/packages/mdm", {}],
 
     "@turbo/darwin-64": ["@turbo/darwin-64@2.10.8", "", { "os": "darwin", "cpu": "x64" }, "sha512-po+7rfJfUnFXjWlcoN2RwhErgzCdRtBc1T26vYPcywHlggmCQiQe1uWaE4j+BibI2uY9/2pDoFzMN0rmSaPFOw=="],
 
