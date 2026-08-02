@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://bradtech.app/schemas/mdm_device.json",
+  "$id": "https://bradtech.app/schemas/device.json",
   "archetypeId": "hardware.device",
   "name": "IoT Physical Device / Hardware System",
   "nature": "physical",

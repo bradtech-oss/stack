@@ -1,7 +1,7 @@
 import { Device, DeviceType } from './Device'
 import { Mdm } from '@quatrain/mdm'
 import { MockMdmAdapter } from '@quatrain/mdm'
-import deviceArchetypeConfig from './mdm_device.json'
+import deviceArchetypeConfig from './device.json'
 
 describe('@bradtech-oss/backoffice Device Model & Specification Scopes (Type vs Unit) Test Suite', () => {
    beforeEach(() => {
@@ -9,7 +9,7 @@ describe('@bradtech-oss/backoffice Device Model & Specification Scopes (Type vs 
       Mdm.addAdapter(adapter, 'default', true)
    })
 
-   it('should declare specification group scopes in mdm_device.json (scope: type vs scope: unit)', () => {
+   it('should declare specification group scopes in device.json (scope: type vs scope: unit)', () => {
       const device = new Device({} as any)
       const spec = device.getArchetypeSpec()
 

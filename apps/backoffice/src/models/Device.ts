@@ -2,7 +2,7 @@ import { AbstractMdmObject, MdmArchetypeSpec } from '@quatrain/mdm'
 import { MapProperty, StringProperty, Core } from '@quatrain/core'
 import { DeviceDimensionsMap, DeviceVendorMap, DeviceElectricalMap, DeviceNetworkMap } from '@bradtech-oss/db'
 
-import deviceArchetypeConfig from './mdm_device.json'
+import deviceArchetypeConfig from './device.json'
 
 /**
  * Concrete Device Model for Catalog Models (DeviceType) and Physical Units (Device)
