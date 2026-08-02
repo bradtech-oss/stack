@@ -8,23 +8,23 @@ describe('@bradtech-oss/backoffice Device Model & Specification Groups Test Suit
       Mdm.addAdapter(adapter, 'default', true)
    })
 
-   it('should instantiate Soil Probe device with inline dimensions Map and vendor_info ObjectUri & lifecycle', () => {
+   it('should instantiate Soil Probe device with inline dimensions Map (unitSystem: metric, height, width, depth, weight) and vendor_info ObjectUri', () => {
       const probe = Device.fromObject({
-         uid: 'dev_probe_001',
+         id: 'd311aa66-6f0e-1ef5-883a-3aa6ba050a44',
          name: 'Soil Moisture Probe V2',
          sku: 'BRAD-PROBE-V2-HYBRID',
          archetypeId: 'hardware.probe',
-         nature: MdmNature.PHYSICAL,
          lifecycleState: 'ASSOCIATED',
          dimensions: {
-            heightMm: 450,
-            widthMm: 65,
-            depthMm: 65,
-            weightGrams: 480,
+            unitSystem: 'metric',
+            height: 450,
+            width: 65,
+            depth: 65,
+            weight: 480,
             enclosureRating: 'IP68'
          },
          vendor_info: {
-            vendorUri: 'vendors/vendor_brad_tech',
+            vendorUri: 'vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
             vendorSku: 'BRAD-PHY-PCB-HYBRID-01',
             status: 'ACTIVE',
             releaseDate: '2025-06-01',
@@ -33,10 +33,12 @@ describe('@bradtech-oss/backoffice Device Model & Specification Groups Test Suit
       })
 
       expect(probe.dataObject.val('name')).toBe('Soil Moisture Probe V2')
-      expect(probe.dimensionsMap.heightMm).toBe(450)
+      expect(probe.dimensionsMap.unitSystem).toBe('metric')
+      expect(probe.dimensionsMap.height).toBe(450)
+      expect(probe.dimensionsMap.weight).toBe(480)
       expect(probe.dimensionsMap.enclosureRating).toBe('IP68')
-      expect(probe.vendorInfoMap.vendorUri).toBe('vendors/vendor_brad_tech')
+      expect(probe.vendorInfoMap.vendorUri).toBe('vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11')
       expect(probe.vendorInfoMap.status).toBe('ACTIVE')
-      expect(probe.getSubcollectionName('keychains')).toBe('devices/dev_probe_001/keychains')
+      expect(probe.getSubcollectionName('keychains')).toBe('devices/d311aa66-6f0e-1ef5-883a-3aa6ba050a44/keychains')
    })
 })

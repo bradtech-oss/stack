@@ -4,10 +4,11 @@
  */
 
 export interface DeviceDimensionsMap {
-  heightMm?: number
-  widthMm?: number
-  depthMm?: number
-  weightGrams?: number
+  unitSystem?: 'metric' | 'imperial' | string
+  height?: number
+  width?: number
+  depth?: number
+  weight?: number
   enclosureRating?: 'IP65' | 'IP66' | 'IP67' | 'IP68' | string
 }
 
@@ -20,11 +21,10 @@ export interface DeviceVendorInfoMap {
 }
 
 export interface DeviceRow {
-  uid: string
+  id: string
   name: string
   sku?: string
   archetype_id: string
-  nature: 'physical' | 'virtual' | 'service' | 'composite' | string
   lifecycle_state: 'AVAILABLE' | 'ASSOCIATED' | 'MAINTENANCE' | 'RETIRED' | string
   dimensions: DeviceDimensionsMap
   vendor_info: DeviceVendorInfoMap
@@ -32,7 +32,7 @@ export interface DeviceRow {
 }
 
 export interface VendorRow {
-  uid: string
+  id: string
   name: string
   sku?: string
   url?: string

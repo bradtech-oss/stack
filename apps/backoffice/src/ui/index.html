@@ -155,7 +155,8 @@
     }
 
     .device-sku {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
+      font-family: monospace;
       color: var(--text-muted);
       margin-top: 0.2rem;
     }
@@ -173,12 +174,6 @@
       background: rgba(16, 185, 129, 0.2);
       color: #34d399;
       border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-
-    .status-eol {
-      background: rgba(245, 158, 11, 0.2);
-      color: #fbbf24;
-      border: 1px solid rgba(245, 158, 11, 0.3);
     }
 
     .spec-group {
@@ -263,10 +258,10 @@
       <div class="brand-logo">B</div>
       <div>
         <h1>BradTech Backoffice — Quatrain MDM</h1>
-        <div class="subtitle">Unified Devices Store & Inline Specification Groups Visualizer</div>
+        <div class="subtitle">Unified Devices Table (UUID PK) & Inline Specification Groups ("dimensions", "vendor_info")</div>
       </div>
     </div>
-    <div class="badge-podman">⚡ Podman Local Postgres + Inline JSONB Store</div>
+    <div class="badge-podman">⚡ PostgreSQL 16 + UUID id PK + JSONB Map</div>
   </header>
 
   <div class="controls-bar">
@@ -285,34 +280,31 @@
   <script>
     const mockDevices = [
       {
-        uid: 'dev_probe_001',
+        id: 'd311aa66-6f0e-1ef5-883a-3aa6ba050a44',
         name: 'Soil Moisture Probe V2',
         sku: 'BRAD-PROBE-V2-HYBRID',
         archetype_id: 'hardware.probe',
-        nature: 'physical',
         lifecycle_state: 'ASSOCIATED',
-        dimensions: { heightMm: 450, widthMm: 65, depthMm: 65, weightGrams: 480, enclosureRating: 'IP68' },
-        vendor_info: { vendorUri: 'vendors/vendor_brad_tech', vendorName: 'Brad Technology', vendorSku: 'BRAD-PHY-PCB-HYBRID-01', status: 'ACTIVE', releaseDate: '2025-06-01', eolDate: '2030-12-31' }
+        dimensions: { unitSystem: 'metric', height: 450, width: 65, depth: 65, weight: 480, enclosureRating: 'IP68' },
+        vendor_info: { vendorUri: 'vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', vendorName: 'Brad Technology', vendorSku: 'BRAD-PHY-PCB-HYBRID-01', status: 'ACTIVE', releaseDate: '2025-06-01', eolDate: '2030-12-31' }
       },
       {
-        uid: 'dev_gateway_001',
+        id: 'e422bb55-5f0d-0ef4-7729-2aa5ab040a55',
         name: 'LoRaWAN Outdoor Gateway 868MHz',
         sku: 'BRAD-GW-868-OUTDOOR',
         archetype_id: 'hardware.gateway',
-        nature: 'physical',
         lifecycle_state: 'AVAILABLE',
-        dimensions: { heightMm: 220, widthMm: 180, depthMm: 90, weightGrams: 1250, enclosureRating: 'IP67' },
-        vendor_info: { vendorUri: 'vendors/vendor_brad_tech', vendorName: 'Brad Technology', vendorSku: 'BRAD-GW-MOD-868', status: 'ACTIVE', releaseDate: '2024-03-15', eolDate: '2029-12-31' }
+        dimensions: { unitSystem: 'metric', height: 220, width: 180, depth: 90, weight: 1250, enclosureRating: 'IP67' },
+        vendor_info: { vendorUri: 'vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', vendorName: 'Brad Technology', vendorSku: 'BRAD-GW-MOD-868', status: 'ACTIVE', releaseDate: '2024-03-15', eolDate: '2029-12-31' }
       },
       {
-        uid: 'dev_station_001',
+        id: 'f533cc44-4f0c-9ef3-6618-1aa4ab030a66',
         name: 'Agri Weather Station Pro',
         sku: 'ECO-WX-STATION-PRO',
         archetype_id: 'hardware.weather_station',
-        nature: 'physical',
         lifecycle_state: 'AVAILABLE',
-        dimensions: { heightMm: 850, widthMm: 320, depthMm: 320, weightGrams: 3400, enclosureRating: 'IP66' },
-        vendor_info: { vendorUri: 'vendors/vendor_eco_mills', vendorName: 'EcoApparel & IoT Sensors', vendorSku: 'ECO-WX-2026-X', status: 'ACTIVE', releaseDate: '2025-01-10', eolDate: '2031-01-01' }
+        dimensions: { unitSystem: 'metric', height: 850, width: 320, depth: 320, weight: 3400, enclosureRating: 'IP66' },
+        vendor_info: { vendorUri: 'vendors/b1ffcd88-8d0a-3ef7-aa5c-5aa8ac270a22', vendorName: 'EcoApparel & IoT Sensors', vendorSku: 'ECO-WX-2026-X', status: 'ACTIVE', releaseDate: '2025-01-10', eolDate: '2031-01-01' }
       }
     ];
 
@@ -325,11 +317,15 @@
       filtered.forEach(dev => {
         const card = document.createElement('div');
         card.className = 'device-card';
+        const unit = dev.dimensions.unitSystem === 'metric' ? 'mm' : 'in';
+        const weightUnit = dev.dimensions.unitSystem === 'metric' ? 'g' : 'lbs';
+
         card.innerHTML = `
           <div class="card-header">
             <div>
               <div class="device-title">${dev.name}</div>
-              <div class="device-sku">SKU: ${dev.sku} | UID: ${dev.uid}</div>
+              <div class="device-sku">SKU: ${dev.sku}</div>
+              <div class="device-sku" style="color: #60a5fa;">UUID ID: ${dev.id}</div>
             </div>
             <span class="status-badge status-active">${dev.lifecycle_state}</span>
           </div>
@@ -337,17 +333,17 @@
           <!-- Inline Specification Group: Dimensions Map -->
           <div class="spec-group">
             <div class="group-title">
-              <span>Inline Group: "dimensions"</span>
+              <span>Dimensions (${dev.dimensions.unitSystem})</span>
               <span class="ip-badge">${dev.dimensions.enclosureRating}</span>
             </div>
             <div class="spec-grid">
               <div class="spec-item">
                 <span class="spec-label">Height x Width</span>
-                <span class="spec-value">${dev.dimensions.heightMm} x ${dev.dimensions.widthMm} mm</span>
+                <span class="spec-value">${dev.dimensions.height} x ${dev.dimensions.width} ${unit}</span>
               </div>
               <div class="spec-item">
-                <span class="spec-label">Depth x Weight</span>
-                <span class="spec-value">${dev.dimensions.depthMm} mm | ${dev.dimensions.weightGrams} g</span>
+                <span class="spec-label">Depth | Weight</span>
+                <span class="spec-value">${dev.dimensions.depth} ${unit} | ${dev.dimensions.weight} ${weightUnit}</span>
               </div>
             </div>
           </div>

@@ -10,7 +10,7 @@ export class Device extends AbstractMdmObject {
    static COLLECTION = 'devices'
    static PROPS_DEFINITION = [
       ...AbstractMdmObject.PROPS_DEFINITION,
-      { name: 'dimensions', type: ObjectProperty.TYPE, required: false, default: {} },
+      { name: 'dimensions', type: ObjectProperty.TYPE, required: false, default: { unitSystem: 'metric' } },
       { name: 'vendor_info', type: ObjectProperty.TYPE, required: false, default: {} },
    ] as typeof AbstractMdmObject.PROPS_DEFINITION
 
@@ -26,7 +26,7 @@ export class Device extends AbstractMdmObject {
    }
 
    public get dimensionsMap(): DeviceDimensionsMap {
-      return (this.dataObject.val('dimensions') as DeviceDimensionsMap) || {}
+      return (this.dataObject.val('dimensions') as DeviceDimensionsMap) || { unitSystem: 'metric' }
    }
 
    public get vendorInfoMap(): DeviceVendorInfoMap {
