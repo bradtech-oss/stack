@@ -1,4 +1,5 @@
-import { Device, DeviceType } from './Device'
+import { Device } from './Device'
+import { DeviceType } from './DeviceType'
 import { Mdm } from '@quatrain/mdm'
 import { MockMdmAdapter } from '@quatrain/mdm'
 import deviceArchetypeConfig from './device.json'
