@@ -6,12 +6,17 @@
   "nature": "physical",
   "collection": "devices",
   "typeCollection": "device_types",
+  "specGroupRefs": [
+    { "key": "dimensions", "$ref": "@quatrain/mdm/groups/dimensions" },
+    { "key": "vendor_info", "$ref": "@quatrain/mdm/groups/vendor_info" }
+  ],
   "requiredProperties": ["dimensions", "vendor_info"],
   "jsonSchema": {
     "type": "object",
     "required": ["dimensions", "vendor_info"],
     "properties": {
       "dimensions": {
+        "$ref": "@quatrain/mdm/groups/dimensions",
         "type": "object",
         "title": "Physical Dimensions & Enclosure Group",
         "description": "Inline physical dimension attributes and ingress protection rating",
@@ -51,6 +56,7 @@
         }
       },
       "vendor_info": {
+        "$ref": "@quatrain/mdm/groups/vendor_info",
         "type": "object",
         "title": "Vendor Relationship & Product Lifecycle Group",
         "description": "Inline supplier link and manufacturing lifecycle status",
