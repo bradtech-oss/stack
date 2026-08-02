@@ -1,6 +1,5 @@
 import { AbstractMdmObject, MdmArchetypeSpec } from '@quatrain/mdm'
 import { MapProperty, StringProperty, Core } from '@quatrain/core'
-import { DeviceDimensionsMap, DeviceVendorMap, DeviceElectricalMap } from '@bradtech-oss/db'
 
 import deviceArchetypeConfig from './device.json'
 
@@ -20,22 +19,6 @@ export class DeviceType extends AbstractMdmObject {
 
    getArchetypeSpec(): MdmArchetypeSpec {
       return deviceArchetypeConfig as MdmArchetypeSpec
-   }
-
-   public get sku(): string {
-      return (this.dataObject.val('sku') as string) || ''
-   }
-
-   public get dimensionsMap(): DeviceDimensionsMap {
-      return (this.dataObject.val('dimensions') as DeviceDimensionsMap) || { unitSystem: 'metric' }
-   }
-
-   public get vendorMap(): DeviceVendorMap {
-      return (this.dataObject.val('vendor') as DeviceVendorMap) || { status: 'ACTIVE' }
-   }
-
-   public get electricalMap(): DeviceElectricalMap {
-      return (this.dataObject.val('electrical') as DeviceElectricalMap) || {}
    }
 }
 

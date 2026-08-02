@@ -1,6 +1,5 @@
 import { AbstractMdmObject, MdmArchetypeSpec } from '@quatrain/mdm'
 import { MapProperty, StringProperty, Core } from '@quatrain/core'
-import { DeviceNetworkMap } from '@bradtech-oss/db'
 
 import deviceArchetypeConfig from './device.json'
 
@@ -19,18 +18,6 @@ export class Device extends AbstractMdmObject {
 
    getArchetypeSpec(): MdmArchetypeSpec {
       return deviceArchetypeConfig as MdmArchetypeSpec
-   }
-
-   public get serialNumber(): string {
-      return (this.dataObject.val('serialNumber') as string) || ''
-   }
-
-   public get deviceTypeId(): string {
-      return (this.dataObject.val('deviceTypeId') as string) || ''
-   }
-
-   public get networkMap(): DeviceNetworkMap {
-      return (this.dataObject.val('network') as DeviceNetworkMap) || {}
    }
 }
 

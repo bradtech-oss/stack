@@ -52,11 +52,11 @@ describe('@bradtech-oss/backoffice Device Model & Specification Scopes (Type vs 
          }
       })
 
-      expect(probeType.sku).toBe('BRAD-PROBE-V2-HYBRID')
-      expect(probeType.dimensionsMap.height).toBe(450)
-      expect(probeType.vendorMap.status).toBe('ACTIVE')
-      expect(probeType.electricalMap.voltageNominal).toBe(3.6)
-      expect(probeType.electricalMap.currentMax).toBe(120)
+      expect(probeType.val('sku')).toBe('BRAD-PROBE-V2-HYBRID')
+      expect((probeType.val('dimensions') as any).height).toBe(450)
+      expect((probeType.val('vendor') as any).status).toBe('ACTIVE')
+      expect((probeType.val('electrical') as any).voltageNominal).toBe(3.6)
+      expect((probeType.val('electrical') as any).currentMax).toBe(120)
    })
 
    it('should instantiate Physical Device Unit with unit-level specs (network carrying powerSource & LoRaWAN DevEUI / Wi-Fi MAC / GSM IMEI)', () => {
@@ -78,10 +78,10 @@ describe('@bradtech-oss/backoffice Device Model & Specification Scopes (Type vs 
          }
       })
 
-      expect(probeUnit.dataObject.val('name')).toBe('Soil Probe #042 - Field Parcel 3')
-      expect(probeUnit.serialNumber).toBe('SN-BRAD-PROBE-2026-0042')
-      expect(probeUnit.networkMap.powerSource).toBe('BATTERY')
-      expect(probeUnit.networkMap.lorawan?.devEui).toBe('0018B44113AB7042')
-      expect(probeUnit.networkMap.lorawan?.frequencyBand).toBe('EU868')
+      expect(probeUnit.val('name')).toBe('Soil Probe #042 - Field Parcel 3')
+      expect(probeUnit.val('serialNumber')).toBe('SN-BRAD-PROBE-2026-0042')
+      expect((probeUnit.val('network') as any).powerSource).toBe('BATTERY')
+      expect((probeUnit.val('network') as any).lorawan?.devEui).toBe('0018B44113AB7042')
+      expect((probeUnit.val('network') as any).lorawan?.frequencyBand).toBe('EU868')
    })
 })
