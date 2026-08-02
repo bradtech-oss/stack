@@ -15,22 +15,23 @@ async function main() {
   vendors.forEach(v => console.log(`  - [${v.id}] ${v.name} (${v.url || 'No URL'})`))
 
   const deviceTypes: DeviceTypeRow[] = await sql`SELECT * FROM device_types`
-  console.log(`\n📐 Found ${deviceTypes.length} Catalog Device Types (carrying SKU, dimensions Map, vendor_info Map):`)
+  console.log(`\n📐 Found ${deviceTypes.length} Catalog Device Types (Type-Level Specs: dimensions Map, vendor Map):`)
   deviceTypes.forEach(dt => {
     console.log(`  - [${dt.id}] ${dt.name} (SKU: ${dt.sku})`)
     console.log(`    📐 Dimensions Map: ${JSON.stringify(dt.dimensions)}`)
-    console.log(`    🔗 Vendor Info Map: ${JSON.stringify(dt.vendor_info)}`)
+    console.log(`    🏢 Vendor Map: ${JSON.stringify(dt.vendor)}`)
   })
 
   const devices: DeviceRow[] = await sql`SELECT * FROM devices`
-  console.log(`\n📱 Found ${devices.length} Physical Inventory Device Units (carrying Serial Numbers):`)
+  console.log(`\n📱 Found ${devices.length} Physical Inventory Device Units (Unit-Level Specs: net Map & S/N):`)
   devices.forEach(d => {
     console.log(`  - [${d.id}] ${d.name} (S/N: ${d.serial_number}, Model ID: ${d.device_type_id})`)
+    console.log(`    🌐 Net Spec Map (eth/wifi/lorawan/gsm): ${JSON.stringify(d.net)}`)
   })
 
   // Test PostgreSQL JOIN query
   const joinedQuery = await sql`
-    SELECT d.serial_number, d.name as unit_name, dt.name as model_name, dt.sku, dt.dimensions->>'enclosureRating' as ip
+    SELECT d.serial_number, d.name as unit_name, d.net, dt.name as model_name, dt.sku, dt.dimensions->>'enclosureRating' as ip
     FROM devices d
     JOIN device_types dt ON d.device_type_id = dt.id
   `

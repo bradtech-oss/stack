@@ -1,4 +1,4 @@
--- Seed data for Vendors, Device Types (Catalog Models) and Physical Device Units (Serial Numbers)
+-- Seed data for Vendors, Device Types (Type-level specs) and Physical Devices (Unit-level specs with net Map)
 
 INSERT INTO vendors (id, name, sku, url, details) VALUES
   ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Brad Technology', 'BRAD-HQ', 'https://brad.technology', '{"country": "FR", "supportEmail": "support@brad.technology"}'::jsonb),
@@ -6,8 +6,8 @@ INSERT INTO vendors (id, name, sku, url, details) VALUES
   ('c2aabe77-7e0f-2ef6-994b-4aa7ab160a33', 'Harvest Tech Ltd', 'HARVEST-UK', 'https://harvest-tech.example.com', '{"country": "UK", "supportEmail": "contact@harvest-tech.example.com"}'::jsonb)
 ON CONFLICT (id) DO NOTHING;
 
--- Seed Device Types (Catalog Models with SKU, dimensions Map, vendor_info Map)
-INSERT INTO device_types (id, name, sku, archetype_id, dimensions, vendor_info) VALUES
+-- Seed Device Types (Type-level specs: dimensions Map & vendor Map)
+INSERT INTO device_types (id, name, sku, archetype_id, dimensions, vendor) VALUES
   (
     '7711aa66-6f0e-1ef5-883a-3aa6ba050a11',
     'Soil Moisture Probe V2 Model',
@@ -34,27 +34,30 @@ INSERT INTO device_types (id, name, sku, archetype_id, dimensions, vendor_info) 
   )
 ON CONFLICT (id) DO NOTHING;
 
--- Seed Physical Inventory Units (Inherits specs from device_types, carries serial_number)
-INSERT INTO devices (id, device_type_id, serial_number, name, lifecycle_state) VALUES
+-- Seed Physical Inventory Units (Unit-level specs: net Map carrying MAC/DevEUI/IMEI sub-groups)
+INSERT INTO devices (id, device_type_id, serial_number, name, lifecycle_state, net) VALUES
   (
     'd311aa66-6f0e-1ef5-883a-3aa6ba050a44',
     '7711aa66-6f0e-1ef5-883a-3aa6ba050a11',
     'SN-BRAD-PROBE-2026-0042',
     'Soil Probe #042 - Field Parcel 3',
-    'ASSOCIATED'
+    'ASSOCIATED',
+    '{"lorawan": {"devEui": "0018B44113AB7042", "appEui": "70B3D57ED0000001", "frequencyBand": "EU868", "activationMode": "OTAA"}}'::jsonb
   ),
   (
     'e422bb55-5f0d-0ef4-7729-2aa5ab040a55',
     '8822bb55-5f0d-0ef4-7729-2aa5ab040a22',
     'SN-BRAD-GW-2026-0108',
     'Gateway Outdoor Mast #108',
-    'AVAILABLE'
+    'AVAILABLE',
+    '{"eth": {"macAddress": "00:1B:44:11:3A:08", "speedMbps": 1000, "poeSupported": true}, "wifi": {"macAddress": "00:1B:44:11:3A:09", "supportedStandards": ["802.11n", "802.11ac"], "frequencyBands": ["2.4", "5.0"]}, "gsm": {"imei": "354892019283018", "iccid": "893301928301928301F", "technologies": ["4G", "LTE-M"]}}'::jsonb
   ),
   (
     'f533cc44-4f0c-9ef3-6618-1aa4ab030a66',
     '9933cc44-4f0c-9ef3-6618-1aa4ab030a33',
     'SN-ECO-WX-2026-0019',
     'Agri Weather Station North Station',
-    'AVAILABLE'
+    'AVAILABLE',
+    '{"lorawan": {"devEui": "0018B44113AB7019", "appEui": "70B3D57ED0000001", "frequencyBand": "EU868", "activationMode": "OTAA"}, "gsm": {"imei": "354892019283019", "iccid": "893301928301928302F", "technologies": ["NB-IoT"]}}'::jsonb
   )
 ON CONFLICT (id) DO NOTHING;

@@ -12,7 +12,7 @@ export interface DeviceDimensionsMap {
   enclosureRating?: 'IP65' | 'IP66' | 'IP67' | 'IP68' | string
 }
 
-export interface DeviceVendorInfoMap {
+export interface DeviceVendorMap {
   vendorUri?: string
   vendorSku?: string
   status: 'ACTIVE' | 'EOL' | 'DISCONTINUED'
@@ -20,13 +20,45 @@ export interface DeviceVendorInfoMap {
   eolDate?: string
 }
 
+export interface DeviceEthMap {
+  macAddress?: string
+  speedMbps?: number
+  poeSupported?: boolean
+}
+
+export interface DeviceWifiMap {
+  macAddress?: string
+  supportedStandards?: string[]
+  frequencyBands?: string[]
+}
+
+export interface DeviceLorawanMap {
+  devEui?: string
+  appEui?: string
+  frequencyBand?: 'EU868' | 'US915' | 'AU915' | 'AS923' | string
+  activationMode?: 'OTAA' | 'ABP' | string
+}
+
+export interface DeviceGsmMap {
+  imei?: string
+  iccid?: string
+  technologies?: string[]
+}
+
+export interface DeviceNetMap {
+  eth?: DeviceEthMap
+  wifi?: DeviceWifiMap
+  lorawan?: DeviceLorawanMap
+  gsm?: DeviceGsmMap
+}
+
 export interface DeviceTypeRow {
   id: string
   name: string
   sku: string
   archetype_id: string
-  dimensions: DeviceDimensionsMap
-  vendor_info: DeviceVendorInfoMap
+  dimensions: DeviceDimensionsMap   // Type-level spec group
+  vendor: DeviceVendorMap          // Type-level spec group
   created_at?: string
 }
 
@@ -36,6 +68,7 @@ export interface DeviceRow {
   serial_number: string
   name: string
   lifecycle_state: 'AVAILABLE' | 'ASSOCIATED' | 'MAINTENANCE' | 'RETIRED' | string
+  net: DeviceNetMap                 // Unit-level spec group (eth, wifi, lorawan, gsm)
   created_at?: string
 }
 

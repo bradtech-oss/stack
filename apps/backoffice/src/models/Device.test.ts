@@ -1,32 +1,30 @@
-import { Device } from './Device'
+import { Device, DeviceType } from './Device'
 import { Mdm } from '@quatrain/mdm'
 import { MockMdmAdapter } from '@quatrain/mdm'
 import deviceArchetypeConfig from './mdm_device.json'
 
-describe('@bradtech-oss/backoffice Device Model & Declarative JSON Schema Test Suite', () => {
+describe('@bradtech-oss/backoffice Device Model & Specification Scopes (Type vs Unit) Test Suite', () => {
    beforeEach(() => {
       const adapter = new MockMdmAdapter('default')
       Mdm.addAdapter(adapter, 'default', true)
    })
 
-   it('should load archetype spec from mdm_device.json at the exact same directory level', () => {
+   it('should declare specification group scopes in mdm_device.json (scope: type vs scope: unit)', () => {
       const device = new Device({} as any)
       const spec = device.getArchetypeSpec()
 
       expect(spec.archetypeId).toBe('hardware.device')
-      expect(spec.nature).toBe('physical')
-      expect(spec.collection).toBe('devices')
-      expect(deviceArchetypeConfig.requiredProperties).toContain('dimensions')
+      expect(deviceArchetypeConfig.specGroupRefs.find(r => r.key === 'dimensions')?.scope).toBe('type')
+      expect(deviceArchetypeConfig.specGroupRefs.find(r => r.key === 'vendor')?.scope).toBe('type')
+      expect(deviceArchetypeConfig.specGroupRefs.find(r => r.key === 'net')?.scope).toBe('unit')
    })
 
-   it('should instantiate physical device inventory unit with serialNumber and deviceTypeId', () => {
-      const probeUnit = Device.fromObject({
-         id: 'd311aa66-6f0e-1ef5-883a-3aa6ba050a44',
-         deviceTypeId: '7711aa66-6f0e-1ef5-883a-3aa6ba050a11',
-         serialNumber: 'SN-BRAD-PROBE-2026-0042',
-         name: 'Soil Probe #042 - Field Parcel 3',
+   it('should instantiate Catalog DeviceType with type-level specs (dimensions, vendor)', () => {
+      const probeType = DeviceType.fromObject({
+         id: '7711aa66-6f0e-1ef5-883a-3aa6ba050a11',
+         name: 'Soil Moisture Probe V2 Model',
+         sku: 'BRAD-PROBE-V2-HYBRID',
          archetypeId: 'hardware.probe',
-         lifecycleState: 'ASSOCIATED',
          dimensions: {
             unitSystem: 'metric',
             height: 450,
@@ -35,7 +33,7 @@ describe('@bradtech-oss/backoffice Device Model & Declarative JSON Schema Test S
             weight: 480,
             enclosureRating: 'IP68'
          },
-         vendor_info: {
+         vendor: {
             vendorUri: 'vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
             vendorSku: 'BRAD-PHY-PCB-HYBRID-01',
             status: 'ACTIVE',
@@ -44,10 +42,32 @@ describe('@bradtech-oss/backoffice Device Model & Declarative JSON Schema Test S
          }
       })
 
+      expect(probeType.sku).toBe('BRAD-PROBE-V2-HYBRID')
+      expect(probeType.dimensionsMap.height).toBe(450)
+      expect(probeType.vendorMap.status).toBe('ACTIVE')
+   })
+
+   it('should instantiate Physical Device Unit with unit-level specs (net carrying LoRaWAN DevEUI / Wi-Fi MAC / GSM IMEI)', () => {
+      const probeUnit = Device.fromObject({
+         id: 'd311aa66-6f0e-1ef5-883a-3aa6ba050a44',
+         deviceTypeId: '7711aa66-6f0e-1ef5-883a-3aa6ba050a11',
+         serialNumber: 'SN-BRAD-PROBE-2026-0042',
+         name: 'Soil Probe #042 - Field Parcel 3',
+         archetypeId: 'hardware.probe',
+         lifecycleState: 'ASSOCIATED',
+         net: {
+            lorawan: {
+               devEui: '0018B44113AB7042',
+               appEui: '70B3D57ED0000001',
+               frequencyBand: 'EU868',
+               activationMode: 'OTAA'
+            }
+         }
+      })
+
       expect(probeUnit.dataObject.val('name')).toBe('Soil Probe #042 - Field Parcel 3')
       expect(probeUnit.serialNumber).toBe('SN-BRAD-PROBE-2026-0042')
-      expect(probeUnit.deviceTypeId).toBe('7711aa66-6f0e-1ef5-883a-3aa6ba050a11')
-      expect(probeUnit.dimensionsMap.height).toBe(450)
-      expect(probeUnit.vendorInfoMap.vendorSku).toBe('BRAD-PHY-PCB-HYBRID-01')
+      expect(probeUnit.netMap.lorawan?.devEui).toBe('0018B44113AB7042')
+      expect(probeUnit.netMap.lorawan?.frequencyBand).toBe('EU868')
    })
 })
