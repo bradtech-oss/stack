@@ -1,17 +1,18 @@
 import { AbstractMdmObject, MdmArchetypeSpec, MdmNature } from '@quatrain/mdm'
-import { ObjectProperty, Core } from '@quatrain/core'
+import { MapProperty, Core } from '@quatrain/core'
 import { DeviceDimensionsMap, DeviceVendorInfoMap } from '@bradtech-oss/db'
 
 /**
  * Concrete Device model for physical hardware (probes, gateways, weather stations)
- * Uses clean COLLECTION = 'devices' and manages inline specification groups for dimensions and vendor_info.
+ * Uses clean COLLECTION = 'devices' and manages inline specification groups for dimensions and vendor_info
+ * using MapProperty.TYPE for key-value dictionary maps.
  */
 export class Device extends AbstractMdmObject {
    static COLLECTION = 'devices'
    static PROPS_DEFINITION = [
       ...AbstractMdmObject.PROPS_DEFINITION,
-      { name: 'dimensions', type: ObjectProperty.TYPE, required: false, default: { unitSystem: 'metric' } },
-      { name: 'vendor_info', type: ObjectProperty.TYPE, required: false, default: {} },
+      { name: 'dimensions', type: MapProperty.TYPE, required: false, default: { unitSystem: 'metric' } },
+      { name: 'vendor_info', type: MapProperty.TYPE, required: false, default: {} },
    ] as typeof AbstractMdmObject.PROPS_DEFINITION
 
    getArchetypeSpec(): MdmArchetypeSpec {
