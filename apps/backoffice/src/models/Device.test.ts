@@ -20,7 +20,7 @@ describe('@bradtech-oss/backoffice Device Model & Specification Scopes (Type vs 
       expect(deviceArchetypeConfig.specGroupRefs.find(r => r.key === 'net')?.scope).toBe('unit')
    })
 
-   it('should instantiate Catalog DeviceType with type-level specs (dimensions, vendor, electrical)', () => {
+   it('should instantiate Catalog DeviceType with static physical specs (dimensions, vendor, electrical)', () => {
       const probeType = DeviceType.fromObject({
          id: '7711aa66-6f0e-1ef5-883a-3aa6ba050a11',
          name: 'Soil Moisture Probe V2 Model',
@@ -47,8 +47,7 @@ describe('@bradtech-oss/backoffice Device Model & Specification Scopes (Type vs 
             voltageMaxV: 4.2,
             currentMaxmA: 120,
             powerActivemW: 432,
-            powerSleepuW: 18,
-            powerSource: 'BATTERY'
+            powerSleepuW: 18
          }
       })
 
@@ -56,10 +55,10 @@ describe('@bradtech-oss/backoffice Device Model & Specification Scopes (Type vs 
       expect(probeType.dimensionsMap.height).toBe(450)
       expect(probeType.vendorMap.status).toBe('ACTIVE')
       expect(probeType.electricalMap.voltageNominalV).toBe(3.6)
-      expect(probeType.electricalMap.powerSource).toBe('BATTERY')
+      expect(probeType.electricalMap.currentMaxmA).toBe(120)
    })
 
-   it('should instantiate Physical Device Unit with unit-level specs (net carrying LoRaWAN DevEUI / Wi-Fi MAC / GSM IMEI)', () => {
+   it('should instantiate Physical Device Unit with unit-level specs (net carrying powerSource & LoRaWAN DevEUI / Wi-Fi MAC / GSM IMEI)', () => {
       const probeUnit = Device.fromObject({
          id: 'd311aa66-6f0e-1ef5-883a-3aa6ba050a44',
          deviceTypeId: '7711aa66-6f0e-1ef5-883a-3aa6ba050a11',
@@ -68,6 +67,7 @@ describe('@bradtech-oss/backoffice Device Model & Specification Scopes (Type vs 
          archetypeId: 'hardware.probe',
          lifecycleState: 'ASSOCIATED',
          net: {
+            powerSource: 'BATTERY',
             lorawan: {
                devEui: '0018B44113AB7042',
                appEui: '70B3D57ED0000001',
@@ -79,6 +79,7 @@ describe('@bradtech-oss/backoffice Device Model & Specification Scopes (Type vs 
 
       expect(probeUnit.dataObject.val('name')).toBe('Soil Probe #042 - Field Parcel 3')
       expect(probeUnit.serialNumber).toBe('SN-BRAD-PROBE-2026-0042')
+      expect(probeUnit.netMap.powerSource).toBe('BATTERY')
       expect(probeUnit.netMap.lorawan?.devEui).toBe('0018B44113AB7042')
       expect(probeUnit.netMap.lorawan?.frequencyBand).toBe('EU868')
    })

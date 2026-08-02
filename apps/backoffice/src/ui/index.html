@@ -220,6 +220,16 @@
       border: 1px solid rgba(59, 130, 246, 0.3);
     }
 
+    .power-badge {
+      font-family: monospace;
+      font-size: 0.75rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      background: rgba(245, 158, 11, 0.15);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
     .ip-badge {
       display: inline-block;
       background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
@@ -238,16 +248,16 @@
       <div class="brand-logo">B</div>
       <div>
         <h1>BradTech Backoffice — Quatrain MDM</h1>
-        <div class="subtitle">Specification Scopes: Type-Level (dimensions, vendor, electrical) vs Unit-Level (net, serial_number)</div>
+        <div class="subtitle">Specification Scopes: Type-Level (dimensions, vendor, electrical ratings) vs Unit-Level (net, powerSource, serial_number)</div>
       </div>
     </div>
     <div class="badge-json">📜 Archetype Spec: mdm_device.json</div>
   </header>
 
-  <div class="section-title">📱 Physical Inventory Devices (`devices` Table — Unit-Level Specs: `net` Map & `serial_number`)</div>
+  <div class="section-title">📱 Physical Inventory Devices (`devices` Table — Unit-Level Specs: `net` Map with `powerSource` & `serial_number`)</div>
   <div class="device-grid" id="physicalDevicesGrid"></div>
 
-  <div class="section-title">📐 Catalog Device Models (`device_types` Table — Type-Level Specs: `dimensions`, `vendor`, `electrical`)</div>
+  <div class="section-title">📐 Catalog Device Models (`device_types` Table — Type-Level Specs: `dimensions`, `vendor`, `electrical` static ratings)</div>
   <div class="device-grid" id="deviceTypesGrid"></div>
 
   <script>
@@ -258,7 +268,7 @@
         sku: 'BRAD-PROBE-V2-HYBRID',
         dimensions: { unitSystem: 'metric', height: 450, width: 65, depth: 65, weight: 480, enclosureRating: 'IP68' },
         vendor: { vendorUri: 'vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', vendorName: 'Brad Technology', vendorSku: 'BRAD-PHY-PCB-HYBRID-01', status: 'ACTIVE' },
-        electrical: { voltageNominalV: 3.6, currentMaxmA: 120, powerActivemW: 432, powerSleepuW: 18, powerSource: 'BATTERY' }
+        electrical: { voltageNominalV: 3.6, currentMaxmA: 120, powerActivemW: 432, powerSleepuW: 18 }
       },
       {
         id: '8822bb55-5f0d-0ef4-7729-2aa5ab040a22',
@@ -266,7 +276,7 @@
         sku: 'BRAD-GW-868-OUTDOOR',
         dimensions: { unitSystem: 'metric', height: 220, width: 180, depth: 90, weight: 1250, enclosureRating: 'IP67' },
         vendor: { vendorUri: 'vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', vendorName: 'Brad Technology', vendorSku: 'BRAD-GW-MOD-868', status: 'ACTIVE' },
-        electrical: { voltageNominalV: 48.0, currentMaxmA: 1250, powerActivemW: 15000, powerSleepuW: 1200000, powerSource: 'POE' }
+        electrical: { voltageNominalV: 48.0, currentMaxmA: 1250, powerActivemW: 15000, powerSleepuW: 1200000 }
       },
       {
         id: '9933cc44-4f0c-9ef3-6618-1aa4ab030a33',
@@ -274,7 +284,7 @@
         sku: 'ECO-WX-STATION-PRO',
         dimensions: { unitSystem: 'metric', height: 850, width: 320, depth: 320, weight: 3400, enclosureRating: 'IP66' },
         vendor: { vendorUri: 'vendors/b1ffcd88-8d0a-3ef7-aa5c-5aa8ac270a22', vendorName: 'EcoApparel & IoT Sensors', vendorSku: 'ECO-WX-2026-X', status: 'ACTIVE' },
-        electrical: { voltageNominalV: 6.0, currentMaxmA: 350, powerActivemW: 2100, powerSleepuW: 45, powerSource: 'SOLAR_BATTERY' }
+        electrical: { voltageNominalV: 6.0, currentMaxmA: 350, powerActivemW: 2100, powerSleepuW: 45 }
       }
     ];
 
@@ -286,6 +296,7 @@
         lifecycle_state: 'ASSOCIATED',
         model_name: 'Soil Moisture Probe V2 Model',
         net: {
+          powerSource: 'BATTERY',
           lorawan: { devEui: '0018B44113AB7042', frequencyBand: 'EU868', activationMode: 'OTAA' }
         }
       },
@@ -296,6 +307,7 @@
         lifecycle_state: 'AVAILABLE',
         model_name: 'LoRaWAN Outdoor Gateway 868MHz Model',
         net: {
+          powerSource: 'POE',
           eth: { macAddress: '00:1B:44:11:3A:08', speedMbps: 1000, poeSupported: true },
           wifi: { macAddress: '00:1B:44:11:3A:09', supportedStandards: ['802.11ac'], frequencyBands: ['2.4', '5.0'] },
           gsm: { imei: '354892019283018', technologies: ['4G', 'LTE-M'] }
@@ -308,6 +320,7 @@
         lifecycle_state: 'AVAILABLE',
         model_name: 'Agri Weather Station Pro Model',
         net: {
+          powerSource: 'SOLAR_BATTERY',
           lorawan: { devEui: '0018B44113AB7019', frequencyBand: 'EU868' },
           gsm: { imei: '354892019283019', technologies: ['NB-IoT'] }
         }
@@ -322,9 +335,9 @@
         const card = document.createElement('div');
         card.className = 'device-card';
 
-        let netHtml = '';
+        let netHtml = `<div><span class="spec-label">Deployment Power Source:</span> <span class="power-badge">⚡ ${dev.net.powerSource || 'N/A'}</span></div>`;
         if (dev.net.lorawan) {
-          netHtml += `<div><span class="spec-label">LoRaWAN DevEUI:</span> <span class="net-tag">${dev.net.lorawan.devEui} (${dev.net.lorawan.frequencyBand})</span></div>`;
+          netHtml += `<div style="margin-top:0.3rem;"><span class="spec-label">LoRaWAN DevEUI:</span> <span class="net-tag">${dev.net.lorawan.devEui} (${dev.net.lorawan.frequencyBand})</span></div>`;
         }
         if (dev.net.eth) {
           netHtml += `<div style="margin-top:0.3rem;"><span class="spec-label">Eth MAC:</span> <span class="net-tag">${dev.net.eth.macAddress} (${dev.net.eth.speedMbps}M)</span></div>`;
@@ -390,11 +403,11 @@
           </div>
 
           <div class="spec-group">
-            <div class="group-title">Type Spec: "electrical"</div>
+            <div class="group-title">Type Spec: "electrical" Static Ratings</div>
             <div class="spec-grid">
               <div class="spec-item">
-                <span class="spec-label">Voltage | Amperage</span>
-                <span class="spec-value">${devType.electrical.voltageNominalV}V | ${devType.electrical.currentMaxmA} mA</span>
+                <span class="spec-label">Voltage Ratings</span>
+                <span class="spec-value">${devType.electrical.voltageNominalV}V Nominal</span>
               </div>
               <div class="spec-item">
                 <span class="spec-label">Power (Active | Sleep)</span>

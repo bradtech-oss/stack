@@ -27,7 +27,6 @@ export interface DeviceElectricalMap {
   currentMaxmA?: number
   powerActivemW?: number
   powerSleepuW?: number
-  powerSource?: 'BATTERY' | 'SOLAR_BATTERY' | 'MAINS_AC' | 'POE' | 'DC_EXTERNAL' | string
 }
 
 export interface DeviceEthMap {
@@ -56,6 +55,7 @@ export interface DeviceGsmMap {
 }
 
 export interface DeviceNetMap {
+  powerSource?: 'BATTERY' | 'SOLAR_BATTERY' | 'MAINS_AC' | 'POE' | 'DC_EXTERNAL' | string
   eth?: DeviceEthMap
   wifi?: DeviceWifiMap
   lorawan?: DeviceLorawanMap
@@ -79,7 +79,7 @@ export interface DeviceRow {
   serial_number: string
   name: string
   lifecycle_state: 'AVAILABLE' | 'ASSOCIATED' | 'MAINTENANCE' | 'RETIRED' | string
-  net: DeviceNetMap                 // Unit-level spec group (eth, wifi, lorawan, gsm)
+  net: DeviceNetMap                 // Unit-level spec group (eth, wifi, lorawan, gsm, powerSource)
   created_at?: string
 }
 

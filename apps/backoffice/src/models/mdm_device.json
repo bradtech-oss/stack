@@ -50,16 +50,15 @@
         "$ref": "@quatrain/mdm/groups/electrical",
         "scope": "type",
         "type": "object",
-        "title": "Electrical & Power Supply Specification Group (Type-Level)",
-        "description": "Operating voltage ratings, peak amperage, power consumption and supply source",
+        "title": "Electrical Hardware Ratings Specification Group (Type-Level)",
+        "description": "Static hardware operating voltage ratings, peak amperage, and active/sleep power consumption",
         "properties": {
           "voltageNominalV": { "type": "number", "minimum": 0 },
           "voltageMinV": { "type": "number", "minimum": 0 },
           "voltageMaxV": { "type": "number", "minimum": 0 },
           "currentMaxmA": { "type": "number", "minimum": 0 },
           "powerActivemW": { "type": "number", "minimum": 0 },
-          "powerSleepuW": { "type": "number", "minimum": 0 },
-          "powerSource": { "type": "string", "enum": ["BATTERY", "SOLAR_BATTERY", "MAINS_AC", "POE", "DC_EXTERNAL"] }
+          "powerSleepuW": { "type": "number", "minimum": 0 }
         }
       },
       "net": {
@@ -67,8 +66,9 @@
         "scope": "unit",
         "type": "object",
         "title": "Network Connectivity Master Group (Unit-Level)",
-        "description": "Unique physical hardware network interfaces (MAC addresses, DevEUI, IMEI)",
+        "description": "Unique physical hardware network interfaces (MAC addresses, DevEUI, IMEI) and deployment power source",
         "properties": {
+          "powerSource": { "type": "string", "enum": ["BATTERY", "SOLAR_BATTERY", "MAINS_AC", "POE", "DC_EXTERNAL"] },
           "eth": { "$ref": "@quatrain/mdm/groups/net/eth" },
           "wifi": { "$ref": "@quatrain/mdm/groups/net/wifi" },
           "lorawan": { "$ref": "@quatrain/mdm/groups/net/lorawan" },
