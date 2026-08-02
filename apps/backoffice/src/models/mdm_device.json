@@ -9,12 +9,13 @@
   "specGroupRefs": [
     { "key": "dimensions", "scope": "type", "$ref": "@quatrain/mdm/groups/dimensions" },
     { "key": "vendor", "scope": "type", "$ref": "@quatrain/mdm/groups/vendor" },
+    { "key": "electrical", "scope": "type", "$ref": "@quatrain/mdm/groups/electrical" },
     { "key": "net", "scope": "unit", "$ref": "@quatrain/mdm/groups/net" }
   ],
-  "requiredProperties": ["dimensions", "vendor", "net"],
+  "requiredProperties": ["dimensions", "vendor", "electrical", "net"],
   "jsonSchema": {
     "type": "object",
-    "required": ["dimensions", "vendor", "net"],
+    "required": ["dimensions", "vendor", "electrical", "net"],
     "properties": {
       "dimensions": {
         "$ref": "@quatrain/mdm/groups/dimensions",
@@ -43,6 +44,22 @@
           "status": { "type": "string", "enum": ["ACTIVE", "EOL", "DISCONTINUED"], "default": "ACTIVE" },
           "releaseDate": { "type": "string", "format": "date" },
           "eolDate": { "type": "string", "format": "date" }
+        }
+      },
+      "electrical": {
+        "$ref": "@quatrain/mdm/groups/electrical",
+        "scope": "type",
+        "type": "object",
+        "title": "Electrical & Power Supply Specification Group (Type-Level)",
+        "description": "Operating voltage ratings, peak amperage, power consumption and supply source",
+        "properties": {
+          "voltageNominalV": { "type": "number", "minimum": 0 },
+          "voltageMinV": { "type": "number", "minimum": 0 },
+          "voltageMaxV": { "type": "number", "minimum": 0 },
+          "currentMaxmA": { "type": "number", "minimum": 0 },
+          "powerActivemW": { "type": "number", "minimum": 0 },
+          "powerSleepuW": { "type": "number", "minimum": 0 },
+          "powerSource": { "type": "string", "enum": ["BATTERY", "SOLAR_BATTERY", "MAINS_AC", "POE", "DC_EXTERNAL"] }
         }
       },
       "net": {

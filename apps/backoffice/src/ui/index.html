@@ -238,7 +238,7 @@
       <div class="brand-logo">B</div>
       <div>
         <h1>BradTech Backoffice — Quatrain MDM</h1>
-        <div class="subtitle">Specification Scopes: Type-Level (dimensions, vendor) vs Unit-Level (net, serial_number)</div>
+        <div class="subtitle">Specification Scopes: Type-Level (dimensions, vendor, electrical) vs Unit-Level (net, serial_number)</div>
       </div>
     </div>
     <div class="badge-json">📜 Archetype Spec: mdm_device.json</div>
@@ -247,7 +247,7 @@
   <div class="section-title">📱 Physical Inventory Devices (`devices` Table — Unit-Level Specs: `net` Map & `serial_number`)</div>
   <div class="device-grid" id="physicalDevicesGrid"></div>
 
-  <div class="section-title">📐 Catalog Device Models (`device_types` Table — Type-Level Specs: `dimensions` & `vendor`)</div>
+  <div class="section-title">📐 Catalog Device Models (`device_types` Table — Type-Level Specs: `dimensions`, `vendor`, `electrical`)</div>
   <div class="device-grid" id="deviceTypesGrid"></div>
 
   <script>
@@ -257,21 +257,24 @@
         name: 'Soil Moisture Probe V2 Model',
         sku: 'BRAD-PROBE-V2-HYBRID',
         dimensions: { unitSystem: 'metric', height: 450, width: 65, depth: 65, weight: 480, enclosureRating: 'IP68' },
-        vendor: { vendorUri: 'vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', vendorName: 'Brad Technology', vendorSku: 'BRAD-PHY-PCB-HYBRID-01', status: 'ACTIVE' }
+        vendor: { vendorUri: 'vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', vendorName: 'Brad Technology', vendorSku: 'BRAD-PHY-PCB-HYBRID-01', status: 'ACTIVE' },
+        electrical: { voltageNominalV: 3.6, currentMaxmA: 120, powerActivemW: 432, powerSleepuW: 18, powerSource: 'BATTERY' }
       },
       {
         id: '8822bb55-5f0d-0ef4-7729-2aa5ab040a22',
         name: 'LoRaWAN Outdoor Gateway 868MHz Model',
         sku: 'BRAD-GW-868-OUTDOOR',
         dimensions: { unitSystem: 'metric', height: 220, width: 180, depth: 90, weight: 1250, enclosureRating: 'IP67' },
-        vendor: { vendorUri: 'vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', vendorName: 'Brad Technology', vendorSku: 'BRAD-GW-MOD-868', status: 'ACTIVE' }
+        vendor: { vendorUri: 'vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', vendorName: 'Brad Technology', vendorSku: 'BRAD-GW-MOD-868', status: 'ACTIVE' },
+        electrical: { voltageNominalV: 48.0, currentMaxmA: 1250, powerActivemW: 15000, powerSleepuW: 1200000, powerSource: 'POE' }
       },
       {
         id: '9933cc44-4f0c-9ef3-6618-1aa4ab030a33',
         name: 'Agri Weather Station Pro Model',
         sku: 'ECO-WX-STATION-PRO',
         dimensions: { unitSystem: 'metric', height: 850, width: 320, depth: 320, weight: 3400, enclosureRating: 'IP66' },
-        vendor: { vendorUri: 'vendors/b1ffcd88-8d0a-3ef7-aa5c-5aa8ac270a22', vendorName: 'EcoApparel & IoT Sensors', vendorSku: 'ECO-WX-2026-X', status: 'ACTIVE' }
+        vendor: { vendorUri: 'vendors/b1ffcd88-8d0a-3ef7-aa5c-5aa8ac270a22', vendorName: 'EcoApparel & IoT Sensors', vendorSku: 'ECO-WX-2026-X', status: 'ACTIVE' },
+        electrical: { voltageNominalV: 6.0, currentMaxmA: 350, powerActivemW: 2100, powerSleepuW: 45, powerSource: 'SOLAR_BATTERY' }
       }
     ];
 
@@ -373,23 +376,31 @@
           </div>
 
           <div class="spec-group">
-            <div class="group-title">Type Spec: "dimensions"</div>
+            <div class="group-title">Type Spec: "dimensions" & "vendor"</div>
             <div class="spec-grid">
               <div class="spec-item">
-                <span class="spec-label">Height x Width</span>
+                <span class="spec-label">Dimensions (HxW)</span>
                 <span class="spec-value">${devType.dimensions.height} x ${devType.dimensions.width} mm</span>
               </div>
               <div class="spec-item">
-                <span class="spec-label">Depth | Weight</span>
-                <span class="spec-value">${devType.dimensions.depth} mm | ${devType.dimensions.weight} g</span>
+                <span class="spec-label">Vendor</span>
+                <span class="spec-value" style="color:#93c5fd;">${devType.vendor.vendorName}</span>
               </div>
             </div>
           </div>
 
           <div class="spec-group">
-            <div class="group-title">Type Spec: "vendor"</div>
-            <div style="font-size: 0.85rem; font-weight: 600; color: #93c5fd;">${devType.vendor.vendorName}</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Vendor SKU: ${devType.vendor.vendorSku}</div>
+            <div class="group-title">Type Spec: "electrical"</div>
+            <div class="spec-grid">
+              <div class="spec-item">
+                <span class="spec-label">Voltage | Amperage</span>
+                <span class="spec-value">${devType.electrical.voltageNominalV}V | ${devType.electrical.currentMaxmA} mA</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Power (Active | Sleep)</span>
+                <span class="spec-value">${devType.electrical.powerActivemW} mW | ${devType.electrical.powerSleepuW} µW</span>
+              </div>
+            </div>
           </div>
         `;
         container.appendChild(card);

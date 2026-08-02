@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS vendors (
    created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Catalog of Device Models (Type-level specs: dimensions Map, vendor Map)
+-- Catalog of Device Models (Type-level specs: dimensions Map, vendor Map, electrical Map)
 CREATE TABLE IF NOT EXISTS device_types (
    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
    name VARCHAR(255) NOT NULL,
@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS device_types (
    archetype_id VARCHAR(128) NOT NULL DEFAULT 'hardware.device',
    dimensions JSONB DEFAULT '{"unitSystem": "metric"}'::jsonb,  -- TYPE-LEVEL SPEC GROUP
    vendor JSONB DEFAULT '{}'::jsonb,                            -- TYPE-LEVEL SPEC GROUP
+   electrical JSONB DEFAULT '{}'::jsonb,                        -- TYPE-LEVEL SPEC GROUP
    created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -35,5 +36,6 @@ CREATE TABLE IF NOT EXISTS devices (
 -- JSONB GIN Indexes for high-performance spec group queries
 CREATE INDEX IF NOT EXISTS idx_device_types_dimensions ON device_types USING GIN (dimensions);
 CREATE INDEX IF NOT EXISTS idx_device_types_vendor ON device_types USING GIN (vendor);
+CREATE INDEX IF NOT EXISTS idx_device_types_electrical ON device_types USING GIN (electrical);
 CREATE INDEX IF NOT EXISTS idx_devices_net ON devices USING GIN (net);
 CREATE INDEX IF NOT EXISTS idx_devices_serial_number ON devices (serial_number);

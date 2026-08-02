@@ -16,10 +16,11 @@ describe('@bradtech-oss/backoffice Device Model & Specification Scopes (Type vs 
       expect(spec.archetypeId).toBe('hardware.device')
       expect(deviceArchetypeConfig.specGroupRefs.find(r => r.key === 'dimensions')?.scope).toBe('type')
       expect(deviceArchetypeConfig.specGroupRefs.find(r => r.key === 'vendor')?.scope).toBe('type')
+      expect(deviceArchetypeConfig.specGroupRefs.find(r => r.key === 'electrical')?.scope).toBe('type')
       expect(deviceArchetypeConfig.specGroupRefs.find(r => r.key === 'net')?.scope).toBe('unit')
    })
 
-   it('should instantiate Catalog DeviceType with type-level specs (dimensions, vendor)', () => {
+   it('should instantiate Catalog DeviceType with type-level specs (dimensions, vendor, electrical)', () => {
       const probeType = DeviceType.fromObject({
          id: '7711aa66-6f0e-1ef5-883a-3aa6ba050a11',
          name: 'Soil Moisture Probe V2 Model',
@@ -39,12 +40,23 @@ describe('@bradtech-oss/backoffice Device Model & Specification Scopes (Type vs 
             status: 'ACTIVE',
             releaseDate: '2025-06-01',
             eolDate: '2030-12-31'
+         },
+         electrical: {
+            voltageNominalV: 3.6,
+            voltageMinV: 3.0,
+            voltageMaxV: 4.2,
+            currentMaxmA: 120,
+            powerActivemW: 432,
+            powerSleepuW: 18,
+            powerSource: 'BATTERY'
          }
       })
 
       expect(probeType.sku).toBe('BRAD-PROBE-V2-HYBRID')
       expect(probeType.dimensionsMap.height).toBe(450)
       expect(probeType.vendorMap.status).toBe('ACTIVE')
+      expect(probeType.electricalMap.voltageNominalV).toBe(3.6)
+      expect(probeType.electricalMap.powerSource).toBe('BATTERY')
    })
 
    it('should instantiate Physical Device Unit with unit-level specs (net carrying LoRaWAN DevEUI / Wi-Fi MAC / GSM IMEI)', () => {

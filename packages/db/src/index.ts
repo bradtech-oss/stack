@@ -20,6 +20,16 @@ export interface DeviceVendorMap {
   eolDate?: string
 }
 
+export interface DeviceElectricalMap {
+  voltageNominalV?: number
+  voltageMinV?: number
+  voltageMaxV?: number
+  currentMaxmA?: number
+  powerActivemW?: number
+  powerSleepuW?: number
+  powerSource?: 'BATTERY' | 'SOLAR_BATTERY' | 'MAINS_AC' | 'POE' | 'DC_EXTERNAL' | string
+}
+
 export interface DeviceEthMap {
   macAddress?: string
   speedMbps?: number
@@ -59,6 +69,7 @@ export interface DeviceTypeRow {
   archetype_id: string
   dimensions: DeviceDimensionsMap   // Type-level spec group
   vendor: DeviceVendorMap          // Type-level spec group
+  electrical: DeviceElectricalMap  // Type-level spec group
   created_at?: string
 }
 
