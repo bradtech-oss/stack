@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BradTech Backoffice - Quatrain MDM Device Visualizer</title>
+  <title>BradTech Backoffice - Quatrain MDM Device Types & Physical Inventory Visualizer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
@@ -79,10 +79,10 @@
       color: var(--text-muted);
     }
 
-    .badge-podman {
-      background: rgba(59, 130, 246, 0.15);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      color: #60a5fa;
+    .badge-json {
+      background: rgba(139, 92, 246, 0.2);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      color: #c4b5fd;
       padding: 0.4rem 0.8rem;
       border-radius: 20px;
       font-size: 0.8rem;
@@ -119,10 +119,22 @@
       border-color: rgba(255, 255, 255, 0.3);
     }
 
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
     .device-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
       gap: 1.5rem;
+      margin-bottom: 3rem;
     }
 
     .device-card {
@@ -159,6 +171,17 @@
       font-family: monospace;
       color: var(--text-muted);
       margin-top: 0.2rem;
+    }
+
+    .serial-tag {
+      font-family: monospace;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+      padding: 0.25rem 0.6rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
     }
 
     .status-badge {
@@ -226,29 +249,6 @@
       font-size: 0.75rem;
       font-weight: 600;
     }
-
-    .vendor-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(59, 130, 246, 0.08);
-      border: 1px solid rgba(59, 130, 246, 0.2);
-      border-radius: 8px;
-      padding: 0.6rem 0.8rem;
-      margin-top: 0.5rem;
-    }
-
-    .vendor-name {
-      font-weight: 600;
-      font-size: 0.85rem;
-      color: #93c5fd;
-    }
-
-    .uri-link {
-      font-family: monospace;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
   </style>
 </head>
 <body>
@@ -258,116 +258,130 @@
       <div class="brand-logo">B</div>
       <div>
         <h1>BradTech Backoffice — Quatrain MDM</h1>
-        <div class="subtitle">Unified Devices Table (UUID PK) & Inline Specification Groups ("dimensions", "vendor_info")</div>
+        <div class="subtitle">Catalog Model (device_types) & Physical Inventory Units (serial_number)</div>
       </div>
     </div>
-    <div class="badge-podman">⚡ PostgreSQL 16 + UUID id PK + JSONB Map</div>
+    <div class="badge-json">📜 Archetype Spec: mdm_device.json</div>
   </header>
 
-  <div class="controls-bar">
-    <div class="filters">
-      <button class="filter-btn active" onclick="filterDevices('ALL')">All Devices (3)</button>
-      <button class="filter-btn" onclick="filterDevices('hardware.probe')">Probes</button>
-      <button class="filter-btn" onclick="filterDevices('hardware.gateway')">Gateways</button>
-      <button class="filter-btn" onclick="filterDevices('hardware.weather_station')">Weather Stations</button>
-    </div>
-  </div>
+  <div class="section-title">📱 Physical Inventory Devices (`devices` Table with Serial Numbers)</div>
+  <div class="device-grid" id="physicalDevicesGrid"></div>
 
-  <div class="device-grid" id="deviceGrid">
-    <!-- Rendered dynamically by JavaScript -->
-  </div>
+  <div class="section-title">📐 Catalog Device Models (`device_types` Table carrying SKU & Specifications)</div>
+  <div class="device-grid" id="deviceTypesGrid"></div>
 
   <script>
-    const mockDevices = [
+    const mockDeviceTypes = [
       {
-        id: 'd311aa66-6f0e-1ef5-883a-3aa6ba050a44',
-        name: 'Soil Moisture Probe V2',
+        id: '7711aa66-6f0e-1ef5-883a-3aa6ba050a11',
+        name: 'Soil Moisture Probe V2 Model',
         sku: 'BRAD-PROBE-V2-HYBRID',
         archetype_id: 'hardware.probe',
-        lifecycle_state: 'ASSOCIATED',
         dimensions: { unitSystem: 'metric', height: 450, width: 65, depth: 65, weight: 480, enclosureRating: 'IP68' },
         vendor_info: { vendorUri: 'vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', vendorName: 'Brad Technology', vendorSku: 'BRAD-PHY-PCB-HYBRID-01', status: 'ACTIVE', releaseDate: '2025-06-01', eolDate: '2030-12-31' }
       },
       {
-        id: 'e422bb55-5f0d-0ef4-7729-2aa5ab040a55',
-        name: 'LoRaWAN Outdoor Gateway 868MHz',
+        id: '8822bb55-5f0d-0ef4-7729-2aa5ab040a22',
+        name: 'LoRaWAN Outdoor Gateway 868MHz Model',
         sku: 'BRAD-GW-868-OUTDOOR',
         archetype_id: 'hardware.gateway',
-        lifecycle_state: 'AVAILABLE',
         dimensions: { unitSystem: 'metric', height: 220, width: 180, depth: 90, weight: 1250, enclosureRating: 'IP67' },
         vendor_info: { vendorUri: 'vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', vendorName: 'Brad Technology', vendorSku: 'BRAD-GW-MOD-868', status: 'ACTIVE', releaseDate: '2024-03-15', eolDate: '2029-12-31' }
       },
       {
-        id: 'f533cc44-4f0c-9ef3-6618-1aa4ab030a66',
-        name: 'Agri Weather Station Pro',
+        id: '9933cc44-4f0c-9ef3-6618-1aa4ab030a33',
+        name: 'Agri Weather Station Pro Model',
         sku: 'ECO-WX-STATION-PRO',
         archetype_id: 'hardware.weather_station',
-        lifecycle_state: 'AVAILABLE',
         dimensions: { unitSystem: 'metric', height: 850, width: 320, depth: 320, weight: 3400, enclosureRating: 'IP66' },
         vendor_info: { vendorUri: 'vendors/b1ffcd88-8d0a-3ef7-aa5c-5aa8ac270a22', vendorName: 'EcoApparel & IoT Sensors', vendorSku: 'ECO-WX-2026-X', status: 'ACTIVE', releaseDate: '2025-01-10', eolDate: '2031-01-01' }
       }
     ];
 
-    function renderDevices(filter = 'ALL') {
-      const container = document.getElementById('deviceGrid');
+    const mockPhysicalDevices = [
+      {
+        id: 'd311aa66-6f0e-1ef5-883a-3aa6ba050a44',
+        device_type_id: '7711aa66-6f0e-1ef5-883a-3aa6ba050a11',
+        serial_number: 'SN-BRAD-PROBE-2026-0042',
+        name: 'Soil Probe #042 - Field Parcel 3',
+        lifecycle_state: 'ASSOCIATED',
+        model_name: 'Soil Moisture Probe V2 Model',
+        sku: 'BRAD-PROBE-V2-HYBRID'
+      },
+      {
+        id: 'e422bb55-5f0d-0ef4-7729-2aa5ab040a55',
+        device_type_id: '8822bb55-5f0d-0ef4-7729-2aa5ab040a22',
+        serial_number: 'SN-BRAD-GW-2026-0108',
+        name: 'Gateway Outdoor Mast #108',
+        lifecycle_state: 'AVAILABLE',
+        model_name: 'LoRaWAN Outdoor Gateway 868MHz Model',
+        sku: 'BRAD-GW-868-OUTDOOR'
+      },
+      {
+        id: 'f533cc44-4f0c-9ef3-6618-1aa4ab030a66',
+        device_type_id: '9933cc44-4f0c-9ef3-6618-1aa4ab030a33',
+        serial_number: 'SN-ECO-WX-2026-0019',
+        name: 'Agri Weather Station North Station',
+        lifecycle_state: 'AVAILABLE',
+        model_name: 'Agri Weather Station Pro Model',
+        sku: 'ECO-WX-STATION-PRO'
+      }
+    ];
+
+    function renderPhysicalDevices() {
+      const container = document.getElementById('physicalDevicesGrid');
       container.innerHTML = '';
 
-      const filtered = filter === 'ALL' ? mockDevices : mockDevices.filter(d => d.archetype_id === filter);
-
-      filtered.forEach(dev => {
+      mockPhysicalDevices.forEach(dev => {
         const card = document.createElement('div');
         card.className = 'device-card';
-        const unit = dev.dimensions.unitSystem === 'metric' ? 'mm' : 'in';
-        const weightUnit = dev.dimensions.unitSystem === 'metric' ? 'g' : 'lbs';
-
         card.innerHTML = `
           <div class="card-header">
             <div>
               <div class="device-title">${dev.name}</div>
-              <div class="device-sku">SKU: ${dev.sku}</div>
-              <div class="device-sku" style="color: #60a5fa;">UUID ID: ${dev.id}</div>
+              <div class="device-sku">Derived Model: ${dev.model_name}</div>
             </div>
             <span class="status-badge status-active">${dev.lifecycle_state}</span>
           </div>
 
-          <!-- Inline Specification Group: Dimensions Map -->
-          <div class="spec-group">
-            <div class="group-title">
-              <span>Dimensions (${dev.dimensions.unitSystem})</span>
-              <span class="ip-badge">${dev.dimensions.enclosureRating}</span>
+          <div style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+            <span class="spec-label">Serial Number (S/N)</span>
+            <span class="serial-tag">🏷️ ${dev.serial_number}</span>
+          </div>
+          <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">
+            Inherited SKU: <span style="color: #60a5fa; font-family: monospace;">${dev.sku}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderDeviceTypes() {
+      const container = document.getElementById('deviceTypesGrid');
+      container.innerHTML = '';
+
+      mockDeviceTypes.forEach(devType => {
+        const card = document.createElement('div');
+        card.className = 'device-card';
+        card.innerHTML = `
+          <div class="card-header">
+            <div>
+              <div class="device-title">${devType.name}</div>
+              <div class="device-sku">Catalog SKU: ${devType.sku}</div>
             </div>
+            <span class="ip-badge">${devType.dimensions.enclosureRating}</span>
+          </div>
+
+          <div class="spec-group">
+            <div class="group-title">Inline Specification: "dimensions"</div>
             <div class="spec-grid">
               <div class="spec-item">
                 <span class="spec-label">Height x Width</span>
-                <span class="spec-value">${dev.dimensions.height} x ${dev.dimensions.width} ${unit}</span>
+                <span class="spec-value">${devType.dimensions.height} x ${devType.dimensions.width} mm</span>
               </div>
               <div class="spec-item">
                 <span class="spec-label">Depth | Weight</span>
-                <span class="spec-value">${dev.dimensions.depth} ${unit} | ${dev.dimensions.weight} ${weightUnit}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Inline Specification Group: Vendor ObjectUri & Lifecycle -->
-          <div class="spec-group">
-            <div class="group-title">
-              <span>Inline Group: "vendor_info"</span>
-              <span class="status-badge status-active">${dev.vendor_info.status}</span>
-            </div>
-            <div class="vendor-card">
-              <div>
-                <div class="vendor-name">${dev.vendor_info.vendorName}</div>
-                <div class="uri-link">ObjectUri: ${dev.vendor_info.vendorUri}</div>
-              </div>
-            </div>
-            <div class="spec-grid" style="margin-top: 0.6rem;">
-              <div class="spec-item">
-                <span class="spec-label">Vendor SKU</span>
-                <span class="spec-value">${dev.vendor_info.vendorSku}</span>
-              </div>
-              <div class="spec-item">
-                <span class="spec-label">Lifecycle EOL</span>
-                <span class="spec-value">${dev.vendor_info.eolDate}</span>
+                <span class="spec-value">${devType.dimensions.depth} mm | ${devType.dimensions.weight} g</span>
               </div>
             </div>
           </div>
@@ -376,13 +390,8 @@
       });
     }
 
-    function filterDevices(archetype) {
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      renderDevices(archetype);
-    }
-
-    renderDevices();
+    renderPhysicalDevices();
+    renderDeviceTypes();
   </script>
 </body>
 </html>

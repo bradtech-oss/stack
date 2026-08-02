@@ -20,14 +20,22 @@ export interface DeviceVendorInfoMap {
   eolDate?: string
 }
 
-export interface DeviceRow {
+export interface DeviceTypeRow {
   id: string
   name: string
-  sku?: string
+  sku: string
   archetype_id: string
-  lifecycle_state: 'AVAILABLE' | 'ASSOCIATED' | 'MAINTENANCE' | 'RETIRED' | string
   dimensions: DeviceDimensionsMap
   vendor_info: DeviceVendorInfoMap
+  created_at?: string
+}
+
+export interface DeviceRow {
+  id: string
+  device_type_id: string
+  serial_number: string
+  name: string
+  lifecycle_state: 'AVAILABLE' | 'ASSOCIATED' | 'MAINTENANCE' | 'RETIRED' | string
   created_at?: string
 }
 

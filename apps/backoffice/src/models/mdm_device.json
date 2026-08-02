@@ -1,0 +1,9 @@
+{
+  "archetypeId": "hardware.device",
+  "name": "IoT Physical Device / Hardware System",
+  "nature": "physical",
+  "collection": "devices",
+  "typeCollection": "device_types",
+  "requiredProperties": ["dimensions", "vendor_info"],
+  "optionalProperties": ["powerCapabilities", "commCapabilities"]
+}
