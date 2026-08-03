@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BradTech Backoffice - Quatrain MDM Device Types & Physical Inventory Visualizer</title>
+  <title>BradTech Backoffice — Quatrain MDM Schema & Device Models CRUD Visualizer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #0b0f19;
-      --card-bg: rgba(22, 31, 49, 0.75);
-      --card-border: rgba(255, 255, 255, 0.1);
+      --bg-dark: #090d16;
+      --card-bg: rgba(20, 27, 44, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
       --accent-green: #10b981;
       --accent-blue: #3b82f6;
       --accent-purple: #8b5cf6;
       --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
       --text-main: #f3f4f6;
       --text-muted: #9ca3af;
       --glass-blur: blur(16px);
@@ -29,7 +30,7 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at 15% 15%, #1e1b4b 0%, var(--bg-dark) 50%, #030712 100%);
+      background: radial-gradient(circle at 15% 15%, #1e1b4b 0%, var(--bg-dark) 60%, #030712 100%);
       color: var(--text-main);
       min-height: 100vh;
       padding: 2rem;
@@ -51,8 +52,8 @@
     }
 
     .brand-logo {
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
       border-radius: 12px;
       display: flex;
@@ -60,7 +61,7 @@
       justify-content: center;
       font-family: 'Outfit', sans-serif;
       font-weight: 700;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       color: #fff;
       box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
     }
@@ -79,14 +80,49 @@
       color: var(--text-muted);
     }
 
-    .badge-json {
-      background: rgba(139, 92, 246, 0.2);
-      border: 1px solid rgba(139, 92, 246, 0.4);
-      color: #c4b5fd;
-      padding: 0.4rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 500;
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.3rem;
+      border-radius: 12px;
+      width: fit-content;
+      border: 1px solid var(--card-border);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--accent-blue);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
     }
 
     .section-title {
@@ -94,10 +130,41 @@
       font-size: 1.3rem;
       font-weight: 600;
       color: #fff;
-      margin-bottom: 1rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+      transition: transform 0.15s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+      box-shadow: none;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, var(--accent-red), #dc2626);
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
     }
 
     .device-grid {
@@ -115,11 +182,41 @@
       padding: 1.5rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       transition: transform 0.2s ease, border-color 0.2s ease;
+      position: relative;
     }
 
     .device-card:hover {
       transform: translateY(-4px);
-      border-color: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .icon-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .icon-btn-danger:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
     }
 
     .card-header {
@@ -160,7 +257,6 @@
       font-size: 0.75rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .status-active {
@@ -170,20 +266,20 @@
     }
 
     .spec-group {
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.25);
       border-radius: 10px;
-      padding: 1rem;
-      margin-top: 1rem;
+      padding: 0.9rem;
+      margin-top: 0.9rem;
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .group-title {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
       text-transform: uppercase;
       color: var(--text-muted);
-      letter-spacing: 1px;
-      margin-bottom: 0.75rem;
+      letter-spacing: 0.8px;
+      margin-bottom: 0.6rem;
       display: flex;
       justify-content: space-between;
     }
@@ -202,7 +298,7 @@
 
     .spec-label {
       color: var(--text-muted);
-      font-size: 0.75rem;
+      font-size: 0.73rem;
     }
 
     .spec-value {
@@ -211,7 +307,7 @@
     }
 
     .net-tag {
-      font-family: monospace;
+      font-family: 'Fira Code', monospace;
       font-size: 0.75rem;
       padding: 0.15rem 0.5rem;
       border-radius: 6px;
@@ -221,7 +317,7 @@
     }
 
     .power-badge {
-      font-family: monospace;
+      font-family: 'Fira Code', monospace;
       font-size: 0.75rem;
       padding: 0.15rem 0.5rem;
       border-radius: 6px;
@@ -239,6 +335,106 @@
       font-size: 0.75rem;
       font-weight: 600;
     }
+
+    .json-box {
+      background: #0d1117;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.2rem;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.82rem;
+      color: #7ee787;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    /* Modal Overlay & Forms */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #131b2e;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+      font-weight: 500;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.6rem 0.9rem;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.88rem;
+    }
+
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--card-border);
+    }
   </style>
 </head>
 <body>
@@ -248,114 +444,286 @@
       <div class="brand-logo">B</div>
       <div>
         <h1>BradTech Backoffice — Quatrain MDM</h1>
-        <div class="subtitle">Specification Scopes: Type-Level (dimensions, vendor, electrical) vs Unit-Level (network, powerSource, serial_number)</div>
+        <div class="subtitle">Interactive CRUD Visualizer: JSON Schemas & PostgreSQL Device Models</div>
       </div>
     </div>
-    <div class="badge-json">📜 Archetype Spec: device.json</div>
   </header>
 
-  <div class="section-title">📱 Physical Inventory Devices (`devices` Table — Unit-Level Specs: `network` Map with `powerSource` & `serial_number`)</div>
-  <div class="device-grid" id="physicalDevicesGrid"></div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('units')">📱 Inventory Units (`devices`)</button>
+    <button class="tab-btn" onclick="switchTab('models')">📐 Catalog Models (`device_types`)</button>
+    <button class="tab-btn" onclick="switchTab('schemas')">📜 JSON Schemas Inspector</button>
+  </div>
 
-  <div class="section-title">📐 Catalog Device Models (`device_types` Table — Type-Level Specs: `dimensions`, `vendor`, `electrical`)</div>
-  <div class="device-grid" id="deviceTypesGrid"></div>
+  <!-- TAB 1: Physical Inventory Units -->
+  <div id="tab-units" class="tab-content active">
+    <div class="action-bar">
+      <div class="section-title">📱 Physical Devices (`devices` Table — Unit-Level Specs: `network` Map)</div>
+      <button class="btn" onclick="openDeviceModal()">➕ Add Physical Device Unit</button>
+    </div>
+    <div class="device-grid" id="physicalDevicesGrid"></div>
+  </div>
+
+  <!-- TAB 2: Catalog Device Models -->
+  <div id="tab-models" class="tab-content">
+    <div class="action-bar">
+      <div class="section-title">📐 Catalog Models (`device_types` Table — Type-Level Specs)</div>
+      <button class="btn" onclick="openDeviceTypeModal()">➕ Add Catalog Device Model</button>
+    </div>
+    <div class="device-grid" id="deviceTypesGrid"></div>
+  </div>
+
+  <!-- TAB 3: Schemas Inspector -->
+  <div id="tab-schemas" class="tab-content">
+    <div class="section-title" style="margin-bottom: 1rem;">📜 Quatrain MDM JSON Schema Inspector</div>
+    <div style="margin-bottom: 1rem;">
+      <button class="tab-btn active" id="schema-btn-archetype" onclick="viewSchema('archetype')">device.json (Archetype)</button>
+      <button class="tab-btn" id="schema-btn-dimensions" onclick="viewSchema('dimensions')">groups/dimensions</button>
+      <button class="tab-btn" id="schema-btn-vendor" onclick="viewSchema('vendor')">groups/vendor</button>
+      <button class="tab-btn" id="schema-btn-electrical" onclick="viewSchema('electrical')">groups/electrical</button>
+      <button class="tab-btn" id="schema-btn-network" onclick="viewSchema('network')">groups/network</button>
+    </div>
+    <div class="json-box" id="jsonSchemaViewer">Loading JSON Schema...</div>
+  </div>
+
+  <!-- MODAL: Device Type CRUD Form -->
+  <div class="modal-overlay" id="deviceTypeModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title" id="deviceTypeModalTitle">Add Catalog Device Model</div>
+        <button class="icon-btn" onclick="closeModal('deviceTypeModal')">✕</button>
+      </div>
+      <form id="deviceTypeForm" onsubmit="saveDeviceType(event)">
+        <input type="hidden" id="dt-id">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Model Name</label>
+            <input type="text" id="dt-name" class="form-input" placeholder="e.g. Soil Moisture Probe V3" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">SKU</label>
+            <input type="text" id="dt-sku" class="form-input" placeholder="e.g. BRAD-PROBE-V3" required>
+          </div>
+        </div>
+
+        <div style="font-weight: 600; font-size: 0.85rem; margin: 1rem 0 0.5rem 0; color: var(--accent-purple);">📐 Dimensions Spec Group</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Height (mm)</label>
+            <input type="number" id="dt-height" class="form-input" placeholder="450">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Width (mm)</label>
+            <input type="number" id="dt-width" class="form-input" placeholder="65">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">IP Rating</label>
+            <select id="dt-ip" class="form-select">
+              <option value="IP68">IP68</option>
+              <option value="IP67">IP67</option>
+              <option value="IP66">IP66</option>
+              <option value="IP65">IP65</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Weight (g)</label>
+            <input type="number" id="dt-weight" class="form-input" placeholder="480">
+          </div>
+        </div>
+
+        <div style="font-weight: 600; font-size: 0.85rem; margin: 1rem 0 0.5rem 0; color: var(--accent-amber);">⚡ Electrical Spec Group</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nominal Voltage (V)</label>
+            <input type="number" step="0.1" id="dt-voltage" class="form-input" placeholder="3.6">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Max Current (mA)</label>
+            <input type="number" id="dt-current" class="form-input" placeholder="120">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('deviceTypeModal')">Cancel</button>
+          <button type="submit" class="btn">💾 Save Model</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Physical Device CRUD Form -->
+  <div class="modal-overlay" id="deviceModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title" id="deviceModalTitle">Add Physical Inventory Device</div>
+        <button class="icon-btn" onclick="closeModal('deviceModal')">✕</button>
+      </div>
+      <form id="deviceForm" onsubmit="saveDevice(event)">
+        <input type="hidden" id="dev-id">
+        <div class="form-group">
+          <label class="form-label">Catalog Device Model</label>
+          <select id="dev-model-id" class="form-select" required></select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Serial Number</label>
+            <input type="text" id="dev-serial" class="form-input" placeholder="SN-BRAD-PROBE-2026-0099" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Unit Name</label>
+            <input type="text" id="dev-name" class="form-input" placeholder="Probe #099 - Field 4" required>
+          </div>
+        </div>
+
+        <div style="font-weight: 600; font-size: 0.85rem; margin: 1rem 0 0.5rem 0; color: var(--accent-blue);">🌐 Network & Power Unit Specs</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Deployment Power Source</label>
+            <select id="dev-powersource" class="form-select">
+              <option value="BATTERY">BATTERY</option>
+              <option value="SOLAR_BATTERY">SOLAR_BATTERY</option>
+              <option value="POE">POE</option>
+              <option value="MAINS_AC">MAINS_AC</option>
+              <option value="DC_EXTERNAL">DC_EXTERNAL</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">LoRaWAN DevEUI</label>
+            <input type="text" id="dev-deveui" class="form-input" placeholder="0018B44113AB7099">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('deviceModal')">Cancel</button>
+          <button type="submit" class="btn">💾 Save Physical Unit</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <script>
-    const mockDeviceTypes = [
-      {
-        id: '7711aa66-6f0e-1ef5-883a-3aa6ba050a11',
-        name: 'Soil Moisture Probe V2 Model',
-        sku: 'BRAD-PROBE-V2-HYBRID',
-        dimensions: { unitSystem: 'metric', height: 450, width: 65, depth: 65, weight: 480, enclosureRating: 'IP68' },
-        vendor: { vendorUri: 'vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', vendorName: 'Brad Technology', vendorSku: 'BRAD-PHY-PCB-HYBRID-01', status: 'ACTIVE' },
-        electrical: { voltageNominal: 3.6, currentMax: 120, powerActive: 432, powerSleep: 18 }
-      },
-      {
-        id: '8822bb55-5f0d-0ef4-7729-2aa5ab040a22',
-        name: 'LoRaWAN Outdoor Gateway 868MHz Model',
-        sku: 'BRAD-GW-868-OUTDOOR',
-        dimensions: { unitSystem: 'metric', height: 220, width: 180, depth: 90, weight: 1250, enclosureRating: 'IP67' },
-        vendor: { vendorUri: 'vendors/a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', vendorName: 'Brad Technology', vendorSku: 'BRAD-GW-MOD-868', status: 'ACTIVE' },
-        electrical: { voltageNominal: 48.0, currentMax: 1250, powerActive: 15000, powerSleep: 1200000 }
-      },
-      {
-        id: '9933cc44-4f0c-9ef3-6618-1aa4ab030a33',
-        name: 'Agri Weather Station Pro Model',
-        sku: 'ECO-WX-STATION-PRO',
-        dimensions: { unitSystem: 'metric', height: 850, width: 320, depth: 320, weight: 3400, enclosureRating: 'IP66' },
-        vendor: { vendorUri: 'vendors/b1ffcd88-8d0a-3ef7-aa5c-5aa8ac270a22', vendorName: 'EcoApparel & IoT Sensors', vendorSku: 'ECO-WX-2026-X', status: 'ACTIVE' },
-        electrical: { voltageNominal: 6.0, currentMax: 350, powerActive: 2100, powerSleep: 45 }
-      }
-    ];
+    let deviceTypesData = [];
+    let devicesData = [];
+    let schemasData = null;
 
-    const mockPhysicalDevices = [
-      {
-        id: 'd311aa66-6f0e-1ef5-883a-3aa6ba050a44',
-        serial_number: 'SN-BRAD-PROBE-2026-0042',
-        name: 'Soil Probe #042 - Field Parcel 3',
-        lifecycle_state: 'ASSOCIATED',
-        model_name: 'Soil Moisture Probe V2 Model',
-        network: {
-          powerSource: 'BATTERY',
-          lorawan: { devEui: '0018B44113AB7042', frequencyBand: 'EU868', activationMode: 'OTAA' }
-        }
-      },
-      {
-        id: 'e422bb55-5f0d-0ef4-7729-2aa5ab040a55',
-        serial_number: 'SN-BRAD-GW-2026-0108',
-        name: 'Gateway Outdoor Mast #108',
-        lifecycle_state: 'AVAILABLE',
-        model_name: 'LoRaWAN Outdoor Gateway 868MHz Model',
-        network: {
-          powerSource: 'POE',
-          eth: { macAddress: '00:1B:44:11:3A:08', speed: 1000, poeSupported: true },
-          wifi: { macAddress: '00:1B:44:11:3A:09', supportedStandards: ['802.11ac'], frequencyBands: ['2.4', '5.0'] },
-          gsm: { imei: '354892019283018', technologies: ['4G', 'LTE-M'] }
-        }
-      },
-      {
-        id: 'f533cc44-4f0c-9ef3-6618-1aa4ab030a66',
-        serial_number: 'SN-ECO-WX-2026-0019',
-        name: 'Agri Weather Station North Station',
-        lifecycle_state: 'AVAILABLE',
-        model_name: 'Agri Weather Station Pro Model',
-        network: {
-          powerSource: 'SOLAR_BATTERY',
-          lorawan: { devEui: '0018B44113AB7019', frequencyBand: 'EU868' },
-          gsm: { imei: '354892019283019', technologies: ['NB-IoT'] }
-        }
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      event.target.classList.add('active');
+      document.getElementById(`tab-${tabName}`).classList.add('active');
+    }
+
+    async function loadData() {
+      try {
+        const [typesRes, devRes, schemaRes] = await Promise.all([
+          fetch('/api/device-types'),
+          fetch('/api/devices'),
+          fetch('/api/schemas')
+        ]);
+
+        deviceTypesData = await typesRes.json();
+        devicesData = await devRes.json();
+        schemasData = await schemaRes.json();
+
+        renderDeviceTypes();
+        renderPhysicalDevices();
+        renderModelSelectOptions();
+        viewSchema('archetype');
+      } catch (err) {
+        console.warn('API Error loading PostgreSQL data:', err);
       }
-    ];
+    }
+
+    function renderDeviceTypes() {
+      const container = document.getElementById('deviceTypesGrid');
+      container.innerHTML = '';
+
+      deviceTypesData.forEach(dt => {
+        const card = document.createElement('div');
+        card.className = 'device-card';
+        const dims = dt.dimensions || {};
+        const elec = dt.electrical || {};
+        const vend = dt.vendor || {};
+
+        card.innerHTML = `
+          <div class="card-header">
+            <div>
+              <div class="device-title">${dt.name}</div>
+              <div class="device-sku">SKU: ${dt.sku}</div>
+            </div>
+            <div class="card-actions">
+              <span class="ip-badge">${dims.enclosureRating || 'IP68'}</span>
+              <button class="icon-btn" onclick="editDeviceType('${dt.id}')">✏️</button>
+              <button class="icon-btn icon-btn-danger" onclick="deleteDeviceType('${dt.id}')">🗑️</button>
+            </div>
+          </div>
+
+          <div class="spec-group">
+            <div class="group-title">Type Spec: "dimensions"</div>
+            <div class="spec-grid">
+              <div class="spec-item">
+                <span class="spec-label">Height x Width</span>
+                <span class="spec-value">${dims.height || '-'} x ${dims.width || '-'} mm</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Weight</span>
+                <span class="spec-value">${dims.weight || '-'} g</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="spec-group">
+            <div class="group-title">Type Spec: "electrical"</div>
+            <div class="spec-grid">
+              <div class="spec-item">
+                <span class="spec-label">Voltage | Current</span>
+                <span class="spec-value">${elec.voltageNominal || '-'}V | ${elec.currentMax || '-'} mA</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Active Power</span>
+                <span class="spec-value">${elec.powerActive || '-'} mW</span>
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
 
     function renderPhysicalDevices() {
       const container = document.getElementById('physicalDevicesGrid');
       container.innerHTML = '';
 
-      mockPhysicalDevices.forEach(dev => {
+      devicesData.forEach(dev => {
         const card = document.createElement('div');
         card.className = 'device-card';
+        const net = dev.network || {};
 
-        let netHtml = `<div><span class="spec-label">Deployment Power Source:</span> <span class="power-badge">⚡ ${dev.network.powerSource || 'N/A'}</span></div>`;
-        if (dev.network.lorawan) {
-          netHtml += `<div style="margin-top:0.3rem;"><span class="spec-label">LoRaWAN DevEUI:</span> <span class="net-tag">${dev.network.lorawan.devEui} (${dev.network.lorawan.frequencyBand})</span></div>`;
+        let netHtml = `<div><span class="spec-label">Deployment Power Source:</span> <span class="power-badge">⚡ ${net.powerSource || 'N/A'}</span></div>`;
+        if (net.lorawan) {
+          netHtml += `<div style="margin-top:0.3rem;"><span class="spec-label">LoRaWAN DevEUI:</span> <span class="net-tag">${net.lorawan.devEui} (${net.lorawan.frequencyBand || 'EU868'})</span></div>`;
         }
-        if (dev.network.eth) {
-          netHtml += `<div style="margin-top:0.3rem;"><span class="spec-label">Eth MAC:</span> <span class="net-tag">${dev.network.eth.macAddress} (${dev.network.eth.speed}M)</span></div>`;
+        if (net.eth) {
+          netHtml += `<div style="margin-top:0.3rem;"><span class="spec-label">Eth MAC:</span> <span class="net-tag">${net.eth.macAddress}</span></div>`;
         }
-        if (dev.network.wifi) {
-          netHtml += `<div style="margin-top:0.3rem;"><span class="spec-label">Wi-Fi MAC:</span> <span class="net-tag">${dev.network.wifi.macAddress}</span></div>`;
-        }
-        if (dev.network.gsm) {
-          netHtml += `<div style="margin-top:0.3rem;"><span class="spec-label">Cellular IMEI:</span> <span class="net-tag">${dev.network.gsm.imei} (${dev.network.gsm.technologies.join(', ')})</span></div>`;
+        if (net.gsm) {
+          netHtml += `<div style="margin-top:0.3rem;"><span class="spec-label">Cellular IMEI:</span> <span class="net-tag">${net.gsm.imei}</span></div>`;
         }
 
         card.innerHTML = `
           <div class="card-header">
             <div>
               <div class="device-title">${dev.name}</div>
-              <div class="device-sku">Model: ${dev.model_name}</div>
+              <div class="device-sku">Model: ${dev.model_name || dev.device_type_id}</div>
             </div>
-            <span class="status-badge status-active">${dev.lifecycle_state}</span>
+            <div class="card-actions">
+              <span class="status-badge status-active">${dev.lifecycle_state}</span>
+              <button class="icon-btn" onclick="editDevice('${dev.id}')">✏️</button>
+              <button class="icon-btn icon-btn-danger" onclick="deleteDevice('${dev.id}')">🗑️</button>
+            </div>
           </div>
 
           <div style="margin-top: 0.8rem; display: flex; justify-content: space-between; align-items: center;">
@@ -372,56 +740,136 @@
       });
     }
 
-    function renderDeviceTypes() {
-      const container = document.getElementById('deviceTypesGrid');
-      container.innerHTML = '';
-
-      mockDeviceTypes.forEach(devType => {
-        const card = document.createElement('div');
-        card.className = 'device-card';
-        card.innerHTML = `
-          <div class="card-header">
-            <div>
-              <div class="device-title">${devType.name}</div>
-              <div class="device-sku">Catalog SKU: ${devType.sku}</div>
-            </div>
-            <span class="ip-badge">${devType.dimensions.enclosureRating}</span>
-          </div>
-
-          <div class="spec-group">
-            <div class="group-title">Type Spec: "dimensions" & "vendor"</div>
-            <div class="spec-grid">
-              <div class="spec-item">
-                <span class="spec-label">Dimensions (HxW)</span>
-                <span class="spec-value">${devType.dimensions.height} x ${devType.dimensions.width} mm</span>
-              </div>
-              <div class="spec-item">
-                <span class="spec-label">Vendor</span>
-                <span class="spec-value" style="color:#93c5fd;">${devType.vendor.vendorName}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="spec-group">
-            <div class="group-title">Type Spec: "electrical" Ratings</div>
-            <div class="spec-grid">
-              <div class="spec-item">
-                <span class="spec-label">Voltage | Current</span>
-                <span class="spec-value">${devType.electrical.voltageNominal}V | ${devType.electrical.currentMax} mA</span>
-              </div>
-              <div class="spec-item">
-                <span class="spec-label">Power (Active | Sleep)</span>
-                <span class="spec-value">${devType.electrical.powerActive} mW | ${devType.electrical.powerSleep} µW</span>
-              </div>
-            </div>
-          </div>
-        `;
-        container.appendChild(card);
+    function renderModelSelectOptions() {
+      const select = document.getElementById('dev-model-id');
+      select.innerHTML = '';
+      deviceTypesData.forEach(dt => {
+        const opt = document.createElement('option');
+        opt.value = dt.id;
+        opt.textContent = `${dt.name} (${dt.sku})`;
+        select.appendChild(opt);
       });
     }
 
-    renderPhysicalDevices();
-    renderDeviceTypes();
+    function viewSchema(key) {
+      if (!schemasData) return;
+      const jsonViewer = document.getElementById('jsonSchemaViewer');
+      let target = schemasData.archetype;
+      if (key !== 'archetype' && schemasData.groups[key]) {
+        target = schemasData.groups[key];
+      }
+      jsonViewer.textContent = JSON.stringify(target, null, 2);
+    }
+
+    // Modal Controls & Handlers
+    function openDeviceTypeModal(dt = null) {
+      document.getElementById('dt-id').value = dt ? dt.id : '';
+      document.getElementById('dt-name').value = dt ? dt.name : '';
+      document.getElementById('dt-sku').value = dt ? dt.sku : '';
+      document.getElementById('dt-height').value = dt && dt.dimensions ? dt.dimensions.height : '';
+      document.getElementById('dt-width').value = dt && dt.dimensions ? dt.dimensions.width : '';
+      document.getElementById('dt-ip').value = dt && dt.dimensions ? dt.dimensions.enclosureRating : 'IP68';
+      document.getElementById('dt-weight').value = dt && dt.dimensions ? dt.dimensions.weight : '';
+      document.getElementById('dt-voltage').value = dt && dt.electrical ? dt.electrical.voltageNominal : '';
+      document.getElementById('dt-current').value = dt && dt.electrical ? dt.electrical.currentMax : '';
+
+      document.getElementById('deviceTypeModalTitle').textContent = dt ? 'Edit Catalog Device Model' : 'Add Catalog Device Model';
+      document.getElementById('deviceTypeModal').classList.add('active');
+    }
+
+    function openDeviceModal(dev = null) {
+      document.getElementById('dev-id').value = dev ? dev.id : '';
+      document.getElementById('dev-serial').value = dev ? dev.serial_number : '';
+      document.getElementById('dev-name').value = dev ? dev.name : '';
+      if (dev) document.getElementById('dev-model-id').value = dev.device_type_id;
+      document.getElementById('dev-powersource').value = dev && dev.network ? dev.network.powerSource || 'BATTERY' : 'BATTERY';
+      document.getElementById('dev-deveui').value = dev && dev.network && dev.network.lorawan ? dev.network.lorawan.devEui : '';
+
+      document.getElementById('deviceModalTitle').textContent = dev ? 'Edit Physical Inventory Unit' : 'Add Physical Inventory Device';
+      document.getElementById('deviceModal').classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    async function saveDeviceType(e) {
+      e.preventDefault();
+      const id = document.getElementById('dt-id').value;
+      const payload = {
+        name: document.getElementById('dt-name').value,
+        sku: document.getElementById('dt-sku').value,
+        dimensions: {
+          unitSystem: 'metric',
+          height: parseFloat(document.getElementById('dt-height').value) || 450,
+          width: parseFloat(document.getElementById('dt-width').value) || 65,
+          enclosureRating: document.getElementById('dt-ip').value,
+          weight: parseFloat(document.getElementById('dt-weight').value) || 480
+        },
+        electrical: {
+          voltageNominal: parseFloat(document.getElementById('dt-voltage').value) || 3.6,
+          currentMax: parseFloat(document.getElementById('dt-current').value) || 120,
+          powerActive: 432
+        }
+      };
+
+      const method = id ? 'PUT' : 'POST';
+      const url = id ? `/api/device-types/${id}` : '/api/device-types';
+
+      await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      closeModal('deviceTypeModal');
+      await loadData();
+    }
+
+    async function saveDevice(e) {
+      e.preventDefault();
+      const id = document.getElementById('dev-id').value;
+      const devEui = document.getElementById('dev-deveui').value;
+
+      const payload = {
+        device_type_id: document.getElementById('dev-model-id').value,
+        serial_number: document.getElementById('dev-serial').value,
+        name: document.getElementById('dev-name').value,
+        lifecycle_state: 'AVAILABLE',
+        network: {
+          powerSource: document.getElementById('dev-powersource').value,
+          ...(devEui ? { lorawan: { devEui, frequencyBand: 'EU868', activationMode: 'OTAA' } } : {})
+        }
+      };
+
+      const method = id ? 'PUT' : 'POST';
+      const url = id ? `/api/devices/${id}` : '/api/devices';
+
+      await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      closeModal('deviceModal');
+      await loadData();
+    }
+
+    async function deleteDeviceType(id) {
+      if (confirm('Delete this catalog model?')) {
+        await fetch(`/api/device-types/${id}`, { method: 'DELETE' });
+        await loadData();
+      }
+    }
+
+    async function deleteDevice(id) {
+      if (confirm('Delete this physical inventory unit?')) {
+        await fetch(`/api/devices/${id}`, { method: 'DELETE' });
+        await loadData();
+      }
+    }
+
+    function editDeviceType(id) {
+      const dt = deviceTypesData.find(d => d.id === id);
+      if (dt) openDeviceTypeModal(dt);
+    }
+
+    function editDevice(id) {
+      const dev = devicesData.find(d => d.id === id);
+      if (dev) openDeviceModal(dev);
+    }
+
+    loadData();
   </script>
 </body>
 </html>

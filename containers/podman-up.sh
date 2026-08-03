@@ -9,12 +9,12 @@ podman network create bradtech-net 2>/dev/null || true
 # Remove old containers if running
 podman rm -f bradtech-postgres bradtech-adminer 2>/dev/null || true
 
-# Launch PostgreSQL 16
-echo "🐘 Starting PostgreSQL container (port 5432)..."
+# Launch PostgreSQL 16 on host port 54322 (to avoid host macOS PostgreSQL 5432 conflict)
+echo "🐘 Starting PostgreSQL container (host port 54322 -> container 5432)..."
 podman run -d \
   --name bradtech-postgres \
   --network bradtech-net \
-  -p 5432:5432 \
+  -p 54322:5432 \
   -e POSTGRES_DB=bradtech_db \
   -e POSTGRES_USER=brad \
   -e POSTGRES_PASSWORD=bradpass \
@@ -46,7 +46,7 @@ podman exec -i bradtech-postgres psql -U brad -d bradtech_db < packages/db/src/s
 
 echo "=========================================================="
 echo "🎉 Podman Containers Successfully Deployed!"
-echo "🐘 PostgreSQL Connection : postgres://brad:bradpass@localhost:5432/bradtech_db"
+echo "🐘 PostgreSQL Connection : postgres://brad:bradpass@localhost:54322/bradtech_db"
 echo "🌐 Adminer DB Visualizer : http://localhost:8080"
 echo "   -> System   : PostgreSQL"
 echo "   -> Server   : bradtech-postgres"

@@ -1,35 +1,93 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://bradtech.app/schemas/device.json",
+  "$id": "https://app.brad.ag/schemas/device.json",
   "archetypeId": "hardware.device",
   "name": "IoT Physical Device / Hardware System",
   "nature": "physical",
   "collection": "devices",
   "typeCollection": "device_types",
   "specGroupRefs": [
-    { "key": "dimensions", "scope": "type", "$ref": "@quatrain/mdm/groups/dimensions" },
-    { "key": "vendor", "scope": "type", "$ref": "@quatrain/mdm/groups/vendor" },
-    { "key": "electrical", "scope": "type", "$ref": "@quatrain/mdm/groups/electrical" },
-    { "key": "network", "scope": "unit", "$ref": "@quatrain/mdm/groups/network" }
+    {
+      "key": "dimensions",
+      "scope": "type",
+      "$ref": "@quatrain/mdm/groups/dimensions"
+    },
+    {
+      "key": "vendor",
+      "scope": "type",
+      "$ref": "@quatrain/mdm/groups/vendor"
+    },
+    {
+      "key": "electrical",
+      "scope": "type",
+      "$ref": "@quatrain/mdm/groups/electrical"
+    },
+    {
+      "key": "network",
+      "scope": "unit",
+      "$ref": "@quatrain/mdm/groups/network"
+    }
   ],
-  "requiredProperties": ["dimensions", "vendor", "electrical", "network"],
+  "requiredProperties": [
+    "dimensions",
+    "vendor",
+    "electrical",
+    "network"
+  ],
   "jsonSchema": {
     "type": "object",
-    "required": ["dimensions", "vendor", "electrical", "network"],
+    "required": [
+      "dimensions",
+      "vendor",
+      "electrical",
+      "network"
+    ],
     "properties": {
       "dimensions": {
         "$ref": "@quatrain/mdm/groups/dimensions",
         "scope": "type",
         "type": "object",
         "title": "Physical Dimensions & Enclosure Group (Type-Level)",
-        "required": ["unitSystem", "height", "width"],
+        "required": [
+          "unitSystem",
+          "height",
+          "width"
+        ],
         "properties": {
-          "unitSystem": { "type": "string", "enum": ["metric", "imperial"], "default": "metric" },
-          "height": { "type": "number", "minimum": 0 },
-          "width": { "type": "number", "minimum": 0 },
-          "depth": { "type": "number", "minimum": 0 },
-          "weight": { "type": "number", "minimum": 0 },
-          "enclosureRating": { "type": "string", "enum": ["IP65", "IP66", "IP67", "IP68", "NONE"] }
+          "unitSystem": {
+            "type": "string",
+            "enum": [
+              "metric",
+              "imperial"
+            ],
+            "default": "metric"
+          },
+          "height": {
+            "type": "number",
+            "minimum": 0
+          },
+          "width": {
+            "type": "number",
+            "minimum": 0
+          },
+          "depth": {
+            "type": "number",
+            "minimum": 0
+          },
+          "weight": {
+            "type": "number",
+            "minimum": 0
+          },
+          "enclosureRating": {
+            "type": "string",
+            "enum": [
+              "IP65",
+              "IP66",
+              "IP67",
+              "IP68",
+              "NONE"
+            ]
+          }
         }
       },
       "vendor": {
@@ -37,13 +95,34 @@
         "scope": "type",
         "type": "object",
         "title": "Vendor Relationship & Product Lifecycle Group (Type-Level)",
-        "required": ["status"],
+        "required": [
+          "status"
+        ],
         "properties": {
-          "vendorUri": { "type": "string", "pattern": "^vendors/[a-zA-Z0-9_-]+$" },
-          "vendorSku": { "type": "string" },
-          "status": { "type": "string", "enum": ["ACTIVE", "EOL", "DISCONTINUED"], "default": "ACTIVE" },
-          "releaseDate": { "type": "string", "format": "date" },
-          "eolDate": { "type": "string", "format": "date" }
+          "vendorUri": {
+            "type": "string",
+            "pattern": "^vendors/[a-zA-Z0-9_-]+$"
+          },
+          "vendorSku": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "EOL",
+              "DISCONTINUED"
+            ],
+            "default": "ACTIVE"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "eolDate": {
+            "type": "string",
+            "format": "date"
+          }
         }
       },
       "electrical": {
@@ -53,12 +132,30 @@
         "title": "Electrical Hardware Ratings Specification Group (Type-Level)",
         "description": "Static hardware operating voltage ratings, peak amperage, and active/sleep power consumption",
         "properties": {
-          "voltageNominal": { "type": "number", "minimum": 0 },
-          "voltageMin": { "type": "number", "minimum": 0 },
-          "voltageMax": { "type": "number", "minimum": 0 },
-          "currentMax": { "type": "number", "minimum": 0 },
-          "powerActive": { "type": "number", "minimum": 0 },
-          "powerSleep": { "type": "number", "minimum": 0 }
+          "voltageNominal": {
+            "type": "number",
+            "minimum": 0
+          },
+          "voltageMin": {
+            "type": "number",
+            "minimum": 0
+          },
+          "voltageMax": {
+            "type": "number",
+            "minimum": 0
+          },
+          "currentMax": {
+            "type": "number",
+            "minimum": 0
+          },
+          "powerActive": {
+            "type": "number",
+            "minimum": 0
+          },
+          "powerSleep": {
+            "type": "number",
+            "minimum": 0
+          }
         }
       },
       "network": {
@@ -68,11 +165,28 @@
         "title": "Network Connectivity Master Group (Unit-Level)",
         "description": "Unique physical hardware network interfaces (MAC addresses, DevEUI, IMEI) and deployment power source",
         "properties": {
-          "powerSource": { "type": "string", "enum": ["BATTERY", "SOLAR_BATTERY", "MAINS_AC", "POE", "DC_EXTERNAL"] },
-          "eth": { "$ref": "@quatrain/mdm/groups/network/eth" },
-          "wifi": { "$ref": "@quatrain/mdm/groups/network/wifi" },
-          "lorawan": { "$ref": "@quatrain/mdm/groups/network/lorawan" },
-          "gsm": { "$ref": "@quatrain/mdm/groups/network/gsm" }
+          "powerSource": {
+            "type": "string",
+            "enum": [
+              "BATTERY",
+              "SOLAR_BATTERY",
+              "MAINS_AC",
+              "POE",
+              "DC_EXTERNAL"
+            ]
+          },
+          "eth": {
+            "$ref": "@quatrain/mdm/groups/network/eth"
+          },
+          "wifi": {
+            "$ref": "@quatrain/mdm/groups/network/wifi"
+          },
+          "lorawan": {
+            "$ref": "@quatrain/mdm/groups/network/lorawan"
+          },
+          "gsm": {
+            "$ref": "@quatrain/mdm/groups/network/gsm"
+          }
         }
       }
     }
