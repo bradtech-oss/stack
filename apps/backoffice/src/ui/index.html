@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BradTech Backoffice — Quatrain MDM Schema & Device Models CRUD Visualizer</title>
+  <title>BradTech Backoffice — Quatrain MDM Vendors & Device Models CRUD Visualizer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -162,11 +162,6 @@
       box-shadow: none;
     }
 
-    .btn-danger {
-      background: linear-gradient(135deg, var(--accent-red), #dc2626);
-      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-    }
-
     .device-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
@@ -251,6 +246,20 @@
       font-weight: 600;
     }
 
+    .vendor-badge {
+      font-family: sans-serif;
+      background: rgba(139, 92, 246, 0.2);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      color: #c4b5fd;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
     .status-badge {
       padding: 0.25rem 0.6rem;
       border-radius: 12px;
@@ -263,6 +272,18 @@
       background: rgba(16, 185, 129, 0.2);
       color: #34d399;
       border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .lock-badge {
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fbbf24;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.73rem;
+      font-weight: 600;
+      margin-top: 0.4rem;
+      display: inline-block;
     }
 
     .spec-group {
@@ -416,9 +437,11 @@
       font-size: 0.88rem;
     }
 
-    .form-input:focus, .form-select:focus {
-      outline: none;
-      border-color: var(--accent-blue);
+    .form-input:disabled, .form-select:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      border-color: rgba(245, 158, 11, 0.5);
+      background: rgba(245, 158, 11, 0.1);
     }
 
     .form-row {
@@ -444,14 +467,15 @@
       <div class="brand-logo">B</div>
       <div>
         <h1>BradTech Backoffice — Quatrain MDM</h1>
-        <div class="subtitle">Interactive CRUD Visualizer: JSON Schemas & PostgreSQL Device Models</div>
+        <div class="subtitle">Interactive CRUD Visualizer: Vendors, Catalog Models & Physical Devices</div>
       </div>
     </div>
   </header>
 
   <div class="nav-tabs">
-    <button class="tab-btn active" onclick="switchTab('units')">📱 Inventory Units (`devices`)</button>
+    <button class="tab-btn active" onclick="switchTab('units')">📱 Physical Inventory Units (`devices`)</button>
     <button class="tab-btn" onclick="switchTab('models')">📐 Catalog Models (`device_types`)</button>
+    <button class="tab-btn" onclick="switchTab('vendors')">🏭 Vendors / Suppliers (`vendors`)</button>
     <button class="tab-btn" onclick="switchTab('schemas')">📜 JSON Schemas Inspector</button>
   </div>
 
@@ -473,7 +497,16 @@
     <div class="device-grid" id="deviceTypesGrid"></div>
   </div>
 
-  <!-- TAB 3: Schemas Inspector -->
+  <!-- TAB 3: Vendors Catalog -->
+  <div id="tab-vendors" class="tab-content">
+    <div class="action-bar">
+      <div class="section-title">🏭 Hardware Vendors & Suppliers (`vendors` Table)</div>
+      <button class="btn" onclick="openVendorModal()">➕ Add New Vendor</button>
+    </div>
+    <div class="device-grid" id="vendorsGrid"></div>
+  </div>
+
+  <!-- TAB 4: Schemas Inspector -->
   <div id="tab-schemas" class="tab-content">
     <div class="section-title" style="margin-bottom: 1rem;">📜 Quatrain MDM JSON Schema Inspector</div>
     <div style="margin-bottom: 1rem;">
@@ -484,6 +517,50 @@
       <button class="tab-btn" id="schema-btn-network" onclick="viewSchema('network')">groups/network</button>
     </div>
     <div class="json-box" id="jsonSchemaViewer">Loading JSON Schema...</div>
+  </div>
+
+  <!-- MODAL: Vendor CRUD Form -->
+  <div class="modal-overlay" id="vendorModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title" id="vendorModalTitle">Add New Vendor</div>
+        <button class="icon-btn" onclick="closeModal('vendorModal')">✕</button>
+      </div>
+      <form id="vendorForm" onsubmit="saveVendor(event)">
+        <input type="hidden" id="v-id">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Vendor Name</label>
+            <input type="text" id="v-name" class="form-input" placeholder="e.g. Brad Technology" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Vendor Code / SKU</label>
+            <input type="text" id="v-sku" class="form-input" placeholder="e.g. BRAD-HQ" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Official Website URL</label>
+          <input type="url" id="v-url" class="form-input" placeholder="https://brad.technology">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Country Code</label>
+            <input type="text" id="v-country" class="form-input" placeholder="FR">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Support Email</label>
+            <input type="email" id="v-email" class="form-input" placeholder="support@brad.technology">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('vendorModal')">Cancel</button>
+          <button type="submit" class="btn">💾 Save Vendor</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- MODAL: Device Type CRUD Form -->
@@ -504,6 +581,11 @@
             <label class="form-label">SKU</label>
             <input type="text" id="dt-sku" class="form-input" placeholder="e.g. BRAD-PROBE-V3" required>
           </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">🏭 Hardware Vendor</label>
+          <select id="dt-vendor-id" class="form-select" required></select>
         </div>
 
         <div style="font-weight: 600; font-size: 0.85rem; margin: 1rem 0 0.5rem 0; color: var(--accent-purple);">📐 Dimensions Spec Group</div>
@@ -553,7 +635,7 @@
     </div>
   </div>
 
-  <!-- MODAL: Physical Device CRUD Form -->
+  <!-- MODAL: Physical Device CRUD Form (IMMUTABLE MODEL TYPE ON EDIT) -->
   <div class="modal-overlay" id="deviceModal">
     <div class="modal-card">
       <div class="modal-header">
@@ -562,10 +644,13 @@
       </div>
       <form id="deviceForm" onsubmit="saveDevice(event)">
         <input type="hidden" id="dev-id">
+        
         <div class="form-group">
           <label class="form-label">Catalog Device Model</label>
           <select id="dev-model-id" class="form-select" required></select>
+          <div id="dev-model-lock-badge" class="lock-badge" style="display: none;">🔒 Model Type Immutable (Cannot be changed after creation)</div>
         </div>
+
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Serial Number</label>
@@ -604,6 +689,7 @@
   </div>
 
   <script>
+    let vendorsData = [];
     let deviceTypesData = [];
     let devicesData = [];
     let schemasData = null;
@@ -618,23 +704,70 @@
 
     async function loadData() {
       try {
-        const [typesRes, devRes, schemaRes] = await Promise.all([
+        const [vendorsRes, typesRes, devRes, schemaRes] = await Promise.all([
+          fetch('/api/vendors'),
           fetch('/api/device-types'),
           fetch('/api/devices'),
           fetch('/api/schemas')
         ]);
 
+        vendorsData = await vendorsRes.json();
         deviceTypesData = await typesRes.json();
         devicesData = await devRes.json();
         schemasData = await schemaRes.json();
 
+        renderVendors();
         renderDeviceTypes();
         renderPhysicalDevices();
+        renderVendorSelectOptions();
         renderModelSelectOptions();
         viewSchema('archetype');
       } catch (err) {
         console.warn('API Error loading PostgreSQL data:', err);
       }
+    }
+
+    function renderVendors() {
+      const container = document.getElementById('vendorsGrid');
+      container.innerHTML = '';
+
+      vendorsData.forEach(v => {
+        const card = document.createElement('div');
+        card.className = 'device-card';
+        const details = v.details || {};
+
+        card.innerHTML = `
+          <div class="card-header">
+            <div>
+              <div class="device-title">${v.name}</div>
+              <div class="device-sku">Code SKU: ${v.sku || '-'}</div>
+            </div>
+            <div class="card-actions">
+              <button class="icon-btn" onclick="editVendor('${v.id}')">✏️</button>
+              <button class="icon-btn icon-btn-danger" onclick="deleteVendor('${v.id}')">🗑️</button>
+            </div>
+          </div>
+
+          <div style="margin-top: 0.5rem; font-size: 0.85rem;">
+            <a href="${v.url || '#'}" target="_blank" style="color: #93c5fd; text-decoration: none;">🌐 ${v.url || 'No URL'}</a>
+          </div>
+
+          <div class="spec-group">
+            <div class="group-title">Vendor Contact & Support</div>
+            <div class="spec-grid">
+              <div class="spec-item">
+                <span class="spec-label">Country</span>
+                <span class="spec-value">🏳️ ${details.country || 'N/A'}</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Support Email</span>
+                <span class="spec-value" style="color:#c4b5fd;">${details.supportEmail || 'N/A'}</span>
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
     }
 
     function renderDeviceTypes() {
@@ -652,13 +785,17 @@
           <div class="card-header">
             <div>
               <div class="device-title">${dt.name}</div>
-              <div class="device-sku">SKU: ${dt.sku}</div>
+              <div class="device-sku">Catalog SKU: ${dt.sku}</div>
             </div>
             <div class="card-actions">
               <span class="ip-badge">${dims.enclosureRating || 'IP68'}</span>
               <button class="icon-btn" onclick="editDeviceType('${dt.id}')">✏️</button>
               <button class="icon-btn icon-btn-danger" onclick="deleteDeviceType('${dt.id}')">🗑️</button>
             </div>
+          </div>
+
+          <div style="margin-bottom: 0.5rem;">
+            <span class="vendor-badge">🏭 ${dt.vendor_name || 'Brad Technology'}</span>
           </div>
 
           <div class="spec-group">
@@ -740,6 +877,17 @@
       });
     }
 
+    function renderVendorSelectOptions() {
+      const select = document.getElementById('dt-vendor-id');
+      select.innerHTML = '';
+      vendorsData.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.id;
+        opt.textContent = `${v.name} (${v.sku || 'VENDOR'})`;
+        select.appendChild(opt);
+      });
+    }
+
     function renderModelSelectOptions() {
       const select = document.getElementById('dev-model-id');
       select.innerHTML = '';
@@ -762,10 +910,26 @@
     }
 
     // Modal Controls & Handlers
+    function openVendorModal(v = null) {
+      document.getElementById('v-id').value = v ? v.id : '';
+      document.getElementById('v-name').value = v ? v.name : '';
+      document.getElementById('v-sku').value = v ? v.sku : '';
+      document.getElementById('v-url').value = v ? v.url : '';
+      document.getElementById('v-country').value = v && v.details ? v.details.country : 'FR';
+      document.getElementById('v-email').value = v && v.details ? v.details.supportEmail : '';
+
+      document.getElementById('vendorModalTitle').textContent = v ? 'Edit Vendor' : 'Add New Vendor';
+      document.getElementById('vendorModal').classList.add('active');
+    }
+
     function openDeviceTypeModal(dt = null) {
       document.getElementById('dt-id').value = dt ? dt.id : '';
       document.getElementById('dt-name').value = dt ? dt.name : '';
       document.getElementById('dt-sku').value = dt ? dt.sku : '';
+      if (dt && dt.vendor && dt.vendor.vendorUri) {
+        const vId = dt.vendor.vendorUri.replace('vendors/', '');
+        document.getElementById('dt-vendor-id').value = vId;
+      }
       document.getElementById('dt-height').value = dt && dt.dimensions ? dt.dimensions.height : '';
       document.getElementById('dt-width').value = dt && dt.dimensions ? dt.dimensions.width : '';
       document.getElementById('dt-ip').value = dt && dt.dimensions ? dt.dimensions.enclosureRating : 'IP68';
@@ -778,14 +942,28 @@
     }
 
     function openDeviceModal(dev = null) {
+      const modelSelect = document.getElementById('dev-model-id');
+      const lockBadge = document.getElementById('dev-model-lock-badge');
+
       document.getElementById('dev-id').value = dev ? dev.id : '';
       document.getElementById('dev-serial').value = dev ? dev.serial_number : '';
       document.getElementById('dev-name').value = dev ? dev.name : '';
-      if (dev) document.getElementById('dev-model-id').value = dev.device_type_id;
+      
+      if (dev) {
+        // EDIT MODE: ENFORCE IMMUTABILITY OF DEVICE_TYPE_ID!
+        modelSelect.value = dev.device_type_id;
+        modelSelect.disabled = true;
+        lockBadge.style.display = 'inline-block';
+      } else {
+        // CREATE MODE: ALLOW SELECTING DEVICE MODEL
+        modelSelect.disabled = false;
+        lockBadge.style.display = 'none';
+      }
+
       document.getElementById('dev-powersource').value = dev && dev.network ? dev.network.powerSource || 'BATTERY' : 'BATTERY';
       document.getElementById('dev-deveui').value = dev && dev.network && dev.network.lorawan ? dev.network.lorawan.devEui : '';
 
-      document.getElementById('deviceModalTitle').textContent = dev ? 'Edit Physical Inventory Unit' : 'Add Physical Inventory Device';
+      document.getElementById('deviceModalTitle').textContent = dev ? 'Edit Physical Inventory Device' : 'Add Physical Inventory Device';
       document.getElementById('deviceModal').classList.add('active');
     }
 
@@ -793,9 +971,32 @@
       document.getElementById(id).classList.remove('active');
     }
 
+    async function saveVendor(e) {
+      e.preventDefault();
+      const id = document.getElementById('v-id').value;
+      const payload = {
+        name: document.getElementById('v-name').value,
+        sku: document.getElementById('v-sku').value,
+        url: document.getElementById('v-url').value,
+        details: {
+          country: document.getElementById('v-country').value,
+          supportEmail: document.getElementById('v-email').value
+        }
+      };
+
+      const method = id ? 'PUT' : 'POST';
+      const url = id ? `/api/vendors/${id}` : '/api/vendors';
+
+      await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      closeModal('vendorModal');
+      await loadData();
+    }
+
     async function saveDeviceType(e) {
       e.preventDefault();
       const id = document.getElementById('dt-id').value;
+      const vendorId = document.getElementById('dt-vendor-id').value;
+
       const payload = {
         name: document.getElementById('dt-name').value,
         sku: document.getElementById('dt-sku').value,
@@ -805,6 +1006,11 @@
           width: parseFloat(document.getElementById('dt-width').value) || 65,
           enclosureRating: document.getElementById('dt-ip').value,
           weight: parseFloat(document.getElementById('dt-weight').value) || 480
+        },
+        vendor: {
+          vendorUri: `vendors/${vendorId}`,
+          status: 'ACTIVE',
+          releaseDate: '2025-01-01'
         },
         electrical: {
           voltageNominal: parseFloat(document.getElementById('dt-voltage').value) || 3.6,
@@ -845,6 +1051,13 @@
       await loadData();
     }
 
+    async function deleteVendor(id) {
+      if (confirm('Delete this supplier vendor?')) {
+        await fetch(`/api/vendors/${id}`, { method: 'DELETE' });
+        await loadData();
+      }
+    }
+
     async function deleteDeviceType(id) {
       if (confirm('Delete this catalog model?')) {
         await fetch(`/api/device-types/${id}`, { method: 'DELETE' });
@@ -857,6 +1070,11 @@
         await fetch(`/api/devices/${id}`, { method: 'DELETE' });
         await loadData();
       }
+    }
+
+    function editVendor(id) {
+      const v = vendorsData.find(item => item.id === id);
+      if (v) openVendorModal(v);
     }
 
     function editDeviceType(id) {
