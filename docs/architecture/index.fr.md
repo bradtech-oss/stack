@@ -39,10 +39,11 @@ graph TD
 7. 📦 **[Spécifications `@quatrain/mdm` & `@quatrain/state-machine`](QUATRAIN_MDM_AND_STATE_MACHINE.fr.md)** (`QUATRAIN_MDM_AND_STATE_MACHINE.fr.md`)
 
 ### 3. Données, Synchronisation & Intelligence Artificielle
-8. 🗄️ **[Schéma Supabase On-Premise PostgreSQL & RLS](SUPABASE_ONPREM_SCHEMA.fr.md)** (`SUPABASE_ONPREM_SCHEMA.fr.md`)
-9. 🤖 **[Cœur IA "Hey Brad" (Moteur Modaka & Repositories OKF)](HEY_BRAD_AI_CORE.fr.md)** (`HEY_BRAD_AI_CORE.fr.md`)
-10. 🔄 **[Moulinettes ETL, Synchronisation Bi-Système & Remplacement à Chaud (*Hot Swap*)](DATA_SYNC_AND_HOT_SWAP.fr.md)** (`DATA_SYNC_AND_HOT_SWAP.fr.md`)
+8. 🗄️ **[Schéma PostgreSQL Supabase On-Premise & RLS](SUPABASE_ONPREM_SCHEMA.fr.md)** (`SUPABASE_ONPREM_SCHEMA.fr.md`)
+9. 🔋 **[TTL Batterie Dynamique & Système d'Alertes Événementiel](BATTERY_TTL_AND_ALERT_SYSTEM.fr.md)** (`BATTERY_TTL_AND_ALERT_SYSTEM.fr.md`)
+10. 🤖 **[Moteur IA "Hey Brad" (Répertoires Modaka & OKF)](HEY_BRAD_AI_CORE.fr.md)** (`HEY_BRAD_AI_CORE.fr.md`)
+11. 🔄 **[Pipelines de Migration ETL, Synchronisation & Bascule](DATA_SYNC_AND_HOT_SWAP.fr.md)** (`DATA_SYNC_AND_HOT_SWAP.fr.md`)
 
-### 4. Infrastructures, Souveraineté & Déploiement Cloud/Edge
-11. 🛰️ **[Infrastructure LoRaWAN Souveraine & Outil CLI de Provisioning](SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.fr.md)** (`SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.fr.md`)
-12. 🐳 **[Recettes IaC : Terraform, Helm, ArgoCD & Podman](IAC_TERRAFORM_HELM_ARGOCD_PODMAN.fr.md)** (`IAC_TERRAFORM_HELM_ARGOCD_PODMAN.fr.md`)
+### 4. Infrastructure, Souveraineté des Données & Déploiements Cloud/Edge
+12. 🛰️ **[Pile LoRaWAN Souveraine & CLI de Déploiement](SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.fr.md)** (`SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.fr.md`)
+13. 🐳 **[Recettes IaC : Terraform, Helm, ArgoCD & Podman](IAC_TERRAFORM_HELM_ARGOCD_PODMAN.fr.md)** (`IAC_TERRAFORM_HELM_ARGOCD_PODMAN.fr.md`)

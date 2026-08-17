@@ -40,9 +40,10 @@ graph TD
 
 ### 3. Data, Synchronization & Artificial Intelligence
 8. 🗄️ **[Supabase On-Premise PostgreSQL Schema & RLS](SUPABASE_ONPREM_SCHEMA.md)** (`SUPABASE_ONPREM_SCHEMA.md`)
-9. 🤖 **["Hey Brad" AI Core Engine (Modaka & OKF Repositories)](HEY_BRAD_AI_CORE.md)** (`HEY_BRAD_AI_CORE.md`)
-10. 🔄 **[ETL Migration Pipelines, Dual-System Sync & Hot Swap](DATA_SYNC_AND_HOT_SWAP.md)** (`DATA_SYNC_AND_HOT_SWAP.md`)
+9. 🔋 **[Dynamic Battery TTL & Event-Driven Alert System](BATTERY_TTL_AND_ALERT_SYSTEM.md)** (`BATTERY_TTL_AND_ALERT_SYSTEM.md`)
+10. 🤖 **["Hey Brad" AI Core Engine (Modaka & OKF Repositories)](HEY_BRAD_AI_CORE.md)** (`HEY_BRAD_AI_CORE.md`)
+11. 🔄 **[ETL Migration Pipelines, Dual-System Sync & Hot Swap](DATA_SYNC_AND_HOT_SWAP.md)** (`DATA_SYNC_AND_HOT_SWAP.md`)
 
 ### 4. Infrastructure, Data Sovereignty & Cloud/Edge Deployments
-11. 🛰️ **[Sovereign LoRaWAN Stack & Setup CLI Generator](SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.md)** (`SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.md`)
-12. 🐳 **[IaC Recipes: Terraform, Helm, ArgoCD & Podman](IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md)** (`IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md`)
+12. 🛰️ **[Sovereign LoRaWAN Stack & Setup CLI Generator](SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.md)** (`SOVEREIGN_LORAWAN_AND_DEPLOYMENT_CLI.md`)
+13. 🐳 **[IaC Recipes: Terraform, Helm, ArgoCD & Podman](IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md)** (`IAC_TERRAFORM_HELM_ARGOCD_PODMAN.md`)
