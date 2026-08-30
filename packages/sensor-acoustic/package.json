@@ -1,0 +1,60 @@
+{
+  "name": "@bradtech/sensor-acoustic",
+  "version": "1.0.0",
+  "description": "Digital I2S acoustic sensing, dBA sound pressure level (SPL), and acoustic rain/wind spectrum converters",
+  "author": "Olivier Lépine <olivier@lepine.fr>",
+  "license": "AGPL-3.0-or-later",
+  "copyright": "Copyright (C) 2026 Olivier Lépine",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bradtech-oss/stack.git",
+    "directory": "packages/sensor-acoustic"
+  },
+  "keywords": [
+    "iot",
+    "acoustic",
+    "spl",
+    "dba",
+    "i2s-microphone",
+    "acoustic-rain",
+    "wind-buffeting",
+    "noise-monitoring",
+    "brad",
+    "agpl-v3"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "HOWTO.md",
+    "!**/*.test.ts"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc",
+    "wbuild": "tsc --watch",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@bradtech/sensor": "workspace:*"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/node": "^22.10.1",
+    "typescript": "^5.1.5"
+  }
+}

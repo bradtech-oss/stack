@@ -1,0 +1,62 @@
+{
+  "name": "@bradtech/sensor-weather",
+  "version": "1.0.0",
+  "description": "Rain gauge tipping bucket, wind anemometer, solar radiation pyranometer, and barometric pressure converters",
+  "author": "Olivier Lépine <olivier@lepine.fr>",
+  "license": "AGPL-3.0-or-later",
+  "copyright": "Copyright (C) 2026 Olivier Lépine",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bradtech-oss/stack.git",
+    "directory": "packages/sensor-weather"
+  },
+  "keywords": [
+    "iot",
+    "weather-station",
+    "rain-gauge",
+    "wind-speed",
+    "wind-direction",
+    "solar-radiation",
+    "par-ppfd",
+    "barometric-pressure",
+    "qnh",
+    "agronomy",
+    "brad",
+    "agpl-v3"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "HOWTO.md",
+    "!**/*.test.ts"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc",
+    "wbuild": "tsc --watch",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@bradtech/sensor": "workspace:*"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/node": "^22.10.1",
+    "typescript": "^5.1.5"
+  }
+}

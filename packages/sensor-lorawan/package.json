@@ -1,0 +1,65 @@
+{
+  "name": "@bradtech/sensor-lorawan",
+  "version": "1.0.0",
+  "description": "LoRaWAN ChirpStack uplink binary decoder, FPort dispatching pipeline, and pre-instantiated domain adapters for BradOS probes",
+  "author": "Olivier Lépine <olivier@lepine.fr>",
+  "license": "AGPL-3.0-or-later",
+  "copyright": "Copyright (C) 2026 Olivier Lépine",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bradtech-oss/stack.git",
+    "directory": "packages/sensor-lorawan"
+  },
+  "keywords": [
+    "iot",
+    "lorawan",
+    "chirpstack",
+    "decoder",
+    "brados",
+    "fport",
+    "pipeline",
+    "telemetry",
+    "brad",
+    "agpl-v3"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "HOWTO.md",
+    "!**/*.test.ts"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc",
+    "wbuild": "tsc --watch",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@bradtech/sensor": "workspace:*",
+    "@bradtech/sensor-acoustic": "workspace:*",
+    "@bradtech/sensor-air": "workspace:*",
+    "@bradtech/sensor-power": "workspace:*",
+    "@bradtech/sensor-soil": "workspace:*",
+    "@bradtech/sensor-weather": "workspace:*"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/node": "^22.10.1",
+    "typescript": "^5.1.5"
+  }
+}

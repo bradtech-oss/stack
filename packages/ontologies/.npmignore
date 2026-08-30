@@ -1,0 +1,6 @@
+src/**/*.test.ts
+src/**/__tests__
+tsconfig.json
+tsconfig.build.json
+.DS_Store
+*.log

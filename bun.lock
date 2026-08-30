@@ -70,6 +70,103 @@
         "typescript": "^5.5.0",
       },
     },
+    "packages/ontologies": {
+      "name": "@bradtech/ontologies",
+      "version": "0.1.0",
+      "devDependencies": {
+        "typescript": "^5.4.5",
+      },
+    },
+    "packages/sensor": {
+      "name": "@bradtech/sensor",
+      "version": "1.0.0",
+      "dependencies": {
+        "@bradtech/types": "workspace:*",
+        "@quatrain/core": "^1.2.17",
+      },
+      "devDependencies": {
+        "@tsconfig/recommended": "^1.0.1",
+        "@types/node": "^22.10.1",
+        "typescript": "^5.1.5",
+      },
+    },
+    "packages/sensor-acoustic": {
+      "name": "@bradtech/sensor-acoustic",
+      "version": "1.0.0",
+      "dependencies": {
+        "@bradtech/sensor": "workspace:*",
+      },
+      "devDependencies": {
+        "@tsconfig/recommended": "^1.0.1",
+        "@types/node": "^22.10.1",
+        "typescript": "^5.1.5",
+      },
+    },
+    "packages/sensor-air": {
+      "name": "@bradtech/sensor-air",
+      "version": "1.0.0",
+      "dependencies": {
+        "@bradtech/sensor": "workspace:*",
+      },
+      "devDependencies": {
+        "@tsconfig/recommended": "^1.0.1",
+        "@types/node": "^22.10.1",
+        "typescript": "^5.1.5",
+      },
+    },
+    "packages/sensor-lorawan": {
+      "name": "@bradtech/sensor-lorawan",
+      "version": "1.0.0",
+      "dependencies": {
+        "@bradtech/sensor": "workspace:*",
+        "@bradtech/sensor-acoustic": "workspace:*",
+        "@bradtech/sensor-air": "workspace:*",
+        "@bradtech/sensor-power": "workspace:*",
+        "@bradtech/sensor-soil": "workspace:*",
+        "@bradtech/sensor-weather": "workspace:*",
+      },
+      "devDependencies": {
+        "@tsconfig/recommended": "^1.0.1",
+        "@types/node": "^22.10.1",
+        "typescript": "^5.1.5",
+      },
+    },
+    "packages/sensor-power": {
+      "name": "@bradtech/sensor-power",
+      "version": "1.0.0",
+      "dependencies": {
+        "@bradtech/sensor": "workspace:*",
+      },
+      "devDependencies": {
+        "@tsconfig/recommended": "^1.0.1",
+        "@types/node": "^22.10.1",
+        "typescript": "^5.1.5",
+      },
+    },
+    "packages/sensor-soil": {
+      "name": "@bradtech/sensor-soil",
+      "version": "1.0.0",
+      "dependencies": {
+        "@bradtech/sensor": "workspace:*",
+      },
+      "devDependencies": {
+        "@tsconfig/recommended": "^1.0.1",
+        "@types/node": "^22.10.1",
+        "typescript": "^5.1.5",
+      },
+    },
+    "packages/sensor-weather": {
+      "name": "@bradtech/sensor-weather",
+      "version": "1.0.0",
+      "dependencies": {
+        "@bradtech/sensor": "workspace:*",
+      },
+      "devDependencies": {
+        "@tsconfig/recommended": "^1.0.1",
+        "@types/node": "^22.10.1",
+        "typescript": "^5.1.5",
+      },
+    },
     "packages/sync-engine": {
       "name": "@bradtech-oss/sync-engine",
       "version": "0.1.0",
@@ -78,6 +175,16 @@
       },
       "devDependencies": {
         "typescript": "^5.5.0",
+      },
+    },
+    "packages/types": {
+      "name": "@bradtech/types",
+      "version": "0.1.0",
+      "dependencies": {
+        "shulk": "0.15.0",
+      },
+      "devDependencies": {
+        "typescript": "^5.4.5",
       },
     },
   },
@@ -100,7 +207,33 @@
 
     "@bradtech-oss/sync-engine": ["@bradtech-oss/sync-engine@workspace:packages/sync-engine"],
 
+    "@bradtech/ontologies": ["@bradtech/ontologies@workspace:packages/ontologies"],
+
+    "@bradtech/sensor": ["@bradtech/sensor@workspace:packages/sensor"],
+
+    "@bradtech/sensor-acoustic": ["@bradtech/sensor-acoustic@workspace:packages/sensor-acoustic"],
+
+    "@bradtech/sensor-air": ["@bradtech/sensor-air@workspace:packages/sensor-air"],
+
+    "@bradtech/sensor-lorawan": ["@bradtech/sensor-lorawan@workspace:packages/sensor-lorawan"],
+
+    "@bradtech/sensor-power": ["@bradtech/sensor-power@workspace:packages/sensor-power"],
+
+    "@bradtech/sensor-soil": ["@bradtech/sensor-soil@workspace:packages/sensor-soil"],
+
+    "@bradtech/sensor-weather": ["@bradtech/sensor-weather@workspace:packages/sensor-weather"],
+
+    "@bradtech/types": ["@bradtech/types@workspace:packages/types"],
+
+    "@quatrain/core": ["@quatrain/core@1.2.18", "", { "dependencies": { "@quatrain/log": "^1.2.4", "@quatrain/types": "^1.2.17", "node-persist": "^4.0.4", "which": "^5.0.0" } }, "sha512-n1FI/bv7ET+EQX85GissASROiHSkKJlTq37Dug6chj8REQZHWDP4k1oIKkIjjjCXbYlOVA4x7SsisrOomiaS3g=="],
+
+    "@quatrain/log": ["@quatrain/log@1.2.4", "", { "dependencies": { "chalk": "^4.1.2", "loglevel": "^1.9.2" } }, "sha512-ABO9xMc1fm4mipopfPfUeQlm/7vDtdM59lE9H8icOlUIXCsfw3ul3Gm7pBLdmr8q/jZJ9PLohtESxXh07jq0Bw=="],
+
     "@quatrain/mdm": ["@quatrain/mdm@link:../../QUATRAIN/Core/packages/mdm", {}],
+
+    "@quatrain/types": ["@quatrain/types@1.2.18", "", {}, "sha512-UZSYN9cIP7R+z1OZoa1idMnH7/r6v9QghRIgdAKK7i4wHjamuXnULtLaNRPWZ2CyfEQ6iGsvOT2Id83x0OTDVw=="],
+
+    "@tsconfig/recommended": ["@tsconfig/recommended@1.0.13", "", {}, "sha512-sySRuBfMKyKO/j2ZAhR8kSembhjuPEV4Ra3AHtmWLq51+iGaudr45crPSzNC5b7/Ctrh9dfUpBuTlYrH6rM58Q=="],
 
     "@turbo/darwin-64": ["@turbo/darwin-64@2.10.8", "", { "os": "darwin", "cpu": "x64" }, "sha512-po+7rfJfUnFXjWlcoN2RwhErgzCdRtBc1T26vYPcywHlggmCQiQe1uWaE4j+BibI2uY9/2pDoFzMN0rmSaPFOw=="],
 
@@ -116,11 +249,25 @@
 
     "@types/node": ["@types/node@22.20.1", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-EANqOCF9QFyra+4pfxUcX9STKJpCLjMbObVzljIJomAWSnuSIEAvyzEU53GaajbXJEgdh0iEcPL+DGvpUd4k1Q=="],
 
+    "ansi-styles": ["ansi-styles@4.3.0", "", { "dependencies": { "color-convert": "^2.0.1" } }, "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg=="],
+
     "balanced-match": ["balanced-match@4.0.4", "", {}, "sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA=="],
 
     "brace-expansion": ["brace-expansion@5.0.9", "", { "dependencies": { "balanced-match": "^4.0.2" } }, "sha512-ScQ4IuvIEF1TMlP7Zt+vjJ//9zlPb2SDcxWxM3bk8s6t6GGdJ7KO1dCcTidOPJKePW30LE/2cT7wCyPho9/Wxg=="],
 
+    "chalk": ["chalk@4.1.2", "", { "dependencies": { "ansi-styles": "^4.1.0", "supports-color": "^7.1.0" } }, "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA=="],
+
+    "color-convert": ["color-convert@2.0.1", "", { "dependencies": { "color-name": "~1.1.4" } }, "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ=="],
+
+    "color-name": ["color-name@1.1.4", "", {}, "sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA=="],
+
     "glob": ["glob@13.0.6", "", { "dependencies": { "minimatch": "^10.2.2", "minipass": "^7.1.3", "path-scurry": "^2.0.2" } }, "sha512-Wjlyrolmm8uDpm/ogGyXZXb1Z+Ca2B8NbJwqBVg0axK9GbBeoS7yGV6vjXnYdGm6X53iehEuxxbyiKp8QmN4Vw=="],
+
+    "has-flag": ["has-flag@4.0.0", "", {}, "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ=="],
+
+    "isexe": ["isexe@3.1.5", "", {}, "sha512-6B3tLtFqtQS4ekarvLVMZ+X+VlvQekbe4taUkf/rhVO3d/h0M2rfARm/pXLcPEsjjMsFgrFgSrhQIxcSVrBz8w=="],
+
+    "loglevel": ["loglevel@1.9.2", "", {}, "sha512-HgMmCqIJSAKqo68l0rS2AanEWfkxaZ5wNiEFb5ggm08lDs9Xl2KxBlX3PTcaD2chBM1gXAYf491/M2Rv8Jwayg=="],
 
     "lru-cache": ["lru-cache@11.5.2", "", {}, "sha512-4pfM1Ff0x50o0tQwb5ucw/RzNyD0/YJME6IVcStalZuMWxdt3sR3huStTtxz4PUmvZfRguvDejasvQ2kifR11g=="],
 
@@ -128,16 +275,28 @@
 
     "minipass": ["minipass@7.1.3", "", {}, "sha512-tEBHqDnIoM/1rXME1zgka9g6Q2lcoCkxHLuc7ODJ5BxbP5d4c2Z5cGgtXAku59200Cx7diuHTOYfSBD8n6mm8A=="],
 
+    "node-persist": ["node-persist@4.0.4", "", { "dependencies": { "p-limit": "^3.1.0" } }, "sha512-8sPAz/7tw1mCCc8xBG4f0wi+flHkSSgQeX998iQ75Pu27evA6UUWCjSE7xnrYTg2q33oU5leJ061EKPDv6BocQ=="],
+
+    "p-limit": ["p-limit@3.1.0", "", { "dependencies": { "yocto-queue": "^0.1.0" } }, "sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ=="],
+
     "package-json-from-dist": ["package-json-from-dist@1.0.1", "", {}, "sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw=="],
 
     "path-scurry": ["path-scurry@2.0.2", "", { "dependencies": { "lru-cache": "^11.0.0", "minipass": "^7.1.2" } }, "sha512-3O/iVVsJAPsOnpwWIeD+d6z/7PmqApyQePUtCndjatj/9I5LylHvt5qluFaBT3I5h3r1ejfR056c+FCv+NnNXg=="],
 
     "rimraf": ["rimraf@6.1.3", "", { "dependencies": { "glob": "^13.0.3", "package-json-from-dist": "^1.0.1" }, "bin": { "rimraf": "dist/esm/bin.mjs" } }, "sha512-LKg+Cr2ZF61fkcaK1UdkH2yEBBKnYjTyWzTJT6KNPcSPaiT7HSdhtMXQuN5wkTX0Xu72KQ1l8S42rlmexS2hSA=="],
 
+    "shulk": ["shulk@0.15.0", "", {}, "sha512-0Ysyo8i8cMpKPdNVsBDW+tRCgIbzrQE5cJ+GZ5hEL7rk+uqMXWKKga0oH9P04o3SnwzX1vbV1atFG52GMK/kkw=="],
+
+    "supports-color": ["supports-color@7.2.0", "", { "dependencies": { "has-flag": "^4.0.0" } }, "sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw=="],
+
     "turbo": ["turbo@2.10.8", "", { "optionalDependencies": { "@turbo/darwin-64": "2.10.8", "@turbo/darwin-arm64": "2.10.8", "@turbo/linux-64": "2.10.8", "@turbo/linux-arm64": "2.10.8", "@turbo/windows-64": "2.10.8", "@turbo/windows-arm64": "2.10.8" }, "bin": { "turbo": "bin/turbo" } }, "sha512-9+8YX5QOkGXzZxcIykTHgaooRHGMWO+jfdyRK0o+rN0U7hBIig2MrJ8r/aNzIPDPhdA73SGb0O+tIztaModTMg=="],
 
     "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
     "undici-types": ["undici-types@6.21.0", "", {}, "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="],
+
+    "which": ["which@5.0.0", "", { "dependencies": { "isexe": "^3.1.1" }, "bin": { "node-which": "bin/which.js" } }, "sha512-JEdGzHwwkrbWoGOlIHqQ5gtprKGOenpDHpxE9zVR1bWbOtYRyPPHMe9FaP6x61CmNaTThSkb0DAJte5jD+DmzQ=="],
+
+    "yocto-queue": ["yocto-queue@0.1.0", "", {}, "sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q=="],
   }
 }

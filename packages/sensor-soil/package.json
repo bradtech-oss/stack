@@ -1,0 +1,62 @@
+{
+  "name": "@bradtech/sensor-soil",
+  "version": "1.0.0",
+  "description": "Multi-depth capacitive volumetric water content, soil matric water potential pF, EC, and soil temperature converters",
+  "author": "Olivier Lépine <olivier@lepine.fr>",
+  "license": "AGPL-3.0-or-later",
+  "copyright": "Copyright (C) 2026 Olivier Lépine",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bradtech-oss/stack.git",
+    "directory": "packages/sensor-soil"
+  },
+  "keywords": [
+    "iot",
+    "soil-moisture",
+    "vwc",
+    "matric-potential",
+    "pf-curve",
+    "van-genuchten",
+    "soil-ec",
+    "soil-temperature",
+    "agronomy",
+    "irrigation",
+    "brad",
+    "agpl-v3"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "HOWTO.md",
+    "!**/*.test.ts"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc",
+    "wbuild": "tsc --watch",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@bradtech/sensor": "workspace:*"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/node": "^22.10.1",
+    "typescript": "^5.1.5"
+  }
+}

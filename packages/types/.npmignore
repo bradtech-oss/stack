@@ -1,0 +1,6 @@
+*.test.ts
+*.spec.ts
+__test__
+__tests__
+.DS_Store
+tsconfig.json

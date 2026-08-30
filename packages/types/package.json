@@ -1,0 +1,32 @@
+{
+  "name": "@bradtech/types",
+  "version": "0.1.0",
+  "description": "Shared TypeScript domain, LoRaWAN, and network server interfaces for Brad ecosystem",
+  "author": "Olivier Lépine <olivier@lepine.fr>",
+  "license": "AGPL-3.0-or-later",
+  "copyright": "Copyright (C) 2026 Olivier Lépine",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src",
+    "!**/*.test.ts"
+  ],
+  "dependencies": {
+    "shulk": "0.15.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  },
+  "scripts": {
+    "test": "bun test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bradtech-oss/stack.git",
+    "directory": "packages/types"
+  }
+}
