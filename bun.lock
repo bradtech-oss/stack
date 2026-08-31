@@ -28,16 +28,6 @@
         "typescript": "^5.5.0",
       },
     },
-    "packages/hey-brad": {
-      "name": "@bradtech-oss/hey-brad",
-      "version": "0.1.0",
-      "dependencies": {
-        "@bradtech-oss/db": "workspace:*",
-      },
-      "devDependencies": {
-        "typescript": "^5.5.0",
-      },
-    },
     "packages/ontologies": {
       "name": "@bradtech/ontologies",
       "version": "0.1.0",
@@ -165,8 +155,6 @@
     "@bradtech-oss/cli-setup": ["@bradtech-oss/cli-setup@workspace:infra/tools"],
 
     "@bradtech-oss/db": ["@bradtech-oss/db@workspace:packages/db"],
-
-    "@bradtech-oss/hey-brad": ["@bradtech-oss/hey-brad@workspace:packages/hey-brad"],
 
     "@bradtech-oss/sync-engine": ["@bradtech-oss/sync-engine@workspace:packages/sync-engine"],
 
