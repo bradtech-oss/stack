@@ -55,8 +55,10 @@
     "@bradtech/sensor-air": "workspace:*",
     "@bradtech/sensor-power": "workspace:*",
     "@bradtech/sensor-soil": "workspace:*",
-    "@bradtech/sensor-weather": "workspace:*"
+    "@bradtech/sensor-weather": "workspace:*",
+    "@bradtech/types": "workspace:*"
   },
+
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
     "@types/node": "^22.10.1",
