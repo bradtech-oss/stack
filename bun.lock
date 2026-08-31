@@ -11,38 +11,6 @@
         "typescript": "^5.5.0",
       },
     },
-    "apps/api": {
-      "name": "@bradtech-oss/api",
-      "version": "0.1.0",
-      "dependencies": {
-        "@bradtech-oss/db": "workspace:*",
-      },
-      "devDependencies": {
-        "typescript": "^5.5.0",
-      },
-    },
-    "apps/backoffice": {
-      "name": "@bradtech-oss/backoffice",
-      "version": "0.1.0",
-      "dependencies": {
-        "@bradtech-oss/db": "workspace:*",
-        "@bradtech-oss/hey-brad": "workspace:*",
-        "@quatrain/mdm": "link:../../../../QUATRAIN/Core/packages/mdm",
-      },
-      "devDependencies": {
-        "typescript": "^5.5.0",
-      },
-    },
-    "apps/mobile": {
-      "name": "@bradtech-oss/mobile",
-      "version": "0.1.0",
-      "dependencies": {
-        "@bradtech-oss/db": "workspace:*",
-      },
-      "devDependencies": {
-        "typescript": "^5.5.0",
-      },
-    },
     "infra/tools": {
       "name": "@bradtech-oss/cli-setup",
       "version": "0.1.0",
@@ -194,17 +162,11 @@
     "@quatrain/state-machine": "link:../../QUATRAIN/Core/packages/state-machine",
   },
   "packages": {
-    "@bradtech-oss/api": ["@bradtech-oss/api@workspace:apps/api"],
-
-    "@bradtech-oss/backoffice": ["@bradtech-oss/backoffice@workspace:apps/backoffice"],
-
     "@bradtech-oss/cli-setup": ["@bradtech-oss/cli-setup@workspace:infra/tools"],
 
     "@bradtech-oss/db": ["@bradtech-oss/db@workspace:packages/db"],
 
     "@bradtech-oss/hey-brad": ["@bradtech-oss/hey-brad@workspace:packages/hey-brad"],
-
-    "@bradtech-oss/mobile": ["@bradtech-oss/mobile@workspace:apps/mobile"],
 
     "@bradtech-oss/sync-engine": ["@bradtech-oss/sync-engine@workspace:packages/sync-engine"],
 
@@ -229,8 +191,6 @@
     "@quatrain/core": ["@quatrain/core@1.2.18", "", { "dependencies": { "@quatrain/log": "^1.2.4", "@quatrain/types": "^1.2.17", "node-persist": "^4.0.4", "which": "^5.0.0" } }, "sha512-n1FI/bv7ET+EQX85GissASROiHSkKJlTq37Dug6chj8REQZHWDP4k1oIKkIjjjCXbYlOVA4x7SsisrOomiaS3g=="],
 
     "@quatrain/log": ["@quatrain/log@1.2.4", "", { "dependencies": { "chalk": "^4.1.2", "loglevel": "^1.9.2" } }, "sha512-ABO9xMc1fm4mipopfPfUeQlm/7vDtdM59lE9H8icOlUIXCsfw3ul3Gm7pBLdmr8q/jZJ9PLohtESxXh07jq0Bw=="],
-
-    "@quatrain/mdm": ["@quatrain/mdm@link:../../QUATRAIN/Core/packages/mdm", {}],
 
     "@quatrain/types": ["@quatrain/types@1.2.18", "", {}, "sha512-UZSYN9cIP7R+z1OZoa1idMnH7/r6v9QghRIgdAKK7i4wHjamuXnULtLaNRPWZ2CyfEQ6iGsvOT2Id83x0OTDVw=="],
 
