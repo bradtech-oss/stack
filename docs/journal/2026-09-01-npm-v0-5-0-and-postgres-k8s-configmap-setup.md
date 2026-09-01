@@ -27,12 +27,21 @@
      - [`infra/k8s/postgres/postgres-service.yaml`](../infra/k8s/postgres/postgres-service.yaml): ClusterIP Service exposing port 5432.
      - [`infra/k8s/postgres/kustomization.yaml`](../infra/k8s/postgres/kustomization.yaml): Kustomize manifest grouping resources.
 
+4. **ArgoCD GitOps Setup (`brad-infra/k8s/argocd`)**:
+   - Declared `bradtech-postgres` Application in `k8s/argocd/apps.yml` sourcing `https://github.com/bradtech-oss/stack.git` (`infra/k8s/postgres`).
+   - Synced via GitFlow (PR #1 & PR #2 in `brad-infra`), auto-deployed to namespace `bradtech`, verified `Synced` and `Healthy` on live cluster.
+
+5. **Decoupled Radio Payload from Backoffice Agronomic Soil Models (`@bradtech/sensor-lorawan`)**:
+   - Refactored `PipelineUplinkInput` to represent pure hardware/radio telemetry (devEUI, FPort, RSSI, SNR, raw float values). Probes never know their soil texture or parcel assignment.
+   - Introduced `AgronomicPlotContext` contract allowing the Backoffice/Telemetry Worker to inject parcel-specific soil texture and laboratory linear calibration models ($y = a \cdot x + b$) when calling `LoRaWanPipeline.process(uplink, agronomicContext)`.
+   - Updated `HOWTO.md`, documentation, and end-to-end unit tests.
+
 ---
 
 ## 🧪 Verification & Stability Audit
 
 - **Build Status**: `bun run build` -> 11/11 tasks successful.
-- **Unit Tests**: `bun test` -> 45 passed, 0 failed (231 expectations).
+- **Unit Tests**: `bun test` -> 45 passed, 0 failed (236 expectations).
 - **K8s Manifests Validation**: `kubectl kustomize infra/k8s/postgres` -> Validated clean YAML generation.
 - **Podman Container Test**: `containers/podman-up.sh` -> Auto-initialized database with 3 vendors, 3 device types, and 3 physical devices.
-- **TypeScript Integration Query**: `bun run packages/db/src/test-db.ts` -> 100% successful with relational JOINs.
+- **Kubernetes Live Verification**: Pod `postgres-6c7cb55bcd-cpbtn` running in namespace `bradtech`, queried successfully with `psql`.
