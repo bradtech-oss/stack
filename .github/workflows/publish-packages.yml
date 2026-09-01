@@ -1,4 +1,4 @@
-name: Publish Packages to GitHub Packages
+name: Publish NPM Packages
 
 on:
   release:
@@ -6,17 +6,17 @@ on:
   workflow_dispatch:
     inputs:
       dist_tag:
-        description: 'Dist-tag (e.g. latest, beta, next, v0.5.0)'
+        description: 'NPM dist-tag (e.g. latest, beta, next, v0.5.0)'
         required: true
         default: 'latest'
 
 jobs:
   publish:
-    name: Publish Packages to GitHub Packages (npm.pkg.github.com)
+    name: Publish Packages to NPM Registry (registry.npmjs.org)
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
+      id-token: write
 
     steps:
       - name: Checkout repository
@@ -30,8 +30,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          registry-url: 'https://npm.pkg.github.com'
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
           scope: '@bradtech'
 
       - name: Install dependencies & build
@@ -40,14 +40,14 @@ jobs:
           bun run build
           bun test
 
-      - name: Publish packages to GitHub Packages
+      - name: Publish packages to NPM
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_CONFIG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BUN_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
+          BUN_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           TAG="${{ github.event.inputs.dist_tag || 'latest' }}"
-          echo "Publishing packages to GitHub Packages with dist-tag: $TAG"
+          echo "Publishing packages to NPM with dist-tag: $TAG"
           
           # Topological publication order: base types -> ontologies -> core sensor -> domain sensors -> lorawan
           PKGS=(
@@ -66,8 +66,8 @@ jobs:
             if [ -d "$pkg" ] && [ -f "$pkg/package.json" ]; then
               IS_PRIVATE=$(node -p "require('./$pkg/package.json').private || false")
               if [ "$IS_PRIVATE" != "true" ]; then
-                echo "🚀 Publishing $pkg to GitHub Packages..."
-                (cd "$pkg" && npm publish --tag "$TAG" || echo "⚠️ Warning: failed publishing $pkg")
+                echo "🚀 Publishing $pkg to NPM..."
+                (cd "$pkg" && npm publish --access public --tag "$TAG" || echo "⚠️ Warning: failed publishing $pkg")
               fi
             fi
           done

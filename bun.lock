@@ -13,7 +13,7 @@
     },
     "infra/tools": {
       "name": "@bradtech-oss/cli-setup",
-      "version": "0.1.0",
+      "version": "1.1.0",
       "bin": {
         "brad-setup": "./dist/index.js",
       },
@@ -23,21 +23,21 @@
     },
     "packages/db": {
       "name": "@bradtech-oss/db",
-      "version": "0.1.0",
+      "version": "1.1.0",
       "devDependencies": {
         "typescript": "^5.5.0",
       },
     },
     "packages/ontologies": {
       "name": "@bradtech/ontologies",
-      "version": "0.1.0",
+      "version": "1.1.0",
       "devDependencies": {
         "typescript": "^5.4.5",
       },
     },
     "packages/sensor": {
       "name": "@bradtech/sensor",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "dependencies": {
         "@bradtech/types": "workspace:*",
         "@quatrain/core": "^1.2.17",
@@ -50,7 +50,7 @@
     },
     "packages/sensor-acoustic": {
       "name": "@bradtech/sensor-acoustic",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "dependencies": {
         "@bradtech/sensor": "workspace:*",
       },
@@ -62,7 +62,7 @@
     },
     "packages/sensor-air": {
       "name": "@bradtech/sensor-air",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "dependencies": {
         "@bradtech/sensor": "workspace:*",
       },
@@ -74,7 +74,7 @@
     },
     "packages/sensor-lorawan": {
       "name": "@bradtech/sensor-lorawan",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "dependencies": {
         "@bradtech/sensor": "workspace:*",
         "@bradtech/sensor-acoustic": "workspace:*",
@@ -92,7 +92,7 @@
     },
     "packages/sensor-power": {
       "name": "@bradtech/sensor-power",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "dependencies": {
         "@bradtech/sensor": "workspace:*",
       },
@@ -104,7 +104,7 @@
     },
     "packages/sensor-soil": {
       "name": "@bradtech/sensor-soil",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "dependencies": {
         "@bradtech/sensor": "workspace:*",
       },
@@ -116,7 +116,7 @@
     },
     "packages/sensor-weather": {
       "name": "@bradtech/sensor-weather",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "dependencies": {
         "@bradtech/sensor": "workspace:*",
       },
@@ -128,7 +128,7 @@
     },
     "packages/sync-engine": {
       "name": "@bradtech-oss/sync-engine",
-      "version": "0.1.0",
+      "version": "1.1.0",
       "dependencies": {
         "@bradtech-oss/db": "workspace:*",
       },
@@ -138,11 +138,13 @@
     },
     "packages/types": {
       "name": "@bradtech/types",
-      "version": "0.1.0",
+      "version": "1.1.0",
       "dependencies": {
         "shulk": "0.15.0",
       },
       "devDependencies": {
+        "@tsconfig/recommended": "^1.0.1",
+        "@types/node": "^22.10.1",
         "typescript": "^5.4.5",
       },
     },

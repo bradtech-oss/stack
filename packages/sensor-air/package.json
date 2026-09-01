@@ -1,13 +1,13 @@
 {
   "name": "@bradtech/sensor-air",
-  "version": "0.5.0",
+  "version": "1.1.1",
   "description": "In-plot crop canopy air microclimate, foliar VPD, evapotranspiration, and frost risk converters",
   "author": "Olivier Lépine <olivier@lepine.fr>",
   "license": "AGPL-3.0-or-later",
   "copyright": "Copyright (C) 2026 Olivier Lépine",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "repository": {
     "type": "git",
@@ -54,7 +54,7 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@bradtech/sensor": "workspace:*"
+    "@bradtech/sensor": "^1.1.1"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",

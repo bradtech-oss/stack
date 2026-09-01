@@ -1,13 +1,13 @@
 {
   "name": "@bradtech/sensor-lorawan",
-  "version": "0.5.0",
+  "version": "1.1.1",
   "description": "LoRaWAN ChirpStack uplink binary decoder, FPort dispatching pipeline, and pre-instantiated domain adapters for BradOS probes",
   "author": "Olivier Lépine <olivier@lepine.fr>",
   "license": "AGPL-3.0-or-later",
   "copyright": "Copyright (C) 2026 Olivier Lépine",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "repository": {
     "type": "git",
@@ -53,13 +53,13 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@bradtech/sensor": "workspace:*",
-    "@bradtech/sensor-acoustic": "workspace:*",
-    "@bradtech/sensor-air": "workspace:*",
-    "@bradtech/sensor-power": "workspace:*",
-    "@bradtech/sensor-soil": "workspace:*",
-    "@bradtech/sensor-weather": "workspace:*",
-    "@bradtech/types": "workspace:*"
+    "@bradtech/sensor": "^1.1.1",
+    "@bradtech/sensor-acoustic": "^1.1.1",
+    "@bradtech/sensor-air": "^1.1.1",
+    "@bradtech/sensor-power": "^1.1.1",
+    "@bradtech/sensor-soil": "^1.1.1",
+    "@bradtech/sensor-weather": "^1.1.1",
+    "@bradtech/types": "^1.1.1"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
