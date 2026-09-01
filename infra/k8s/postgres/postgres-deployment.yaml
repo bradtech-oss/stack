@@ -26,6 +26,8 @@ spec:
         runAsUser: 70
         runAsGroup: 70
         fsGroup: 70
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: postgres
           image: ghcr.io/bradtech-oss/postgres:0.5.0
