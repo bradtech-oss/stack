@@ -1,6 +1,6 @@
 {
   "name": "@bradtech/sensor-acoustic",
-  "version": "1.0.0",
+  "version": "0.5.0",
   "description": "Digital I2S acoustic sensing, dBA sound pressure level (SPL), and acoustic rain/wind spectrum converters",
   "author": "Olivier Lépine <olivier@lepine.fr>",
   "license": "AGPL-3.0-or-later",

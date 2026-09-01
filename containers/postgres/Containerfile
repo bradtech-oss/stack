@@ -1,0 +1,36 @@
+# ==============================================================================
+# Containerfile — PostgreSQL 16 MDM Database with Automated Schema & Seed Init
+# Platform: Linux multi-arch (linux/amd64, linux/arm64)
+# License: AGPL-3.0-or-later
+# ==============================================================================
+
+FROM docker.io/library/postgres:16-alpine
+
+LABEL org.opencontainers.image.title="BradTech PostgreSQL 16 MDM Database" \
+      org.opencontainers.image.description="PostgreSQL 16 container with automated MDM schema & seed provisioning" \
+      org.opencontainers.image.version="0.5.0" \
+      org.opencontainers.image.authors="Brad Technology <contact@brad.farm>" \
+      org.opencontainers.image.licenses="AGPL-3.0-or-later"
+
+# Default Environment Variables (overridable at runtime)
+ENV POSTGRES_DB=bradtech_db \
+    POSTGRES_USER=brad \
+    POSTGRES_PASSWORD=bradpass
+
+# Copy schema and seed initialization scripts to docker-entrypoint-initdb.d
+# PostgreSQL entrypoint runs these automatically on first startup in alphabetical order
+COPY packages/db/src/schema.sql /docker-entrypoint-initdb.d/01-schema.sql
+COPY packages/db/src/seed.sql   /docker-entrypoint-initdb.d/02-seed.sql
+
+# Ensure proper permissions for postgres user
+RUN chmod 644 /docker-entrypoint-initdb.d/01-schema.sql /docker-entrypoint-initdb.d/02-seed.sql
+
+# Native Healthcheck using pg_isready
+HEALTHCHECK --interval=5s --timeout=5s --start-period=5s --retries=5 \
+  CMD pg_isready -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" || exit 1
+
+# Standard PostgreSQL Port
+EXPOSE 5432
+
+# Non-root unprivileged execution (postgres UID 70 on Alpine)
+USER postgres
