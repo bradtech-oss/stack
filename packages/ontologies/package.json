@@ -16,6 +16,7 @@
     "./data": "./data/index.md"
   },
   "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
     "access": "public"
   },
   "files": [
