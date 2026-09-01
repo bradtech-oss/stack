@@ -1,0 +1,54 @@
+name: Quality Gate & CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'packages/**'
+      - 'infra/**'
+      - 'containers/**'
+      - 'package.json'
+      - 'turbo.json'
+      - 'bun.lock'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'packages/**'
+      - 'infra/**'
+      - 'containers/**'
+      - 'package.json'
+      - 'turbo.json'
+      - 'bun.lock'
+      - '.github/workflows/ci.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Build & Test Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build all packages
+        run: bun run build
+
+      - name: Run unit & pipeline tests
+        run: bun test
