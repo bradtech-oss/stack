@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: bradtech
+
+resources:
+  - postgres-configmap.yaml
+  - postgres-pvc.yaml
+  - postgres-deployment.yaml
+  - postgres-service.yaml
+
+# Note: Create postgres-secret.yaml from postgres-secret.yaml.dist or via SealedSecrets / ExternalSecrets in production
+# resources:
+#   - postgres-secret.yaml

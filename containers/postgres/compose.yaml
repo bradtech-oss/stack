@@ -1,0 +1,46 @@
+services:
+  postgres:
+    build:
+      context: ../..
+      dockerfile: containers/postgres/Containerfile
+    image: bradtech-postgres:0.5.0
+    container_name: bradtech-postgres
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT:-54322}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-bradtech_db}
+      POSTGRES_USER: ${POSTGRES_USER:-brad}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bradpass}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - bradtech-net
+
+  adminer:
+    image: docker.io/library/adminer:latest
+    container_name: bradtech-adminer
+    restart: unless-stopped
+    ports:
+      - "${ADMINER_PORT:-8080}:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - bradtech-net
+
+volumes:
+  pgdata:
+    name: bradtech-pgdata
+
+networks:
+  bradtech-net:
+    name: bradtech-net

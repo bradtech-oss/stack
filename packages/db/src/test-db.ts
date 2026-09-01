@@ -4,11 +4,12 @@ import { DeviceRow, DeviceTypeRow, VendorRow } from './index'
  * Script inspecting PostgreSQL database deployed in Podman
  */
 async function main() {
-  console.log('🔍 Querying Podman PostgreSQL Database (localhost:5432)...')
+  const connectionUrl = process.env.DATABASE_URL || 'postgres://brad:bradpass@127.0.0.1:54322/bradtech_db'
+  console.log(`🔍 Querying Podman PostgreSQL Database (${connectionUrl})...`)
 
   // Use Bun's native SQL client
   const { SQL } = require('bun')
-  const sql = new SQL('postgres://brad:bradpass@127.0.0.1:5432/bradtech_db')
+  const sql = new SQL(connectionUrl)
 
   const vendors: VendorRow[] = await sql`SELECT * FROM vendors`
   console.log(`\n🏢 Found ${vendors.length} Vendors:`)
