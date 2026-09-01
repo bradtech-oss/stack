@@ -28,7 +28,7 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Setup Node for npm publish
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -43,17 +43,35 @@ jobs:
 
       - name: Publish packages to NPM
         env:
+          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
+          BUN_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           TAG="${{ github.event.inputs.dist_tag || 'latest' }}"
           echo "Publishing packages with dist-tag: $TAG"
-          for pkg in packages/*; do
+          
+          # Topological publication order: base types -> ontologies -> core sensor -> domain sensors -> lorawan -> db -> sync -> cli
+          PKGS=(
+            "packages/types"
+            "packages/ontologies"
+            "packages/sensor"
+            "packages/sensor-power"
+            "packages/sensor-acoustic"
+            "packages/sensor-air"
+            "packages/sensor-soil"
+            "packages/sensor-weather"
+            "packages/sensor-lorawan"
+            "packages/db"
+            "packages/sync-engine"
+            "infra/tools"
+          )
+          
+          for pkg in "${PKGS[@]}"; do
             if [ -d "$pkg" ] && [ -f "$pkg/package.json" ]; then
-              # Check if private
               IS_PRIVATE=$(node -p "require('./$pkg/package.json').private || false")
               if [ "$IS_PRIVATE" != "true" ]; then
-                echo "🚀 Publishing $pkg..."
-                npm publish --workspace="$pkg" --access public --tag "$TAG" --provenance || echo "⚠️ Warning: failed publishing $pkg"
+                echo "🚀 Publishing $pkg with tag $TAG..."
+                (cd "$pkg" && bun publish --access public --tag "$TAG" --tolerate-republish) || echo "⚠️ Warning: failed publishing $pkg"
               fi
             fi
           done
