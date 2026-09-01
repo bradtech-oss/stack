@@ -8,12 +8,13 @@ import type {
    PlotUri,
 } from '@bradtech/types'
 
-
 /**
- * Input contract representing a normalized LoRaWAN Uplink message from ChirpStack or external Network Server.
+ * Pure LoRaWAN Uplink message contract from ChirpStack or external Network Server.
+ * Contains purely radio, frame counter, port, and raw binary payload data.
+ * Note: Hardware probe payloads NEVER contain agronomic or soil calibration parameters.
  */
 export interface PipelineUplinkInput {
-   /** Device metadata and user tags attached in ChirpStack */
+   /** Device metadata from Network Server */
    deviceInfo?: {
       /** 64-bit IEEE Extended Unique Identifier in hex (e.g. "0018b20000001234") */
       devEui?: string
@@ -23,7 +24,7 @@ export interface PipelineUplinkInput {
       applicationId?: string
       /** ChirpStack Application Name */
       applicationName?: string
-      /** User tags containing tenancy, plot, soil texture, and custom linear calibration models */
+      /** Optional generic Network Server metadata tags */
       tags?: Record<string, string>
    }
    /** Alternative flat devEUI property */
@@ -50,6 +51,30 @@ export interface PipelineUplinkInput {
    publishedAt?: string
    /** Alternative ISO 8601 message timestamp */
    time?: string
+}
+
+/**
+ * Agronomic & Plot context resolved from the Backoffice / Master Data Management database.
+ * The Backoffice links a physical probe (devEUI) to an agricultural parcel (Plot),
+ * with its specific soil profile, texture classification, and optional lab calibration model.
+ */
+export interface AgronomicPlotContext {
+   /** Canonical Plot identifier or URI (e.g. "plots/parcelle-nord-01" or "parcelle-nord-01") */
+   plot?: PlotUri | (string & {})
+   /** Canonical Company / Tenant identifier or URI (e.g. "companies/domaine-alpha" or "domaine-alpha") */
+   company?: CompanyUri | (string & {})
+   /** Soil texture classification assigned to the plot in Backoffice (e.g. "clay", "sand", "loam", "silt", "peat") */
+   soilTexture?: 'sand' | 'loam' | 'clay' | 'silt' | 'peat' | 'default' | (string & {})
+   /** Custom plot-specific laboratory calibration model (linear regression: y = slope * raw + intercept) */
+   soilLinearRegression?: {
+      slope: number
+      intercept: number
+      modelLabel?: string
+   }
+   /** Optional hardware vendor tag */
+   vendor?: string
+   /** Optional hardware model tag */
+   vendorModel?: string
 }
 
 /**
@@ -86,7 +111,7 @@ export interface PipelineDataPointOutput {
  * - IEEE 754 Float32 binary decoding via `BradOSCodec`.
  * - Automatic hardware sensor attribution (SHT40, Brad soil sensor, Davis, SI1145, BMP280, MP34DT01).
  * - Routing to decoupled domain converter packages (`@bradtech/sensor-*`).
- * - Metadata enrichment with `@bradtech/types` interface tags, converter classes, and model versions.
+ * - Agronomic context enrichment from Backoffice (Plot association, Soil profile, Custom calibration curves).
  */
 export class LoRaWanPipeline {
    private static _airConverter = defaultSensorAdapters.canopyAir
@@ -103,40 +128,43 @@ export class LoRaWanPipeline {
    private static _acousticWeatherConverter = defaultSensorAdapters.acousticWeather
 
    /**
-    * Ingests a raw LoRaWAN uplink message, decodes binary payload, evaluates domain converters,
-    * and returns an array of validated, strongly-typed DataPoints.
+    * Ingests a raw LoRaWAN uplink message, decodes binary payload, evaluates domain converters
+    * with optional agronomic plot context provided by the Backoffice, and returns validated DataPoints.
     *
-    * @param uplink - Incoming ChirpStack LoRaWAN message object.
+    * @param uplink - Incoming ChirpStack LoRaWAN message object (pure radio frame).
+    * @param agronomicContext - Optional agronomic context resolved from Backoffice (Plot ID, Soil Texture, Calibration).
     * @returns Array of transformed DataPoints.
     */
-   static process(uplink: PipelineUplinkInput): PipelineDataPointOutput[] {
-
+   static process(
+      uplink: PipelineUplinkInput,
+      agronomicContext?: AgronomicPlotContext,
+   ): PipelineDataPointOutput[] {
       const dataPoints: PipelineDataPointOutput[] = []
 
       // 1. Resolve Canonical Device & Tenancy Identifiers
       const rawDeviceName = uplink.deviceInfo?.deviceName || uplink.deviceInfo?.devEui || uplink.devEUI || 'unknown'
       const deviceUri = this._buildDeviceUri(rawDeviceName)
-      const plotUri = uplink.deviceInfo?.tags?.plot ? `plots/${uplink.deviceInfo.tags.plot}` : undefined
-      const companyUri = uplink.deviceInfo?.tags?.company ? `companies/${uplink.deviceInfo.tags.company}` : undefined
+      
+      // Plot & Company resolved from Backoffice agronomic context (with fallback to metadata tags)
+      const rawPlot = agronomicContext?.plot || uplink.deviceInfo?.tags?.plot
+      const plotUri = rawPlot ? (rawPlot.startsWith('plots/') ? rawPlot : `plots/${rawPlot}`) : undefined
+
+      const rawCompany = agronomicContext?.company || uplink.deviceInfo?.tags?.company
+      const companyUri = rawCompany ? (rawCompany.startsWith('companies/') ? rawCompany : `companies/${rawCompany}`) : undefined
+
       const timestamp = uplink.publishedAt || uplink.time || new Date().toISOString()
-      const soilTexture = (uplink.deviceInfo?.tags?.soilTexture as any) || 'default'
-      const rawSlope = uplink.deviceInfo?.tags?.soilSlope ? parseFloat(uplink.deviceInfo.tags.soilSlope) : undefined
-      const rawIntercept = uplink.deviceInfo?.tags?.soilIntercept ? parseFloat(uplink.deviceInfo.tags.soilIntercept) : undefined
-      const soilLinearRegression = (rawSlope !== undefined && rawIntercept !== undefined && !isNaN(rawSlope) && !isNaN(rawIntercept))
-         ? {
-              slope: rawSlope,
-              intercept: rawIntercept,
-              modelLabel: uplink.deviceInfo?.tags?.soilModelLabel,
-           }
-         : undefined
+      
+      // Soil texture and calibration model come from the Backoffice plot definition
+      const soilTexture = agronomicContext?.soilTexture || (uplink.deviceInfo?.tags?.soilTexture as any) || 'default'
+      const soilLinearRegression = agronomicContext?.soilLinearRegression || this._extractLinearRegression(uplink.deviceInfo?.tags)
 
       // 2. Build LoRaWAN Radio Metadata Contract
       const bestGateway = uplink.rxInfo?.[0]
-      const vendor = (uplink.deviceInfo?.tags?.vendor as any) || 'brad'
+      const vendor = agronomicContext?.vendor || (uplink.deviceInfo?.tags?.vendor as any) || 'brad'
       const radioMetadata = {
          interface: '@bradtech/types:LoRaWanMetadataInterface',
          vendor,
-         vendorModel: uplink.deviceInfo?.tags?.vendorModel || (rawDeviceName.startsWith('b26w') ? 'Brad Weather Station v1' : 'Brad Soil Probe v2.5'),
+         vendorModel: agronomicContext?.vendorModel || uplink.deviceInfo?.tags?.vendorModel || (rawDeviceName.startsWith('b26w') ? 'Brad Weather Station v1' : 'Brad Soil Probe v2.5'),
          vendorDeviceId: rawDeviceName,
          integrationType: 'lorawan' as const,
          devEui: uplink.deviceInfo?.devEui || uplink.devEUI,
@@ -149,7 +177,6 @@ export class LoRaWanPipeline {
          gatewayId: bestGateway?.gatewayId,
          gatewayCount: uplink.rxInfo?.length || 0,
       }
-
 
       // 3. Emit Network Quality DataPoints
       if (bestGateway?.rssi !== undefined) {
@@ -246,6 +273,7 @@ export class LoRaWanPipeline {
          }
 
          case 'soil_moisture': {
+            // Apply plot-specific soil texture & calibration model from agronomic context
             const vwcOut = LoRaWanPipeline._runConverter(
                LoRaWanPipeline._soilMoistureConverter,
                { depthCm: channel.depthCm || 10, rawValue: channel.rawValue },
@@ -254,7 +282,7 @@ export class LoRaWanPipeline {
 
             conversionOutputs.push(...vwcOut)
 
-            // Automatically compute derived pF matric potential
+            // Automatically compute derived pF matric potential based on plot soil texture
             if (vwcOut.length > 0) {
                const wpOut = LoRaWanPipeline._runConverter(
                   LoRaWanPipeline._soilWpConverter,
@@ -358,21 +386,14 @@ export class LoRaWanPipeline {
                ...out.metadata,
                interface: isDerived ? '@bradtech/types:ComputedMetadataInterface' : '@bradtech/types:LoRaWanMetadataInterface',
             },
-
          })
       }
-
 
       return dataPoints
    }
 
    /**
     * Executes a converter instance and injects class name, model code, and semver version into metadata.
-    *
-    * @param converter - Target sensor converter adapter.
-    * @param raw - Input raw payload.
-    * @param context - Environmental or plot calibration context.
-    * @returns Enriched array of ConversionOutput objects.
     */
    private static _runConverter(
       converter: any,
@@ -393,9 +414,6 @@ export class LoRaWanPipeline {
 
    /**
     * Normalizes raw hardware device names into canonical OKF device URIs.
-    *
-    * @param deviceName - Raw device identifier (e.g. "b25s004", "b26w001", "probes/b25s004").
-    * @returns Canonical URI string formatted as `probes/<id>` or `weather-stations/<id>`.
     */
    private static _buildDeviceUri(deviceName: string): string {
       const clean = deviceName.trim().toLowerCase()
@@ -406,5 +424,20 @@ export class LoRaWanPipeline {
          return `weather-stations/${clean}`
       }
       return `probes/${clean}`
+   }
+
+   /**
+    * Helper extracting linear regression calibration parameters if provided in tags.
+    */
+   private static _extractLinearRegression(tags?: Record<string, string>) {
+      if (!tags?.soilSlope || !tags?.soilIntercept) return undefined
+      const slope = parseFloat(tags.soilSlope)
+      const intercept = parseFloat(tags.soilIntercept)
+      if (isNaN(slope) || isNaN(intercept)) return undefined
+      return {
+         slope,
+         intercept,
+         modelLabel: tags.soilModelLabel,
+      }
    }
 }
