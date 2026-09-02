@@ -10,6 +10,11 @@ export interface DecodedRawChannel {
       | 'soil_temp'
       | 'soil_ec'
       | 'solar'
+      | 'solar_uv'
+      | 'solar_vis'
+      | 'solar_lux'
+      | 'solar_ir'
+      | 'solar_irradiance'
       | 'rain'
       | 'wind_speed'
       | 'wind_dir'
@@ -119,27 +124,27 @@ export class BradOSCodec {
          case 2:
             return { channelType: 'battery', rawValue: floatVal, sensorSource: 'ASR6502 ADC', sensorModel: 'Internal ADC', unitHint: 'V' }
          case 9:
-            return { channelType: 'solar', rawValue: floatVal, sensorSource: 'SI1145', sensorModel: 'Silicon Labs SI1145', unitHint: 'index' }
+            return { channelType: 'solar_uv', rawValue: floatVal, sensorSource: 'SI1145', sensorModel: 'Silicon Labs SI1145', unitHint: 'UV Index' }
          case 11:
             return { channelType: 'canopy_hum', rawValue: floatVal, sensorSource: 'SHT40', sensorModel: 'Sensirion SHT40', unitHint: '%' }
          case 12:
-            return { channelType: 'soil_moisture', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 10cm', depthCm: 10, unitHint: '%' }
+            return { channelType: 'solar_vis', rawValue: floatVal, sensorSource: 'SI1145', sensorModel: 'Silicon Labs SI1145', unitHint: 'counts' }
          case 13:
-            return { channelType: 'soil_moisture', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 20cm', depthCm: 20, unitHint: '%' }
+            return { channelType: 'solar_lux', rawValue: floatVal, sensorSource: 'SI1145', sensorModel: 'Silicon Labs SI1145', unitHint: 'lx' }
          case 14:
-            return { channelType: 'soil_moisture', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 30cm', depthCm: 30, unitHint: '%' }
+            return { channelType: 'solar_ir', rawValue: floatVal, sensorSource: 'SI1145', sensorModel: 'Silicon Labs SI1145', unitHint: 'counts' }
          case 15:
             return { channelType: 'canopy_temp', rawValue: floatVal, sensorSource: 'SHT40', sensorModel: 'Sensirion SHT40', unitHint: '°C' }
          case 16:
-            return { channelType: 'soil_temp', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 10cm', depthCm: 10, unitHint: '°C' }
+            return { channelType: 'soil_moisture', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 15cm', depthCm: 15, unitHint: '%' }
          case 17:
-            return { channelType: 'soil_temp', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 20cm', depthCm: 20, unitHint: '°C' }
+            return { channelType: 'soil_moisture', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 30cm', depthCm: 30, unitHint: '%' }
          case 18:
-            return { channelType: 'soil_temp', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 30cm', depthCm: 30, unitHint: '°C' }
+            return { channelType: 'soil_moisture', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 60cm', depthCm: 60, unitHint: '%' }
          case 19:
-            return { channelType: 'solar', rawValue: floatVal, sensorSource: 'SI1145', sensorModel: 'Silicon Labs SI1145', unitHint: 'W/m²' }
+            return { channelType: 'soil_moisture', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 90cm', depthCm: 90, unitHint: '%' }
          case 20:
-            return { channelType: 'rain', rawValue: floatVal, sensorSource: 'Davis 7852', sensorModel: 'Davis Rain Collector', unitHint: 'mm' }
+            return { channelType: 'soil_moisture', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 120cm', depthCm: 120, unitHint: '%' }
          case 21:
             return { channelType: 'wind_speed', rawValue: floatVal, sensorSource: 'Davis 6410', sensorModel: 'Davis Anemometer', unitHint: 'km/h' }
          case 22:
@@ -151,13 +156,31 @@ export class BradOSCodec {
          case 25:
             return { channelType: 'acoustic_rain', rawValue: floatVal, sensorSource: 'MP34DT01', sensorModel: 'ST MEMS Microphone', unitHint: 'index' }
          case 26:
-            return { channelType: 'acoustic_wind', rawValue: floatVal, sensorSource: 'MP34DT01', sensorModel: 'ST MEMS Microphone', unitHint: 'index' }
+            return { channelType: 'soil_temp', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 15cm', depthCm: 15, unitHint: '°C' }
+         case 27:
+            return { channelType: 'soil_temp', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 30cm', depthCm: 30, unitHint: '°C' }
+         case 28:
+            return { channelType: 'soil_temp', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 60cm', depthCm: 60, unitHint: '°C' }
+         case 29:
+            return { channelType: 'soil_temp', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 90cm', depthCm: 90, unitHint: '°C' }
+         case 30:
+            return { channelType: 'soil_temp', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 120cm', depthCm: 120, unitHint: '°C' }
          case 31:
-            return { channelType: 'soil_ec', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 10cm', depthCm: 10, unitHint: 'mS/cm' }
+            return { channelType: 'soil_ec', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 15cm', depthCm: 15, unitHint: 'mS/cm' }
          case 32:
-            return { channelType: 'soil_ec', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 20cm', depthCm: 20, unitHint: 'mS/cm' }
-         case 33:
             return { channelType: 'soil_ec', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 30cm', depthCm: 30, unitHint: 'mS/cm' }
+         case 33:
+            return { channelType: 'soil_ec', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 60cm', depthCm: 60, unitHint: 'mS/cm' }
+         case 46:
+            return { channelType: 'soil_moisture', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 5cm', depthCm: 5, unitHint: '%' }
+         case 47:
+            return { channelType: 'soil_temp', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 5cm', depthCm: 5, unitHint: '°C' }
+         case 48:
+            return { channelType: 'soil_ec', rawValue: floatVal, sensorSource: 'Brad soil sensor', sensorModel: 'Brad Soil Sensor 5cm', depthCm: 5, unitHint: 'mS/cm' }
+         case 50:
+            return { channelType: 'solar', rawValue: floatVal, sensorSource: 'Davis 6450', sensorModel: 'Davis Solar Radiation Sensor', unitHint: 'W/m²' }
+         case 51:
+            return { channelType: 'rain', rawValue: floatVal, sensorSource: 'Davis 7852', sensorModel: 'Davis Rain Collector', unitHint: 'mm' }
          default:
             return { channelType: 'generic', rawValue: floatVal }
       }

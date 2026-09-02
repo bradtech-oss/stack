@@ -1,6 +1,6 @@
 {
   "name": "@bradtech/types",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Shared TypeScript domain, LoRaWAN, and network server interfaces for Brad ecosystem",
   "author": "Olivier Lépine <olivier@lepine.fr>",
   "license": "AGPL-3.0-or-later",

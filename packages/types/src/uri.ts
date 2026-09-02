@@ -96,6 +96,10 @@ export type OkfSoilMetricUri =
 export type OkfWeatherMetricUri =
    | 'okf:weather/solar/irradiance'
    | 'okf:weather/solar/par_ppfd'
+   | 'okf:weather/solar/uv_index'
+   | 'okf:weather/solar/illuminance'
+   | 'okf:weather/solar/visible'
+   | 'okf:weather/solar/infrared'
    | 'okf:weather/rain/accumulation'
    | 'okf:weather/rain/rate'
    | 'okf:weather/wind/speed'

@@ -274,9 +274,10 @@ export class LoRaWanPipeline {
 
          case 'soil_moisture': {
             // Apply plot-specific soil texture & calibration model from agronomic context
+            const depth = channel.depthCm || 15
             const vwcOut = LoRaWanPipeline._runConverter(
                LoRaWanPipeline._soilMoistureConverter,
-               { depthCm: channel.depthCm || 10, rawValue: channel.rawValue },
+               { depthCm: depth, rawValue: channel.rawValue },
                { soilTexture, soilLinearRegression },
             )
 
@@ -286,7 +287,7 @@ export class LoRaWanPipeline {
             if (vwcOut.length > 0) {
                const wpOut = LoRaWanPipeline._runConverter(
                   LoRaWanPipeline._soilWpConverter,
-                  { depthCm: channel.depthCm || 10, vwcPercent: vwcOut[0].value },
+                  { depthCm: depth, vwcPercent: vwcOut[0].value },
                   { soilTexture },
                )
                conversionOutputs.push(...wpOut)
@@ -296,7 +297,7 @@ export class LoRaWanPipeline {
 
          case 'soil_temp': {
             const tempOut = LoRaWanPipeline._runConverter(LoRaWanPipeline._soilTempConverter, {
-               depthCm: channel.depthCm || 10,
+               depthCm: channel.depthCm || 15,
                temperature: channel.rawValue,
             })
             conversionOutputs.push(...tempOut)
@@ -305,13 +306,74 @@ export class LoRaWanPipeline {
 
          case 'soil_ec': {
             const ecOut = LoRaWanPipeline._runConverter(LoRaWanPipeline._soilEcConverter, {
-               depthCm: channel.depthCm || 10,
+               depthCm: channel.depthCm || 15,
                bulkEcMsCm: channel.rawValue,
             })
             conversionOutputs.push(...ecOut)
             break
          }
 
+         case 'solar_uv': {
+            conversionOutputs.push({
+               metric: 'okf:weather/solar/uv_index',
+               value: Math.max(0, channel.rawValue),
+               unit: 'index',
+               qudtUri: 'qudt:unit/UNITLESS',
+               confidence: 1.0,
+               metadata: {
+                  sensorSource: channel.sensorSource,
+                  sensorModel: channel.sensorModel,
+               },
+            })
+            break
+         }
+
+         case 'solar_vis': {
+            conversionOutputs.push({
+               metric: 'okf:weather/solar/visible',
+               value: Math.max(0, channel.rawValue),
+               unit: 'counts',
+               qudtUri: 'qudt:unit/UNITLESS',
+               confidence: 1.0,
+               metadata: {
+                  sensorSource: channel.sensorSource,
+                  sensorModel: channel.sensorModel,
+               },
+            })
+            break
+         }
+
+         case 'solar_lux': {
+            conversionOutputs.push({
+               metric: 'okf:weather/solar/illuminance',
+               value: Math.max(0, channel.rawValue),
+               unit: 'lx',
+               qudtUri: 'qudt:unit/LUX',
+               confidence: 1.0,
+               metadata: {
+                  sensorSource: channel.sensorSource,
+                  sensorModel: channel.sensorModel,
+               },
+            })
+            break
+         }
+
+         case 'solar_ir': {
+            conversionOutputs.push({
+               metric: 'okf:weather/solar/infrared',
+               value: Math.max(0, channel.rawValue),
+               unit: 'counts',
+               qudtUri: 'qudt:unit/UNITLESS',
+               confidence: 1.0,
+               metadata: {
+                  sensorSource: channel.sensorSource,
+                  sensorModel: channel.sensorModel,
+               },
+            })
+            break
+         }
+
+         case 'solar_irradiance':
          case 'solar': {
             const solarOut = LoRaWanPipeline._runConverter(LoRaWanPipeline._solarConverter, { irradianceWm2: channel.rawValue })
             conversionOutputs.push(...solarOut)

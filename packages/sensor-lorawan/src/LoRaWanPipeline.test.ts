@@ -48,20 +48,20 @@ describe('LoRaWanPipeline End-to-End Tests', () => {
       expect(tempDp?.metadata?.modelVersion).toBe('1.0.0')
    })
 
-   it('should process FPort 12 (Soil Moisture) without agronomic context using default texture', () => {
+   it('should process FPort 16 (15cm Soil Moisture) without agronomic context using default texture', () => {
       const buf = Buffer.alloc(4)
       buf.writeFloatLE(26.0, 0) // 26% raw dielectric moisture
 
       const uplink: PipelineUplinkInput = {
          deviceInfo: { deviceName: 'b26s002' },
-         fPort: 12,
+         fPort: 16,
          data: buf.toString('base64'),
       }
 
       // Ingesting without agronomic context (unassigned probe)
       const dataPoints = LoRaWanPipeline.process(uplink)
 
-      const moisture = dataPoints.find((dp) => dp.metric === 'okf:soil/moisture/10cm')
+      const moisture = dataPoints.find((dp) => dp.metric === 'okf:soil/moisture/15cm')
       expect(moisture).toBeDefined()
       expect(moisture?.value).toBe(26.0)
       expect(moisture?.kind).toBe('measured')
@@ -71,7 +71,7 @@ describe('LoRaWanPipeline End-to-End Tests', () => {
       expect(moisture?.metadata?.modelVersion).toBe('1.0.0')
       expect(moisture?.metadata?.soilTexture).toBe('default')
 
-      const pf = dataPoints.find((dp) => dp.metric === 'okf:soil/potential/pf/10cm')
+      const pf = dataPoints.find((dp) => dp.metric === 'okf:soil/potential/pf/15cm')
       expect(pf).toBeDefined()
       expect(pf?.kind).toBe('computed')
       expect(pf?.metadata?.converterClass).toBe('SoilWaterPotentialConverter')
@@ -83,13 +83,13 @@ describe('LoRaWanPipeline End-to-End Tests', () => {
       const buf = Buffer.alloc(4)
       buf.writeFloatLE(20.0, 0)
 
-      // Pure raw radio frame
+      // Pure raw radio frame on FPort 17 (30cm)
       const uplink: PipelineUplinkInput = {
          deviceInfo: {
             deviceName: 'b26s003',
             devEui: '8c1f640000000003',
          },
-         fPort: 12,
+         fPort: 17,
          data: buf.toString('base64'),
       }
 
@@ -106,7 +106,7 @@ describe('LoRaWanPipeline End-to-End Tests', () => {
       }
 
       const dataPoints = LoRaWanPipeline.process(uplink, agronomicContext)
-      const moisture = dataPoints.find((dp) => dp.metric === 'okf:soil/moisture/10cm')
+      const moisture = dataPoints.find((dp) => dp.metric === 'okf:soil/moisture/30cm')
 
       expect(moisture).toBeDefined()
       expect(moisture?.value).toBe(21.2) // 20.0 * 1.08 - 0.4 = 21.2%
@@ -117,5 +117,25 @@ describe('LoRaWanPipeline End-to-End Tests', () => {
       expect(moisture?.metadata?.calibrationIntercept).toBe(-0.4)
       expect(moisture?.metadata?.customModelLabel).toBe('Lab-Pedo-2026')
       expect(moisture?.metadata?.soilTexture).toBe('clay')
+   })
+
+   it('should process FPort 13 (SI1145 Illuminance Lux)', () => {
+      const buf = Buffer.alloc(4)
+      buf.writeFloatLE(12500.0, 0)
+
+      const uplink: PipelineUplinkInput = {
+         deviceInfo: { deviceName: 'b23s035' },
+         fPort: 13,
+         data: buf.toString('base64'),
+      }
+
+      const dataPoints = LoRaWanPipeline.process(uplink)
+      const luxDp = dataPoints.find((dp) => dp.metric === 'okf:weather/solar/illuminance')
+
+      expect(luxDp).toBeDefined()
+      expect(luxDp?.value).toBe(12500.0)
+      expect(luxDp?.unit).toBe('lx')
+      expect(luxDp?.kind).toBe('measured')
+      expect(luxDp?.metadata?.sensorSource).toBe('SI1145')
    })
 })
