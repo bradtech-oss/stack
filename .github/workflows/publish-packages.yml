@@ -60,6 +60,7 @@ jobs:
             "packages/sensor-soil"
             "packages/sensor-weather"
             "packages/sensor-lorawan"
+            "packages/datapoints"
           )
           
           for pkg in "${PKGS[@]}"; do
