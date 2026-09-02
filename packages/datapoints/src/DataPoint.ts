@@ -1,5 +1,6 @@
 import {
    PersistedBaseObject,
+   PersistedDataObject,
 } from '@quatrain/backend'
 import {
    StringProperty,
@@ -85,6 +86,22 @@ export class DataPoint extends PersistedBaseObject {
    static COLLECTION = 'datapoints'
    /** Property definition schema. */
    static PROPS_DEFINITION = DataPointProperties
+
+   /**
+    * Overrides default fillProperties to prevent injecting CRUD columns
+    * (name, status, createdby, updatedby...) into the pure TimescaleDB hypertable schema.
+    * 
+    * @param child - Child class reference.
+    * @returns The DataObject instance configured strictly with DataPointProperties.
+    */
+   static fillProperties(child: any = this) {
+      const dao = PersistedDataObject.factory({
+         properties: this.PROPS_DEFINITION,
+         parentProp: this.PARENT_PROP,
+      })
+      dao.uri.class = child
+      return dao
+   }
 
    /**
     * Instantiates a new DataPoint model from raw data or existing entity.
