@@ -13,7 +13,7 @@
     },
     "infra/tools": {
       "name": "@bradtech-oss/cli-setup",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "bin": {
         "brad-setup": "./dist/index.js",
       },
@@ -21,23 +21,38 @@
         "typescript": "^5.5.0",
       },
     },
+    "packages/datapoints": {
+      "name": "@bradtech/datapoints",
+      "version": "1.0.0",
+      "dependencies": {
+        "@bradtech/types": "^1.1.1",
+        "@quatrain/backend": "^1.2.18",
+        "@quatrain/backend-postgres": "^1.2.13",
+        "@quatrain/core": "^1.2.18",
+      },
+      "devDependencies": {
+        "@tsconfig/recommended": "^1.0.1",
+        "@types/node": "^22.10.1",
+        "typescript": "^5.4.5",
+      },
+    },
     "packages/db": {
       "name": "@bradtech-oss/db",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "devDependencies": {
         "typescript": "^5.5.0",
       },
     },
     "packages/ontologies": {
       "name": "@bradtech/ontologies",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "devDependencies": {
         "typescript": "^5.4.5",
       },
     },
     "packages/sensor": {
       "name": "@bradtech/sensor",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "dependencies": {
         "@bradtech/types": "workspace:*",
         "@quatrain/core": "^1.2.17",
@@ -50,7 +65,7 @@
     },
     "packages/sensor-acoustic": {
       "name": "@bradtech/sensor-acoustic",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "dependencies": {
         "@bradtech/sensor": "workspace:*",
       },
@@ -62,7 +77,7 @@
     },
     "packages/sensor-air": {
       "name": "@bradtech/sensor-air",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "dependencies": {
         "@bradtech/sensor": "workspace:*",
       },
@@ -74,7 +89,7 @@
     },
     "packages/sensor-lorawan": {
       "name": "@bradtech/sensor-lorawan",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "dependencies": {
         "@bradtech/sensor": "workspace:*",
         "@bradtech/sensor-acoustic": "workspace:*",
@@ -92,7 +107,7 @@
     },
     "packages/sensor-power": {
       "name": "@bradtech/sensor-power",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "dependencies": {
         "@bradtech/sensor": "workspace:*",
       },
@@ -104,7 +119,7 @@
     },
     "packages/sensor-soil": {
       "name": "@bradtech/sensor-soil",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "dependencies": {
         "@bradtech/sensor": "workspace:*",
       },
@@ -116,7 +131,7 @@
     },
     "packages/sensor-weather": {
       "name": "@bradtech/sensor-weather",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "dependencies": {
         "@bradtech/sensor": "workspace:*",
       },
@@ -128,7 +143,7 @@
     },
     "packages/sync-engine": {
       "name": "@bradtech-oss/sync-engine",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "dependencies": {
         "@bradtech-oss/db": "workspace:*",
       },
@@ -138,7 +153,7 @@
     },
     "packages/types": {
       "name": "@bradtech/types",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "dependencies": {
         "shulk": "0.15.0",
       },
@@ -160,6 +175,8 @@
 
     "@bradtech-oss/sync-engine": ["@bradtech-oss/sync-engine@workspace:packages/sync-engine"],
 
+    "@bradtech/datapoints": ["@bradtech/datapoints@workspace:packages/datapoints"],
+
     "@bradtech/ontologies": ["@bradtech/ontologies@workspace:packages/ontologies"],
 
     "@bradtech/sensor": ["@bradtech/sensor@workspace:packages/sensor"],
@@ -177,6 +194,12 @@
     "@bradtech/sensor-weather": ["@bradtech/sensor-weather@workspace:packages/sensor-weather"],
 
     "@bradtech/types": ["@bradtech/types@workspace:packages/types"],
+
+    "@faker-js/faker": ["@faker-js/faker@7.6.0", "", {}, "sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw=="],
+
+    "@quatrain/backend": ["@quatrain/backend@1.2.18", "", { "dependencies": { "@faker-js/faker": "^7.6.0", "@quatrain/core": "^1.2.18", "@quatrain/log": "^1.2.4", "@quatrain/types": "^1.2.18" } }, "sha512-RFwq1WepVyv+niVceV8CTE3XcwON/2cegzyHXzjp1KkFK0we7dwShjL/6KtLGgJC2QfWMDAblc58EddgVM2MeA=="],
+
+    "@quatrain/backend-postgres": ["@quatrain/backend-postgres@1.2.13", "", { "dependencies": { "@quatrain/backend": "^1.2.14", "@quatrain/core": "^1.2.16", "pg": "^8.11.3", "postgres": "^3.4.4" } }, "sha512-9b6GtxY/GkLZnbQNc6TsXoF27MYKCW/qP0LDxgSh5vUg5VgrOHpdqfd5ISb+cFxcOgpSjvQNz7PCNEsFhK4fxg=="],
 
     "@quatrain/core": ["@quatrain/core@1.2.18", "", { "dependencies": { "@quatrain/log": "^1.2.4", "@quatrain/types": "^1.2.17", "node-persist": "^4.0.4", "which": "^5.0.0" } }, "sha512-n1FI/bv7ET+EQX85GissASROiHSkKJlTq37Dug6chj8REQZHWDP4k1oIKkIjjjCXbYlOVA4x7SsisrOomiaS3g=="],
 
@@ -234,9 +257,37 @@
 
     "path-scurry": ["path-scurry@2.0.2", "", { "dependencies": { "lru-cache": "^11.0.0", "minipass": "^7.1.2" } }, "sha512-3O/iVVsJAPsOnpwWIeD+d6z/7PmqApyQePUtCndjatj/9I5LylHvt5qluFaBT3I5h3r1ejfR056c+FCv+NnNXg=="],
 
+    "pg": ["pg@8.23.0", "", { "dependencies": { "pg-connection-string": "^2.14.0", "pg-pool": "^3.14.0", "pg-protocol": "^1.16.0", "pg-types": "2.2.0", "pgpass": "1.0.5" }, "optionalDependencies": { "pg-cloudflare": "^1.4.0" }, "peerDependencies": { "pg-native": ">=3.0.1" }, "optionalPeers": ["pg-native"] }, "sha512-Ip2EQCngowJLGOfCwkFhPXU7/ljlhn6Rxlmy4XYfL2Y+vyRM59+8uR2xqRWKdYmbXmxCFOAmKxBuSUCdF34qLg=="],
+
+    "pg-cloudflare": ["pg-cloudflare@1.4.0", "", {}, "sha512-Vo7z/6rrQYxpNRylp4Tlob2elzbh+N/MOQbxFVWCxS7oEx6jF53GTJFxK2WWpKuBRkmiin4Mt+xofFDjx09R0A=="],
+
+    "pg-connection-string": ["pg-connection-string@2.14.0", "", {}, "sha512-XwWDGcLRGCXAR8F/AM5bG7Q+A3Wm2s6QeEjlOKZLlH3UYcguiqCWKyWXVag5TLTIjR7oOJUY8kcADaZgWPyLeg=="],
+
+    "pg-int8": ["pg-int8@1.0.1", "", {}, "sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw=="],
+
+    "pg-pool": ["pg-pool@3.14.0", "", { "peerDependencies": { "pg": ">=8.0" } }, "sha512-gKtPkFdQPU3DksooVLi9LsjZxrsBUZIpa+7aVx+LV5pNh0KzP4Zleud2po+ConrxbuXGBJ6Hfer6hdgpIBpBaw=="],
+
+    "pg-protocol": ["pg-protocol@1.16.0", "", {}, "sha512-sILXutLVjCLjcDuOmvhX5e2Z4cS5qG/6Bu3VkpFwdf/633ElGLpEh9bgmuI5I4sqKqkifQiGyiCcx1HdtrK7tg=="],
+
+    "pg-types": ["pg-types@2.2.0", "", { "dependencies": { "pg-int8": "1.0.1", "postgres-array": "~2.0.0", "postgres-bytea": "~1.0.0", "postgres-date": "~1.0.4", "postgres-interval": "^1.1.0" } }, "sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA=="],
+
+    "pgpass": ["pgpass@1.0.5", "", { "dependencies": { "split2": "^4.1.0" } }, "sha512-FdW9r/jQZhSeohs1Z3sI1yxFQNFvMcnmfuj4WBMUTxOrAyLMaTcE1aAMBiTlbMNaXvBCQuVi0R7hd8udDSP7ug=="],
+
+    "postgres": ["postgres@3.4.9", "", {}, "sha512-GD3qdB0x1z9xgFI6cdRD6xu2Sp2WCOEoe3mtnyB5Ee0XrrL5Pe+e4CCnJrRMnL1zYtRDZmQQVbvOttLnKDLnaw=="],
+
+    "postgres-array": ["postgres-array@2.0.0", "", {}, "sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA=="],
+
+    "postgres-bytea": ["postgres-bytea@1.0.1", "", {}, "sha512-5+5HqXnsZPE65IJZSMkZtURARZelel2oXUEO8rH83VS/hxH5vv1uHquPg5wZs8yMAfdv971IU+kcPUczi7NVBQ=="],
+
+    "postgres-date": ["postgres-date@1.0.7", "", {}, "sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q=="],
+
+    "postgres-interval": ["postgres-interval@1.2.0", "", { "dependencies": { "xtend": "^4.0.0" } }, "sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ=="],
+
     "rimraf": ["rimraf@6.1.3", "", { "dependencies": { "glob": "^13.0.3", "package-json-from-dist": "^1.0.1" }, "bin": { "rimraf": "dist/esm/bin.mjs" } }, "sha512-LKg+Cr2ZF61fkcaK1UdkH2yEBBKnYjTyWzTJT6KNPcSPaiT7HSdhtMXQuN5wkTX0Xu72KQ1l8S42rlmexS2hSA=="],
 
     "shulk": ["shulk@0.15.0", "", {}, "sha512-0Ysyo8i8cMpKPdNVsBDW+tRCgIbzrQE5cJ+GZ5hEL7rk+uqMXWKKga0oH9P04o3SnwzX1vbV1atFG52GMK/kkw=="],
+
+    "split2": ["split2@4.2.0", "", {}, "sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg=="],
 
     "supports-color": ["supports-color@7.2.0", "", { "dependencies": { "has-flag": "^4.0.0" } }, "sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw=="],
 
@@ -247,6 +298,8 @@
     "undici-types": ["undici-types@6.21.0", "", {}, "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="],
 
     "which": ["which@5.0.0", "", { "dependencies": { "isexe": "^3.1.1" }, "bin": { "node-which": "bin/which.js" } }, "sha512-JEdGzHwwkrbWoGOlIHqQ5gtprKGOenpDHpxE9zVR1bWbOtYRyPPHMe9FaP6x61CmNaTThSkb0DAJte5jD+DmzQ=="],
+
+    "xtend": ["xtend@4.0.2", "", {}, "sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ=="],
 
     "yocto-queue": ["yocto-queue@0.1.0", "", {}, "sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q=="],
   }

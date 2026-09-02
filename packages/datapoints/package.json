@@ -1,0 +1,66 @@
+{
+  "name": "@bradtech/datapoints",
+  "version": "1.0.0",
+  "description": "Quatrain-powered DataPoint domain model and repository for TimescaleDB / PostgreSQL timeseries ingestion and querying",
+  "author": "Olivier Lépine <olivier@lepine.fr>",
+  "license": "AGPL-3.0-or-later",
+  "copyright": "Copyright (C) 2026 Olivier Lépine",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bradtech-oss/stack.git",
+    "directory": "packages/datapoints"
+  },
+  "keywords": [
+    "datapoints",
+    "timeseries",
+    "timescaledb",
+    "postgres",
+    "quatrain",
+    "telemetry",
+    "iot",
+    "agronomy",
+    "brad",
+    "agpl-v3"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "bun": "./src/index.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "HOWTO.md",
+    "!**/*.test.ts"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc",
+    "wbuild": "tsc --watch",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@bradtech/types": "^1.1.1",
+    "@quatrain/backend": "^1.2.18",
+    "@quatrain/backend-postgres": "^1.2.13",
+    "@quatrain/core": "^1.2.18"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/node": "^22.10.1",
+    "typescript": "^5.4.5"
+  }
+}
