@@ -54,4 +54,27 @@ describe('DataPoint Model Unit Tests', () => {
       expect(created.uri.path).toBeDefined()
       expect(created.uri.path).toContain('datapoints/')
    })
+
+   it('should strictly exclude CRUD columns (name, status, audit fields) from property serialization', async () => {
+      const dp = await DataPoint.factory()
+      dp._.device = '8c1f645490100016'
+      dp._.metric = 'okf:agronomy/microclimate/canopy_temperature'
+      dp._.value = 24.2
+      dp._.unit = '°C'
+      dp._.timestamp = '2026-09-02T12:00:00.000Z'
+
+      const data = dp.dataObject.toJSON({ withoutURIData: true })
+      expect(data.name).toBeUndefined()
+      expect(data.status).toBeUndefined()
+      expect(data.createdby).toBeUndefined()
+      expect(data.createdat).toBeUndefined()
+      expect(data.updatedby).toBeUndefined()
+      expect(data.updatedat).toBeUndefined()
+      expect(data.deletedby).toBeUndefined()
+      expect(data.deletedat).toBeUndefined()
+
+      expect(data.device).toBe('8c1f645490100016')
+      expect(data.metric).toBe('okf:agronomy/microclimate/canopy_temperature')
+      expect(data.value).toBe(24.2)
+   })
 })
