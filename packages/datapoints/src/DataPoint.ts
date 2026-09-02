@@ -16,11 +16,6 @@ import {
  */
 export const DataPointProperties = [
    {
-      name: 'id',
-      type: StringProperty.TYPE,
-      required: false,
-   },
-   {
       name: 'device',
       type: StringProperty.TYPE,
       required: true,
