@@ -2,7 +2,6 @@ import {
    PersistedBaseObject,
 } from '@quatrain/backend'
 import {
-   BaseObjectProperties,
    StringProperty,
    NumberProperty,
    EnumProperty,
@@ -15,7 +14,11 @@ import {
  * Property schema definition for the DataPoint model.
  */
 export const DataPointProperties = [
-   ...BaseObjectProperties,
+   {
+      name: 'id',
+      type: StringProperty.TYPE,
+      required: false,
+   },
    {
       name: 'device',
       type: StringProperty.TYPE,

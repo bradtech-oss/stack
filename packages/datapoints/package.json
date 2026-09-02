@@ -1,6 +1,6 @@
 {
   "name": "@bradtech/datapoints",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Quatrain-powered DataPoint domain model and repository for TimescaleDB / PostgreSQL timeseries ingestion and querying",
   "author": "Olivier Lépine <olivier@lepine.fr>",
   "license": "AGPL-3.0-or-later",
