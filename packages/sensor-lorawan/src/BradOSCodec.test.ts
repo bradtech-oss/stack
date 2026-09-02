@@ -24,27 +24,72 @@ describe('BradOSCodec Unit Tests', () => {
       expect(channel?.sensorModel).toBe('Sensirion SHT40')
    })
 
-   it('should map FPort 12 to 10cm soil moisture channel with Brad soil sensor source', () => {
+   it('should map FPort 46 to 5cm soil moisture channel with Brad soil sensor source', () => {
       const buf = Buffer.alloc(4)
       buf.writeFloatLE(28.0, 0)
-      const channel = BradOSCodec.decodeFPortChannel(12, buf)
+      const channel = BradOSCodec.decodeFPortChannel(46, buf)
 
       expect(channel).toBeDefined()
       expect(channel?.channelType).toBe('soil_moisture')
-      expect(channel?.depthCm).toBe(10)
+      expect(channel?.depthCm).toBe(5)
       expect(channel?.sensorSource).toBe('Brad soil sensor')
-      expect(channel?.sensorModel).toBe('Brad Soil Sensor 10cm')
+      expect(channel?.sensorModel).toBe('Brad Soil Sensor 5cm')
    })
 
-   it('should map FPort 19 to solar irradiance with SI1145 sensor source', () => {
+   it('should map FPort 16 to 15cm soil moisture channel with Brad soil sensor source', () => {
       const buf = Buffer.alloc(4)
-      buf.writeFloatLE(750.0, 0)
-      const channel = BradOSCodec.decodeFPortChannel(19, buf)
+      buf.writeFloatLE(28.0, 0)
+      const channel = BradOSCodec.decodeFPortChannel(16, buf)
 
       expect(channel).toBeDefined()
-      expect(channel?.channelType).toBe('solar')
+      expect(channel?.channelType).toBe('soil_moisture')
+      expect(channel?.depthCm).toBe(15)
+      expect(channel?.sensorSource).toBe('Brad soil sensor')
+      expect(channel?.sensorModel).toBe('Brad Soil Sensor 15cm')
+   })
+
+   it('should map FPort 17 to 30cm soil moisture channel with Brad soil sensor source', () => {
+      const buf = Buffer.alloc(4)
+      buf.writeFloatLE(32.5, 0)
+      const channel = BradOSCodec.decodeFPortChannel(17, buf)
+
+      expect(channel).toBeDefined()
+      expect(channel?.channelType).toBe('soil_moisture')
+      expect(channel?.depthCm).toBe(30)
+      expect(channel?.sensorSource).toBe('Brad soil sensor')
+      expect(channel?.sensorModel).toBe('Brad Soil Sensor 30cm')
+   })
+
+   it('should map FPort 13 to illuminance lux with SI1145 sensor source', () => {
+      const buf = Buffer.alloc(4)
+      buf.writeFloatLE(45000.0, 0)
+      const channel = BradOSCodec.decodeFPortChannel(13, buf)
+
+      expect(channel).toBeDefined()
+      expect(channel?.channelType).toBe('solar_lux')
       expect(channel?.sensorSource).toBe('SI1145')
       expect(channel?.sensorModel).toBe('Silicon Labs SI1145')
    })
-})
 
+   it('should map FPort 9 to UV index with SI1145 sensor source', () => {
+      const buf = Buffer.alloc(4)
+      buf.writeFloatLE(6.2, 0)
+      const channel = BradOSCodec.decodeFPortChannel(9, buf)
+
+      expect(channel).toBeDefined()
+      expect(channel?.channelType).toBe('solar_uv')
+      expect(channel?.sensorSource).toBe('SI1145')
+      expect(channel?.sensorModel).toBe('Silicon Labs SI1145')
+   })
+
+   it('should map FPort 50 to broadband solar irradiance with Davis 6450 sensor source', () => {
+      const buf = Buffer.alloc(4)
+      buf.writeFloatLE(750.0, 0)
+      const channel = BradOSCodec.decodeFPortChannel(50, buf)
+
+      expect(channel).toBeDefined()
+      expect(channel?.channelType).toBe('solar')
+      expect(channel?.sensorSource).toBe('Davis 6450')
+      expect(channel?.sensorModel).toBe('Davis Solar Radiation Sensor')
+   })
+})
