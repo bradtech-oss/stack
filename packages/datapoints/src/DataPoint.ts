@@ -9,7 +9,40 @@ import {
    DateTimeProperty,
    ObjectProperty,
    Core,
+   type DataObjectParams,
 } from '@quatrain/core'
+
+/**
+ * Specialized DataObject for DataPoints ensuring that numeric falsey values (e.g. value = 0)
+ * are not converted to null during serialization.
+ */
+export class DataPointDataObject extends PersistedDataObject {
+   protected _dataToJSON(
+      _objectsAsReferences = false,
+      ignoreUnchanged = false,
+      ignoreNulls = false,
+      _converters = {}
+   ) {
+      const data: Record<string, any> = {}
+      Object.keys(this._properties).forEach((key: string) => {
+         const prop = Reflect.get(this._properties, key)
+         const val = prop.val()
+         if (ignoreNulls && (val === null || val === undefined)) {
+            return
+         }
+         if (ignoreUnchanged && prop.hasChanged === false) return
+
+         Reflect.set(data, key, val !== undefined ? val : null)
+      })
+      return data
+   }
+
+   static factory(
+      param: DataObjectParams | undefined = undefined
+   ): DataPointDataObject {
+      return new this(param)
+   }
+}
 
 /**
  * Property schema definition for the DataPoint model.
@@ -84,13 +117,14 @@ export class DataPoint extends PersistedBaseObject {
 
    /**
     * Overrides default fillProperties to prevent injecting CRUD columns
-    * (name, status, createdby, updatedby...) into the pure TimescaleDB hypertable schema.
+    * (name, status, createdby, updatedby...) into the pure TimescaleDB hypertable schema,
+    * and binds DataPointDataObject for clean numeric serialization.
     * 
     * @param child - Child class reference.
     * @returns The DataObject instance configured strictly with DataPointProperties.
     */
    static fillProperties(child: any = this) {
-      const dao = PersistedDataObject.factory({
+      const dao = DataPointDataObject.factory({
          properties: this.PROPS_DEFINITION,
          parentProp: this.PARENT_PROP,
       })
